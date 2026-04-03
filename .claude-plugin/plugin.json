@@ -1,0 +1,13 @@
+{
+  "name": "playdrop",
+  "version": "0.5.5",
+  "description": "Public PlayDrop creator workflows",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "PlayDrop",
+    "shortDescription": "Creator workflows for PlayDrop",
+    "longDescription": "Public creator workflows for planning, building, improving, publishing, and maintaining PlayDrop games.",
+    "developerName": "PlayDrop",
+    "category": "Coding"
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "name": "playdrop",
+  "version": "0.5.5",
+  "description": "Public PlayDrop creator workflows",
+  "author": {
+    "name": "PlayDrop",
+    "email": "support@playdrop.ai",
+    "url": "https://www.playdrop.ai/"
+  },
+  "homepage": "https://www.playdrop.ai/",
+  "repository": "https://github.com/playdrop-ai/playdrop-plugin",
+  "keywords": [
+    "playdrop",
+    "browser-games",
+    "game-development",
+    "game-design",
+    "game-publishing",
+    "asset-discovery",
+    "creator-tools",
+    "game-porting"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "PlayDrop",
+    "shortDescription": "Creator workflows for building and shipping PlayDrop games",
+    "longDescription": "Game planning, asset discovery, development, improvements, listings, marketing, services, engine porting, and creator support for PlayDrop projects.",
+    "developerName": "PlayDrop",
+    "category": "Coding",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "websiteURL": "https://www.playdrop.ai/",
+    "privacyPolicyURL": "https://www.playdrop.ai/legal/privacy",
+    "termsOfServiceURL": "https://www.playdrop.ai/legal/terms",
+    "defaultPrompt": [
+      "Plan a new PlayDrop game",
+      "Prepare a store listing",
+      "Port an existing game"
+    ],
+    "brandColor": "#9D55F8",
+    "composerIcon": "./assets/playdrop-icon-small.svg",
+    "logo": "./assets/playdrop-icon-large.png",
+    "screenshots": []
+  }
+}
