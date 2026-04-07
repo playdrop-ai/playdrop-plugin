@@ -1,0 +1,26 @@
+{
+  "name": "playdrop",
+  "version": "0.5.5",
+  "displayName": "PlayDrop",
+  "description": "Creator workflows for planning, building, improving, publishing, and maintaining PlayDrop games.",
+  "author": {
+    "name": "PlayDrop",
+    "email": "support@playdrop.ai"
+  },
+  "homepage": "https://www.playdrop.ai/",
+  "repository": "https://github.com/playdrop-ai/playdrop-plugin",
+  "license": "MIT",
+  "category": "Coding",
+  "keywords": [
+    "playdrop",
+    "browser-games",
+    "game-development",
+    "game-design",
+    "game-publishing",
+    "asset-discovery",
+    "creator-tools",
+    "game-porting"
+  ],
+  "logo": "./assets/playdrop-icon-large.png",
+  "skills": ["skills/*"]
+}

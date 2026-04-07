@@ -1,6 +1,6 @@
 # playdrop-plugin
 
-Canonical public PlayDrop plugin source for Codex and Claude.
+Canonical public PlayDrop plugin source for Codex, Claude, and Cursor.
 
 This repository is the source of truth for the public `playdrop` plugin. It contains the plugin manifests, public creator-facing skills, shared references, and shared assets used to support PlayDrop creator workflows.
 
@@ -14,6 +14,7 @@ This repository is the source of truth for the public `playdrop` plugin. It cont
 
 - `.codex-plugin/`: Codex manifest
 - `.claude-plugin/`: Claude manifest
+- `.cursor-plugin/`: Cursor manifest
 - `skills/`: specialist public PlayDrop skills
 - `references/`: shared public workflow references
 - `assets/`: plugin icons and branding assets
@@ -36,12 +37,19 @@ claude --plugin-dir .
 
 Then confirm the plugin and specialist skills are available, starting with `/playdrop` and `/playdrop:store-listing`.
 
+### Cursor
+
+Install this repository as a local plugin from source using the cloned repository root as the plugin path.
+
+Then confirm the skills are discoverable, starting with `playdrop:task-routing`.
+
 ## Validation
 
 Use short representative checks instead of treating discovery alone as sufficient.
 
 - Codex: verify `playdrop:task-routing`, `playdrop:game-planning`, `playdrop:scope-control`, and `playdrop:store-listing`
 - Claude: verify `/playdrop`, `/playdrop:game-planning`, `/playdrop:scope-control`, and `/playdrop:store-listing`
+- Cursor: verify `playdrop:task-routing`, `playdrop:game-planning`, `playdrop:scope-control`, and `playdrop:store-listing`
 - Workflow smoke tests:
   - `game-planning` -> `scope-control` -> `gameplay-mockups`
   - `dev-testing` -> `gameplay-review` -> `store-listing`
