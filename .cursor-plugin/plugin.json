@@ -1,6 +1,6 @@
 {
   "name": "playdrop",
-  "version": "0.5.5",
+  "version": "0.6.2",
   "displayName": "PlayDrop",
   "description": "Creator workflows for planning, building, improving, publishing, and maintaining PlayDrop games.",
   "author": {
@@ -22,5 +22,7 @@
     "game-porting"
   ],
   "logo": "./assets/playdrop-icon-large.png",
-  "skills": ["skills/*"]
+  "skills": [
+    "skills/*"
+  ]
 }

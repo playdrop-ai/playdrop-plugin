@@ -1,6 +1,6 @@
 # playdrop-plugin
 
-Canonical public PlayDrop plugin source for Codex, Claude, and Cursor.
+Canonical public PlayDrop plugin source for Codex, Claude Code, and Cursor.
 
 This repository is the source of truth for the public `playdrop` plugin. It contains the plugin manifests, public creator-facing skills, shared references, and shared assets used to support PlayDrop creator workflows.
 
@@ -8,6 +8,7 @@ This repository is the source of truth for the public `playdrop` plugin. It cont
 
 - Home page: [playdrop.ai](https://www.playdrop.ai/)
 - Getting Started: [playdrop.ai/getting-started](https://www.playdrop.ai/getting-started)
+- Plugin docs: [playdrop.ai/docs/plugin](https://www.playdrop.ai/docs/plugin)
 - Full documentation: [playdrop.ai/docs](https://www.playdrop.ai/docs)
 
 ## Repository layout
@@ -27,7 +28,7 @@ Install this repository as a local plugin from source using the cloned repositor
 
 Then confirm the public skills are discoverable, starting with `playdrop:task-routing`.
 
-### Claude
+### Claude Code
 
 Install the plugin from the repository root:
 
@@ -48,7 +49,7 @@ Then confirm the skills are discoverable, starting with `playdrop:task-routing`.
 Use short representative checks instead of treating discovery alone as sufficient.
 
 - Codex: verify `playdrop:task-routing`, `playdrop:game-planning`, `playdrop:scope-control`, and `playdrop:store-listing`
-- Claude: verify `/playdrop`, `/playdrop:game-planning`, `/playdrop:scope-control`, and `/playdrop:store-listing`
+- Claude Code: verify `/playdrop`, `/playdrop:game-planning`, `/playdrop:scope-control`, and `/playdrop:store-listing`
 - Cursor: verify `playdrop:task-routing`, `playdrop:game-planning`, `playdrop:scope-control`, and `playdrop:store-listing`
 - Workflow smoke tests:
   - `game-planning` -> `scope-control` -> `gameplay-mockups`
@@ -79,5 +80,5 @@ node scripts/sync-legacy-skills-repo.mjs --check
 Align the public plugin manifests with the platform release version from the monorepo:
 
 ```bash
-node scripts/set-public-plugin-version.mjs 0.5.5
+node scripts/set-public-plugin-version.mjs 0.6.2
 ```
