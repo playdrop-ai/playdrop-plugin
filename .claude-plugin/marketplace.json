@@ -1,0 +1,12 @@
+{
+  "name": "playdrop",
+  "description": "PlayDrop creator plugins",
+  "plugins": [
+    {
+      "name": "playdrop",
+      "description": "Creator workflows for planning, building, improving, publishing, and maintaining PlayDrop games.",
+      "version": "0.6.2",
+      "source": "."
+    }
+  ]
+}
