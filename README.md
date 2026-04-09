@@ -20,29 +20,39 @@ This repository is the source of truth for the public `playdrop` plugin. It cont
 - `references/`: shared public workflow references
 - `assets/`: plugin icons and branding assets
 
-## Local install
+## Install the Plugin
 
 ### Codex
 
-Install this repository as a local plugin from source using the cloned repository root as the plugin path.
+Copy this prompt into Codex to register the plugin:
 
-Then confirm the public skills are discoverable, starting with `playdrop:task-routing`.
+```text
+Install the PlayDrop Codex Plugin from https://github.com/playdrop-ai/playdrop-plugin in ~/.codex/plugins/
+Then register it to my personal marketplace at ~/.agents/plugins/marketplace.json
+Source: https://developers.openai.com/codex/plugins/build?install-scope=global
+```
+
+Once done you need to restart Codex, go to Plugins > Local Plugins, and click `+` to install it.
 
 ### Claude Code
 
-Install the plugin from the repository root:
+Either run these commands in Claude CLI directly, or tell the Claude app to run them with Claude CLI.
 
 ```bash
-claude --plugin-dir .
+/plugin marketplace add playdrop-ai/playdrop-plugin
+/plugin install playdrop@playdrop
 ```
 
-Then confirm the plugin and specialist skills are available, starting with `/playdrop` and `/playdrop:store-listing`.
+`/plugin` is not available inside the Claude Code app at the moment.
 
 ### Cursor
 
-Install this repository as a local plugin from source using the cloned repository root as the plugin path.
+Copy this prompt into Cursor to register the plugin:
 
-Then confirm the skills are discoverable, starting with `playdrop:task-routing`.
+```text
+Install the PlayDrop Cursor Plugin from https://github.com/playdrop-ai/playdrop-plugin in ~/.cursor/plugins/local/
+Source: https://cursor.com/docs/plugins#creating-plugins
+```
 
 ## Validation
 
