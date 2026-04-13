@@ -24,15 +24,57 @@ This repository is the source of truth for the public `playdrop` plugin. It cont
 
 ### Codex
 
-Copy this prompt into Codex to register the plugin:
+Use this exact local Codex setup:
+
+1. Copy the plugin repo into:
 
 ```text
-Install the PlayDrop Codex Plugin from https://github.com/playdrop-ai/playdrop-plugin in ~/.codex/plugins/
-Then register it to my personal marketplace at ~/.agents/plugins/marketplace.json
-Source: https://developers.openai.com/codex/plugins/build?install-scope=global
+~/.codex/plugins/playdrop
 ```
 
-Once done you need to restart Codex, go to Plugins > Local Plugins, and click `+` to install it.
+2. Create or update:
+
+```text
+~/.agents/plugins/marketplace.json
+```
+
+with:
+
+```json
+{
+  "name": "local-plugins",
+  "interface": {
+    "displayName": "Local Plugins"
+  },
+  "plugins": [
+    {
+      "name": "playdrop",
+      "source": {
+        "source": "local",
+        "path": "./.codex/plugins/playdrop"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Coding"
+    }
+  ]
+}
+```
+
+3. Restart Codex so it reloads the personal marketplace.
+4. Open `Plugins > Local Plugins`, then install `playdrop` from `local-plugins`.
+5. Start a new thread and ask Codex to use `playdrop` or one of its bundled skills.
+
+Optional advanced shortcut for personal setups:
+
+```toml
+[plugins."playdrop@local-plugins"]
+enabled = true
+```
+
+Add that entry to `~/.codex/config.toml` if you want Codex to keep the plugin enabled after it has been installed. Treat it as a local shortcut for your own machine, not the primary install path. If PlayDrop does not appear, use the restart plus `Plugins > Local Plugins` flow above.
 
 ### Claude Code
 
