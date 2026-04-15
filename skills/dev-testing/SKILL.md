@@ -11,9 +11,11 @@ Use this skill to validate creator projects before they become listing or releas
 
 1. Log in and initialize the project if needed
 2. Run `playdrop project validate .`
-3. Start the local dev flow
-4. Use multiple accounts when auth or multiplayer matters
-5. Confirm the core runtime behavior before publish
+3. Start the normal hosted dev flow with `playdrop project dev <app>`
+4. Open the production `/dev` route and click `Connect local game` the first time Chrome asks PlayDrop to reach `127.0.0.1:8888`
+5. Use multiple auth modes and test accounts when auth or multiplayer matters
+6. If Chrome still blocks the normal `/dev` route, use `playdrop project dev-browser <app>` as the isolated Chromium fallback
+7. Confirm the core runtime behavior before publish
 
 ## Rule
 
