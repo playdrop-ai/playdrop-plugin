@@ -100,10 +100,11 @@ Source: https://cursor.com/docs/plugins#creating-plugins
 
 Use short representative checks instead of treating discovery alone as sufficient.
 
-- Codex: verify `playdrop:task-routing`, `playdrop:game-planning`, `playdrop:scope-control`, and `playdrop:store-listing`
+- Codex: verify `playdrop:task-routing`, `playdrop:game-planning`, `playdrop:art-direction`, `playdrop:scope-control`, and `playdrop:store-listing`
 - Claude Code: verify `/playdrop`, `/playdrop:game-planning`, `/playdrop:scope-control`, and `/playdrop:store-listing`
-- Cursor: verify `playdrop:task-routing`, `playdrop:game-planning`, `playdrop:scope-control`, and `playdrop:store-listing`
+- Cursor: verify `playdrop:task-routing`, `playdrop:game-planning`, `playdrop:art-direction`, `playdrop:scope-control`, and `playdrop:store-listing`
 - Workflow smoke tests:
+  - `game-planning` -> `art-direction` -> `gameplay-mockups`
   - `game-planning` -> `scope-control` -> `gameplay-mockups`
   - `dev-testing` -> `gameplay-review` -> `store-listing`
   - `project-updates` -> `service-integration`

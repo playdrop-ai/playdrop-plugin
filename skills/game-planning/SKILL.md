@@ -46,6 +46,7 @@ Use this skill for pre-build planning when the concept still needs to prove it d
 
 ## Handoffs
 
+- visual direction, style exploration, or art mockups -> `art-direction`
 - cut the plan to the smallest strong v1 -> `scope-control`
 - turn the locked plan into visual build targets -> `gameplay-mockups`
 - listing and media prep -> `store-listing`

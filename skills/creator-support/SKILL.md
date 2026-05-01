@@ -23,6 +23,7 @@ Use this skill when the creator is blocked and the main value is fast, practical
 ## Handoff map
 
 - new idea, scope, or platform fit questions -> `game-planning`
+- art direction, visual style, mascot feel, or exploratory art mockups -> `art-direction`
 - cut a plan down to a smaller v1 -> `scope-control`
 - gameplay mockups, HUD framing, or visual build-target review -> `gameplay-mockups`
 - finding starter kits, assets, or remix candidates -> `asset-discovery`

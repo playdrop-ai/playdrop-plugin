@@ -31,4 +31,5 @@ Use this skill whenever the work affects how a game is presented publicly.
 
 ## Handoff
 
+- early icon, hero, or visual direction before final listing media -> `art-direction`
 - daily feedback triage after publish -> `comment-monitoring`

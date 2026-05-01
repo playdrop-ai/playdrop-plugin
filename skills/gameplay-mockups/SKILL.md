@@ -29,6 +29,7 @@ Use this skill when a game needs visual implementation targets before coding or 
 
 ## Handoff
 
+- art direction not locked yet -> `art-direction`
 - planning changes exposed by the mockups -> `game-planning`
 - simplifying the plan before more mockup work -> `scope-control`
 - integrating approved mockups into an existing project -> `game-improvement`

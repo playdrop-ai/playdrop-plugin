@@ -1,6 +1,6 @@
 ---
 name: task-routing
-description: "Route ambiguous or multi-step public Playdrop creator requests to the right specialist skill. Use when the user asks for broad Playdrop help, does not know which creator workflow they need, or one request spans planning, scoping, mockups, improvement, listing, marketing, services, or porting."
+description: "Route ambiguous or multi-step public Playdrop creator requests to the right specialist skill. Use when the user asks for broad Playdrop help, does not know which creator workflow they need, or one request spans planning, art direction, scoping, mockups, improvement, listing, marketing, services, or porting."
 ---
 
 # Task Routing
@@ -10,6 +10,7 @@ Use this skill only when the correct public Playdrop specialist skill is not alr
 ## Route by intent
 
 - idea, pitch, platform fit, roadmap -> `game-planning`
+- visual style, mood, palette, mascot feel, icon or hero concepts, art mockups -> `art-direction`
 - cut scope, reduce feature creep, lock a smaller v1 -> `scope-control`
 - gameplay mockups, HUD framing, visual build targets -> `gameplay-mockups`
 - find references, assets, packs, reusable code -> `asset-discovery`

@@ -32,5 +32,6 @@ Use this skill for focused iteration on an existing Playdrop project.
 ## Handoff
 
 - pre-listing desirability review -> `gameplay-review`
+- visual direction rethink before polishing assets -> `art-direction`
 - concept or scope rethink -> `game-planning`
 - new listing assets or publish prep -> `store-listing`
