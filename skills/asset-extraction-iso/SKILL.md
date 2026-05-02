@@ -11,7 +11,15 @@ This skill only supports classic 2:1 isometric projection. A logical square grid
 
 Current v1 limitation: only square footprints are supported reliably. Use `1x1`, `2x2`, `3x3`, or `4x4`. Do not attempt rectangular footprints such as `2x3` or `3x2`; current image-generation models do not follow the template precisely enough and the output should be rejected before spending more extraction time.
 
-This skill does the extraction. Do not stop at an extraction plan.
+This skill does the extraction. Do not stop at an extraction plan. If a requested asset cannot pass visual validation, leave it rejected in the run folder and do not register it as accepted.
+
+## Package Contract
+
+- Keep all intermediary prompts, source crops, AI generations, template masks, previews, overlays, reports, and rejected attempts under `tmp/asset-extraction-iso/<slug>/`.
+- Ensure `tmp/` is ignored by both `.gitignore` and `.playdropignore` when working inside a game repo.
+- Move only accepted transparent PNGs into `assets/iso/`.
+- Register only accepted assets in `iso.json`; rejected attempts stay in `tmp/` with notes or reports.
+- Use the same metadata vocabulary across extraction skills: `name`, `role`, `image`, `source`, `extraction`, `contactSheet`, `report`, `validationStatus`, and `notes` when useful.
 
 ## Inputs
 
@@ -110,6 +118,20 @@ The footprint is the ground/base footprint, not the full roof or vertical height
       --background '#ff00ff'
     ```
 14. Register accepted outputs in `iso.json` in the game root and move only accepted transparent PNGs into `assets/iso/`.
+
+## Exploration Fallback
+
+When a square-footprint template-constrained output fails but the source still looks promising, try up to three direct image-generation approaches before giving up:
+
+1. Source art plus approved same-game reference plus exact square template. If the generation tool only supports two image inputs, combine source and reference into one labeled reference sheet and use the exact template as the second input.
+2. Source art plus exact square template, without the same-game reference.
+3. Source art only, with a strong prompt requiring a classic 2:1 square-footprint asset on a plain extraction background.
+
+For each approach, record the prompt and direct output in `tmp/asset-extraction-iso/<slug>/`. Do not continue to matte extraction unless the direct output already satisfies the footprint and red/green/purple contract visually.
+
+## Rectangular Footprints
+
+Rectangular footprints are future work. A Steam City `2x3` factory extraction was tested with source+reference+template, source+template, and source-only prompts, including stronger instructions to reinterpret the art, preserve red pixels, fully consume green floor pixels, avoid streets/sidewalks, and adjust perspective. The model still failed the placement contract often enough that rectangular support is not reliable. Reject or defer `2x3`, `3x2`, and other non-square footprints until PlayDrop has a more template-faithful generation path.
 
 ## Prompt Pattern
 

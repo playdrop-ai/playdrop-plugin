@@ -7,7 +7,15 @@ description: "Use when extracting 2D game assets, sprites, mascot poses, props, 
 
 Use this skill when the user provides an image, mockup, screenshot, or approved art direction and asks to extract one or more non-UI 2D game assets into game-ready bitmap files.
 
-This skill does the extraction. Do not stop at an extraction plan.
+This skill does the extraction. Do not stop at an extraction plan. If a requested asset cannot pass visual validation, leave it rejected in the run folder and do not register it as accepted.
+
+## Package Contract
+
+- Keep all intermediary prompts, source crops, AI generations, previews, reports, and rejected attempts under `tmp/asset-extraction-2d/<slug>/`.
+- Ensure `tmp/` is ignored by both `.gitignore` and `.playdropignore` when working inside a game repo.
+- Move only accepted transparent PNGs into `assets/2d/`.
+- Register only accepted assets in `images.json`; rejected attempts stay in `tmp/` with notes or reports.
+- Use the same metadata vocabulary across extraction skills: `name`, `role`, `image`, `source`, `extraction`, `contactSheet`, `report`, `validationStatus`, and `notes` when useful.
 
 ## Workflow
 

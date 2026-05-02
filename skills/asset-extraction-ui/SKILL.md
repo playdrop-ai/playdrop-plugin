@@ -7,7 +7,15 @@ description: "Use when extracting UI components, tokens, states, HUD elements, i
 
 Use this skill when the user provides an image or mockup and asks to extract one or more UI elements into game-ready UI assets.
 
-This skill does the extraction. Do not stop at an extraction plan.
+This skill does the extraction. Do not stop at an extraction plan. If a requested element cannot pass visual validation, leave it rejected in the run folder and do not register it as accepted.
+
+## Package Contract
+
+- Keep all intermediary prompts, source crops, AI generations, previews, reports, and rejected attempts under `tmp/asset-extraction-ui/<slug>/`.
+- Ensure `tmp/` is ignored by both `.gitignore` and `.playdropignore` when working inside a game repo.
+- Move only accepted transparent PNGs into `assets/ui/`.
+- Register only accepted elements in `ui-kit.json`; rejected attempts stay in `tmp/` with notes or reports.
+- Use the same metadata vocabulary across extraction skills: `name`, `role`, `image`, `source`, `extraction`, `contactSheet`, `report`, `validationStatus`, and `notes` when useful.
 
 ## Workflow
 
@@ -71,6 +79,7 @@ Register each accepted asset in `ui-kit.json`:
 
 ```json
 {
+  "version": 1,
   "elements": [
     {
       "name": "advisor-panel",
@@ -80,7 +89,14 @@ Register each accepted asset in `ui-kit.json`:
       "nineSlice": { "left": 18, "right": 18, "top": 18, "bottom": 18 },
       "contentArea": { "x": 28, "y": 24, "width": 188, "height": 96 },
       "states": ["default"],
-      "source": "tmp/asset-extraction-ui/<slug>/source.png"
+      "source": "tmp/asset-extraction-ui/<slug>/source.png",
+      "extraction": {
+        "matteA": "#000000",
+        "matteB": "#00ff00",
+        "contactSheet": "tmp/asset-extraction-ui/<slug>/advisor-panel-contact-sheet.png",
+        "report": "tmp/asset-extraction-ui/<slug>/advisor-panel-report.json",
+        "validationStatus": "accepted"
+      }
     }
   ]
 }
