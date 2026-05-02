@@ -62,6 +62,7 @@ node scripts/extract-alpha-background-swap.ts \\
   --base matte-a.png --swap matte-b.png --out element.png \\
   --base-bg '#000000' --swap-bg '#00ff00' \\
   [--preview-bg '#ff00ff' --preview-out preview.png] \\
+  [--background-threshold 40] [--same-threshold 8] [--opaque-distance-threshold 96] \\
   [--contact-sheet-out contact-sheet.png] [--report report.json]
 
 Both input images must be the same element on flat, different background colors.
@@ -165,6 +166,19 @@ function unmatte(first, second, firstBg, secondBg, alpha) {
   };
 }
 
+function averageOpaque(first, second) {
+  return {
+    r: Math.round((first.r + second.r) / 2),
+    g: Math.round((first.g + second.g) / 2),
+    b: Math.round((first.b + second.b) / 2),
+    a: 255,
+  };
+}
+
+function baseOpaque(first) {
+  return { r: first.r, g: first.g, b: first.b, a: 255 };
+}
+
 function compositeOver(pixel, bg) {
   const alpha = pixel.a / 255;
   return {
@@ -254,6 +268,13 @@ const bgThreshold = readNumberArg(
 );
 const sameThreshold = readNumberArg(args["same-threshold"], 8, "same-threshold", 0, 441);
 const alphaFloor = readNumberArg(args["alpha-floor"], 2, "alpha-floor", 0, 255);
+const opaqueDistanceThreshold = readNumberArg(
+  args["opaque-distance-threshold"],
+  Math.max(bgThreshold * 2, 96),
+  "opaque-distance-threshold",
+  0,
+  441
+);
 const residueThreshold = readNumberArg(
   args["residue-threshold"],
   bgThreshold,
@@ -276,6 +297,7 @@ let opaque = 0;
 let visible = 0;
 let semiTransparent = 0;
 let pairDrift = 0;
+let opaqueDrift = 0;
 let potentialBaseResidue = 0;
 let potentialSwapResidue = 0;
 
@@ -294,12 +316,14 @@ for (let y = 0; y < base.height; y += 1) {
       pixel = { r: 0, g: 0, b: 0, a: 0 };
       transparent += 1;
     } else if (pairDistance <= sameThreshold) {
-      pixel = {
-        r: Math.round((first.r + second.r) / 2),
-        g: Math.round((first.g + second.g) / 2),
-        b: Math.round((first.b + second.b) / 2),
-        a: 255,
-      };
+      pixel = averageOpaque(first, second);
+      opaque += 1;
+    } else if (
+      firstDistance >= opaqueDistanceThreshold &&
+      secondDistance >= opaqueDistanceThreshold
+    ) {
+      pixel = baseOpaque(first);
+      opaqueDrift += 1;
       opaque += 1;
     } else {
       const alpha = estimateAlpha(first, second, firstBg, secondBg);
@@ -307,12 +331,7 @@ for (let y = 0; y < base.height; y += 1) {
         pixel = { r: 0, g: 0, b: 0, a: 0 };
         transparent += 1;
       } else if (alpha >= 0.985) {
-        pixel = {
-          r: Math.round((first.r + second.r) / 2),
-          g: Math.round((first.g + second.g) / 2),
-          b: Math.round((first.b + second.b) / 2),
-          a: 255,
-        };
+        pixel = averageOpaque(first, second);
         opaque += 1;
       } else {
         const color = unmatte(first, second, firstBg, secondBg, alpha);
@@ -383,6 +402,7 @@ const report = {
     semiTransparent,
     pairDriftPixels: pairDrift,
     pairDriftRatio,
+    opaqueDriftPixels: opaqueDrift,
     potentialMatteResidue: {
       baseBgPixels: potentialBaseResidue,
       baseBgRatio: baseResidueRatio,
@@ -403,7 +423,13 @@ const report = {
         colors: contactSheetColors.map(colorToHex),
       }
     : undefined,
-  thresholds: { bgThreshold, sameThreshold, alphaFloor, residueThreshold },
+  thresholds: {
+    bgThreshold,
+    sameThreshold,
+    alphaFloor,
+    opaqueDistanceThreshold,
+    residueThreshold,
+  },
 };
 
 if (typeof args.report === "string") {
