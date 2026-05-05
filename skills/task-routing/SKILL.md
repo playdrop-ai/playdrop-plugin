@@ -7,6 +7,16 @@ description: "Route ambiguous or multi-step public Playdrop creator requests to 
 
 Use this skill only when the correct public Playdrop specialist skill is not already obvious.
 
+## Saved Game Ideas
+
+If the user says "my game idea", "the idea I created", "that game idea", or gives a likely game idea name, first check saved ideas:
+
+```bash
+playdrop creations ideas browse --state all --json
+```
+
+When a saved GameIdea matches, route the work using that record as the source of truth. If the task creates the app, use `playdrop project create app <name> --game-idea <id-or-slug>` so the CLI infers the stored remix source or default TypeScript template. If the task publishes it, pass `--game-idea <id-or-slug>` to `playdrop project publish <app-name>`.
+
 ## Route by intent
 
 - idea, pitch, platform fit, roadmap -> `game-planning`
