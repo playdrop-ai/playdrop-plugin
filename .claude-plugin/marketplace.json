@@ -1,12 +1,15 @@
 {
   "name": "playdrop",
-  "description": "PlayDrop creator plugins",
+  "owner": { "name": "PlayDrop", "url": "https://www.playdrop.ai/" },
+  "metadata": {
+    "description": "PlayDrop creator plugins"
+  },
   "plugins": [
     {
       "name": "playdrop",
       "description": "Creator workflows for planning, building, improving, publishing, and maintaining PlayDrop games.",
       "version": "0.7.26",
-      "source": "."
+      "source": "./"
     }
   ]
 }
