@@ -15,7 +15,7 @@ The app entry should include:
 }
 ```
 
-Allowed `audioPolicy` values are `music-and-sfx`, `sfx-only`, and `silent`.
+Allowed `audioPolicy` values are `music-and-sfx`, `sfx-only`, and `silent`. Use `music-and-sfx` for default marketing packs.
 
 ## Runtime Hook
 
@@ -55,9 +55,12 @@ window.__listingCapture.stopAudioCapture?.()
 - hide menus, debug UI, host UI, corner watermarks, and nonessential HUD
 - skip loading screens and onboarding
 - show action, danger, scoring, effects, progression, win, fail, or a strong mechanic quickly
+- start the strongest visible gameplay beat immediately; do not begin with a static title card
 - set a seed or scripted state for repeatable captures
 - keep text and gameplay readable on portrait, landscape, and desktop surfaces
 - preserve real controls and game visuals instead of staging a misleading scene
+- include background music plus SFX unless the game intentionally has no music
+- make preview audio loud enough for capture and social playback
 
 ## Catalogue Updates
 

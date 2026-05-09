@@ -10,7 +10,7 @@ Use this skill after `marketing-capture` has produced source videos.
 ## Workflow
 
 1. Read `assets/marketing/capture-manifest.json`.
-2. Choose strong gameplay frames with action, stakes, or a readable success/fail moment.
+2. Choose strong gameplay frames with action, stakes, or a readable success/fail moment. Do not use title-only or idle frames.
 3. Render platform covers and screenshots into `assets/marketing/screenshots/`.
 4. Use large simple text, safe zones, and a clear visual hierarchy.
 5. Render thumbnail files into `assets/marketing/thumbnails/` where the platform needs separate thumbnails.
@@ -23,6 +23,8 @@ Use this skill after `marketing-capture` has produced source videos.
 - thumbnails are standalone files for YouTube, Pinterest, Reddit, X, or Playdrop
 - text must remain readable on mobile
 - do not cover the main gameplay action
+- PlayDrop hero/icon assets are not screenshots; route those to `listing-art`
+- do not reuse a social cover as final PlayDrop hero art
 
 ## Scripts
 

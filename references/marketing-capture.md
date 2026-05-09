@@ -43,9 +43,13 @@ Every accepted capture must validate:
 - surface is one of `desktop`, `mobile-landscape`, or `mobile-portrait`
 - dimensions match the requested surface family
 - duration and fps match the CLI options
+- default quality is 60 fps and at least 12 seconds
 - poster frame exists and is not a loading screen
 - required audio is present for `music-and-sfx` and `sfx-only`
+- required audio is loud enough for marketing use
 - gameplay contains motion or an exciting moment early in the capture
+- the captured poster matches the PlayDrop preview frame closely enough to catch wrong-window or wrong-screen capture
+- `capture-manifest.json` declares the public CLI local screen capture source
 
 ## Prohibited Capture Paths
 
@@ -53,3 +57,4 @@ Every accepted capture must validate:
 - no server-side runner
 - no remote mode
 - no native Apple listing recorder dependency
+- no manual browser-frame capture, Playwright video, or screenshot sequence substituted for CLI capture

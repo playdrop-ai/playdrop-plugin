@@ -32,6 +32,7 @@ node scripts/render-marketing-screenshot.ts \\
   --input assets/marketing/captures/mobile-portrait.mp4 \\
   --out assets/marketing/screenshots/tiktok-cover.png \\
   --width 1080 --height 1920 --at 2 \\
+  --frame-description "Final hit lands beside the reward" \\
   --text "Beat the boss" --font assets/fonts/title.ttf \\
   [--root . --manifest assets/marketing/asset-manifest.json --id tiktok-cover --platform tiktok]
 `;
@@ -139,9 +140,13 @@ try {
   const font = args.font === undefined ? "" : resolveFromRoot(projectRoot, String(args.font));
   const fontSize = parseNumber(args, "font-size", Math.round(height * 0.052), 12, 360);
   const bannerHeight = parseNumber(args, "banner-height", Math.round(height * 0.16), 0, height);
+  const frameDescription = args["frame-description"] === undefined ? "" : String(args["frame-description"]).trim();
 
   ensureTool("ffmpeg");
   ensureFile(input, "Input video");
+  if (!frameDescription) {
+    throw new Error("Missing --frame-description explaining why this is a strong gameplay frame.");
+  }
   if (text) {
     if (!font) throw new Error("Missing --font for text overlay");
     ensureFile(font, "Font file");
@@ -191,6 +196,7 @@ try {
     width,
     height,
     text: text || null,
+    frameDescription,
   });
 } catch (error) {
   console.error(error instanceof Error ? error.message : String(error));

@@ -10,7 +10,7 @@ Use this skill after the game, preview, capture, and listing assets are strong e
 ## Workflow
 
 1. Confirm `assets/marketing/capture-manifest.json`, `asset-manifest.json`, and `marketing-report.json` exist.
-2. Write or update `MARKETING.md`.
+2. Run `node <plugin>/scripts/validate-marketing-manifest.ts --root .` before writing final approval language.
 3. Include PlayDrop listing title, short description, long description, tags, and listing asset map.
 4. Include per-platform file maps, captions, descriptions, hashtags, link sticker text, thumbnails, cover notes, and posting notes.
 5. Include audio source notes and any intentionally skipped outputs with reasons.
@@ -40,6 +40,9 @@ Use this skill after the game, preview, capture, and listing assets are strong e
 - keep accepted asset paths under `assets/marketing/`
 - write copy for the actual current game, not a more ambitious version of it
 - explain reused files across platforms instead of duplicating assets unnecessarily
+- do not write "PASS with caveat", "WARNING", or similar approval language for required gates
+- failed or skipped required gates belong in a blocking action list, not in a finished marketing plan
+- social copy should sell the game to players; process/dev copy is only for an explicitly developer-facing LinkedIn post
 
 ## Handoff
 

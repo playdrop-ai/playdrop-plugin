@@ -32,6 +32,7 @@ node scripts/compose-listing-title.ts \\
   --input assets/marketing/playdrop/hero-art.png \\
   --out assets/marketing/playdrop/hero-title.png \\
   --title "Game Name" --font assets/fonts/title.ttf \\
+  --artwork-source playdrop-ai \\
   [--root . --width 1920 --height 1080 --manifest assets/marketing/asset-manifest.json]
 `;
 }
@@ -56,6 +57,14 @@ function ensureFile(file, label) {
   if (!fs.existsSync(file) || !fs.statSync(file).isFile()) {
     throw new Error(`${label} not found: ${file}`);
   }
+}
+
+function parseArtworkSource(raw) {
+  const source = String(raw || "").trim();
+  if (source !== "playdrop-ai") {
+    throw new Error("Missing --artwork-source playdrop-ai. Listing hero art must start from PlayDrop AI-generated or AI-edited artwork.");
+  }
+  return source;
 }
 
 function ensureTool(name) {
@@ -135,10 +144,15 @@ try {
   const height = parseNumber(args, "height", 1080, 320, 7680);
   const fontSize = parseNumber(args, "font-size", Math.round(height * 0.13), 24, 520);
   const y = args.y === undefined ? "(h-text_h)/2" : String(parseNumber(args, "y", 0, 0, height));
+  const artworkSource = parseArtworkSource(args["artwork-source"]);
 
   ensureTool("ffmpeg");
   ensureFile(input, "Input artwork");
   ensureFile(font, "Font file");
+  const relativeInput = path.relative(projectRoot, input).split(path.sep).join("/");
+  if (/^assets\/marketing\/(captures|screenshots|thumbnails|social)\//.test(relativeInput)) {
+    throw new Error(`Listing hero input must be AI artwork, not a capture, screenshot, thumbnail, or social asset: ${relativeInput}`);
+  }
 
   fs.mkdirSync(path.dirname(out), { recursive: true });
   const titleFile = createTextFile(title, tempDirs);
@@ -175,6 +189,8 @@ try {
     height,
     title,
     font: path.relative(projectRoot, font),
+    artworkSource,
+    aiGenerated: true,
   });
 } catch (error) {
   console.error(error instanceof Error ? error.message : String(error));

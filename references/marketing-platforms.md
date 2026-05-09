@@ -15,7 +15,7 @@ Use this reference when choosing sizes, durations, and platform notes for market
 
 ## Platform Notes
 
-- TikTok, Reels, Stories, Shorts, and Snapchat need action in the first 1 to 2 seconds and readable text with sound off.
+- TikTok, Reels, Stories, Shorts, and Snapchat need action at timestamp 0 and readable text with sound off.
 - YouTube landscape uploads need a separate thumbnail file. Long-form YouTube is out of scope unless the creator asks for a longer capture.
 - X and Reddit need a strong first frame because many users see muted autoplay or static previews.
 - Facebook groups benefit from a direct caption that explains the game loop and why people should try it.
@@ -33,3 +33,5 @@ Use this reference when choosing sizes, durations, and platform notes for market
 - Put controls, objective, and stakes in the caption or description.
 - Avoid promising content that is not visible in the actual capture.
 - Reuse the same file across platforms when the aspect ratio and audience match, and document reuse in `MARKETING.md`.
+- Do not reuse PlayDrop hero/icon art as social covers, or social covers as PlayDrop hero/icon art.
+- Do not open short-form video with a title-only card. Put the visible gameplay hook first and let the title sit on top of action.

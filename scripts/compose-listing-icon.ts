@@ -30,6 +30,7 @@ function usage() {
 node scripts/compose-listing-icon.ts \\
   --input assets/marketing/playdrop/icon-art.png \\
   --out assets/marketing/playdrop/icon.png \\
+  --artwork-source playdrop-ai \\
   [--root . --size 1024 --manifest assets/marketing/asset-manifest.json]
 `;
 }
@@ -58,6 +59,14 @@ function ensureFile(file, label) {
   if (!fs.existsSync(file) || !fs.statSync(file).isFile()) {
     throw new Error(`${label} not found: ${file}`);
   }
+}
+
+function parseArtworkSource(raw) {
+  const source = String(raw || "").trim();
+  if (source !== "playdrop-ai") {
+    throw new Error("Missing --artwork-source playdrop-ai. Listing icon art must start from PlayDrop AI-generated or AI-edited artwork.");
+  }
+  return source;
 }
 
 function ensureTool(name) {
@@ -104,9 +113,14 @@ try {
   const input = resolveFromRoot(projectRoot, requireString(args, "input"));
   const out = ensureMarketingOut(projectRoot, requireString(args, "out"));
   const size = parseNumber(args, "size", 1024, 256, 4096);
+  const artworkSource = parseArtworkSource(args["artwork-source"]);
 
   ensureTool("ffmpeg");
   ensureFile(input, "Input icon artwork");
+  const relativeInput = path.relative(projectRoot, input).split(path.sep).join("/");
+  if (/^assets\/marketing\/(captures|screenshots|thumbnails|social)\//.test(relativeInput)) {
+    throw new Error(`Listing icon input must be AI artwork, not a capture, screenshot, thumbnail, or social asset: ${relativeInput}`);
+  }
 
   fs.mkdirSync(path.dirname(out), { recursive: true });
   const result = spawnSync("ffmpeg", [
@@ -133,6 +147,8 @@ try {
     source: path.relative(projectRoot, input),
     width: size,
     height: size,
+    artworkSource,
+    aiGenerated: true,
   });
 } catch (error) {
   console.error(error instanceof Error ? error.message : String(error));
