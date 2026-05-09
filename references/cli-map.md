@@ -11,7 +11,7 @@ Use this when you need the right Playdrop command family fast.
 - new app : `playdrop browse --kind app --app-type template --json`, `playdrop project create app <name> --template <ref>`
 - remix app : `playdrop project create app <name> --remix <ref>`
 - game idea lifecycle : `playdrop project create app <name> --game-idea <id-or-slug>`, `playdrop project publish <app-name> --game-idea <id-or-slug>`
-- capture and publish : `playdrop project capture ...`, `playdrop project publish .`
+- capture and publish : `playdrop project capture`, `playdrop project marketing capture .`, `playdrop project publish .`
 - manage creations : `playdrop creations browse ...`, `playdrop creations apps update ...`
 - comments and releases : `playdrop comments ...`, `playdrop versions ...`
 

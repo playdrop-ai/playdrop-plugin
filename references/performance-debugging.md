@@ -7,7 +7,7 @@ Start with:
 - `playdrop detail playdrop/app/starter-kit-racing --json`
 - `playdrop detail playdrop/app/starter-kit-3d-platformer --json`
 - `playdrop detail playdrop/app/starter-kit-fps --json`
-- `playdrop project capture` or `playdrop project capture remote` if hosted proof is needed
+- `playdrop project capture` for functional evidence or `playdrop project marketing capture .` for local marketing-quality source captures
 
 Default rule:
 - optimize from a deterministic reproduction, not from anecdotal playtesting alone

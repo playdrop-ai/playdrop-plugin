@@ -103,10 +103,12 @@ Use short representative checks instead of treating discovery alone as sufficien
 - Codex: verify `playdrop:task-routing`, `playdrop:game-planning`, `playdrop:art-direction`, `playdrop:scope-control`, and `playdrop:store-listing`
 - Claude Code: verify `/playdrop`, `/playdrop:game-planning`, `/playdrop:scope-control`, and `/playdrop:store-listing`
 - Cursor: verify `playdrop:task-routing`, `playdrop:game-planning`, `playdrop:art-direction`, `playdrop:scope-control`, and `playdrop:store-listing`
+- Marketing: verify `playdrop:marketing-pack`, `playdrop:catalogue-preview`, `playdrop:marketing-capture`, `playdrop:marketing-screenshots`, `playdrop:marketing-videos`, and `playdrop:listing-art`
 - Workflow smoke tests:
   - `game-planning` -> `art-direction` -> `gameplay-mockups`
   - `game-planning` -> `scope-control` -> `gameplay-mockups`
   - `dev-testing` -> `gameplay-review` -> `store-listing`
+  - `marketing-pack` -> `catalogue-preview` -> `marketing-capture` -> `marketing-screenshots` / `marketing-videos` / `listing-art` -> `game-marketing`
   - `project-updates` -> `service-integration`
   - `engine-porting` -> `dev-testing`
 

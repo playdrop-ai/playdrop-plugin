@@ -1,35 +1,40 @@
 ---
 name: store-listing
-description: "Handle the full Playdrop store listing workflow. Use when the user needs gameplay capture, screenshots, hero art, icon art, metadata quality, tags, validation, or publish-ready listing conventions."
+description: "Use when a PlayDrop game needs PlayDrop listing readiness, listing metadata, listing media references, tags, validation, or publish-ready listing conventions."
 ---
 
 # Store Listing
 
-Use this skill whenever the work affects how a game is presented publicly.
+Use this skill for the PlayDrop listing itself. Full social launch kits route to `marketing-pack`; final hero and icon production routes to `listing-art`.
 
 ## Workflow
 
-1. Capture strong real gameplay evidence from the current build
-2. Select screenshots from real play before generating any marketing art
-3. Produce a coherent hero and icon family from actual gameplay references
-4. Improve tags and write short copy that explains how to play and what matters
-5. Validate the project before publish
+1. Confirm accepted listing assets exist under `assets/marketing/`.
+2. Confirm `catalogue.json` references the final PlayDrop listing media.
+3. Improve tags and listing copy that explain the input, goal, and stakes.
+4. Confirm listing media matches the current runtime.
+5. Run `playdrop project validate .` before publish.
 
 ## Rules
 
-- capture from the real current build first
-- never ship a raw crop as the final icon
-- icon and hero should be purpose-built marketing assets, not lazy crops
+- use versioned assets from `assets/marketing/`, not temporary output folders
+- never ship a raw crop as the final icon or hero
+- icon and hero must be purpose-built marketing assets that match actual gameplay
 - listing media must match the actual runtime
 - include a real gameplay video before treating the release as listing-ready
 - copy should explain the core input and the success or fail rule when it could be misread
 - pick gameplay moments, not menus or loading states
+- update `catalogue.json` automatically when listing metadata or media paths are validated
 
 ## Shared references
 
 - `publish-and-listing.md`
+- `marketing-asset-quality.md`
 
 ## Handoff
 
+- full marketing pack, social videos, covers, and `MARKETING.md` -> `marketing-pack`
+- final icon or hero artwork -> `listing-art`
+- PlayDrop listing copy, social copy, tags, and posting guidance -> `game-marketing`
 - early icon, hero, or visual direction before final listing media -> `art-direction`
 - daily feedback triage after publish -> `comment-monitoring`

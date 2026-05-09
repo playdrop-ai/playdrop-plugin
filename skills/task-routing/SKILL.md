@@ -28,9 +28,15 @@ When a saved GameIdea matches, route the work using that record as the source of
 - local validation, test accounts, multiplayer checks -> `dev-testing`
 - pre-publish feel, desirability, session quality -> `gameplay-review`
 - improve an existing game -> `game-improvement`
-- screenshots, hero art, icon art, publish flow -> `store-listing`
+- prepare marketing, launch kit, promo assets, social assets, marketing screenshots, social videos -> `marketing-pack`
+- preview metadata, preview hook, no-HUD autoplay preview, capture scene -> `catalogue-preview`
+- local marketing capture, source capture videos, capture manifest -> `marketing-capture`
+- marketing screenshots, social covers, platform screenshots -> `marketing-screenshots`
+- TikTok, Reels, Shorts, Snapchat, Pinterest, YouTube, X, Reddit, Facebook, or LinkedIn videos -> `marketing-videos`
+- final hero art, final icon art, title typography compositing -> `listing-art`
+- PlayDrop listing readiness, listing media refs, publish flow -> `store-listing`
 - comments and community triage -> `comment-monitoring`
-- visibility, GitHub SEO, boosts, distribution -> `game-marketing`
+- `MARKETING.md`, listing copy, social copy, GitHub SEO, boosts, distribution -> `game-marketing`
 - auth, saves, realtime, monetization, AI assets -> `service-integration`
 - Godot or starter-kit-based porting -> `engine-porting`
 - stuck creator, escalation, support path -> `creator-support`

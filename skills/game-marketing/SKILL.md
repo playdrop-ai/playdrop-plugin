@@ -1,31 +1,49 @@
 ---
 name: game-marketing
-description: "Improve a Playdrop game's distribution and visibility. Use when the user asks about social sharing, GitHub SEO, discovery, boosts, or how to get a published game in front of more players."
+description: "Use when a PlayDrop game needs MARKETING.md, PlayDrop listing copy, social captions, platform-specific posting guidance, tags, descriptions, link sticker text, GitHub SEO, boosts, or distribution planning."
 ---
 
 # Game Marketing
 
-Use this skill after the game and listing are already strong enough to benefit from more visibility.
+Use this skill after the game, preview, capture, and listing assets are strong enough to promote.
 
 ## Workflow
 
-1. confirm the game is actually ready to be promoted
-2. improve GitHub and public share surfaces
-3. choose distribution channels that match the game
-4. evaluate boosts only after the listing quality is good
+1. Confirm `assets/marketing/capture-manifest.json`, `asset-manifest.json`, and `marketing-report.json` exist.
+2. Write or update `MARKETING.md`.
+3. Include PlayDrop listing title, short description, long description, tags, and listing asset map.
+4. Include per-platform file maps, captions, descriptions, hashtags, link sticker text, thumbnails, cover notes, and posting notes.
+5. Include audio source notes and any intentionally skipped outputs with reasons.
+6. Improve GitHub and public share surfaces only after the asset plan is complete.
 
 ## Shared references
 
 - `github-seo.md`
 - `boosts.md`
 - `platform-capabilities.md`
+- `marketing-platforms.md`
+- `marketing-audio.md`
 
-## Rule
+## MARKETING.md Required Sections
 
-Do not treat marketing as a substitute for weak product or listing quality.
+- PlayDrop Listing
+- Asset File Map
+- Platform Posting Plan
+- Copy Bank
+- Audio Sources
+- Skipped Outputs
+- Validation Notes
+
+## Rules
+
+- do not treat marketing as a substitute for weak product or listing quality
+- keep accepted asset paths under `assets/marketing/`
+- write copy for the actual current game, not a more ambitious version of it
+- explain reused files across platforms instead of duplicating assets unnecessarily
 
 ## Handoff
 
 - weak listing or unclear public positioning -> `store-listing`
 - product, runtime, or polish gaps -> `game-improvement`
 - service or platform feature gaps -> `service-integration`
+- missing source captures -> `marketing-capture`

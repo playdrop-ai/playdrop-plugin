@@ -12,8 +12,9 @@ Use this skill when functional testing is not enough and the question is whether
 1. Run or inspect the current build on its best platform first
 2. Judge the first 15 seconds, core loop clarity, control clarity, and danger or reward readability
 3. Check whether the build supports a real session and a reason to replay
-4. Separate blocking issues from polish issues
-5. Decide whether to keep improving, relist, or rethink the concept or scope
+4. Check visual quality, animation quality, audio presence, and supported surfaces before marketing work
+5. Separate blocking issues from polish issues
+6. Decide whether to keep improving, relist, or rethink the concept or scope
 
 ## Rules
 
@@ -21,12 +22,16 @@ Use this skill when functional testing is not enough and the question is whether
 - if the strongest raw screenshot or first playable moment still feels prototype-grade, stop before listing work
 - call out when the core loop, fantasy, or audience promise are misaligned
 - if the loop is fundamentally weak, hand back to planning or scope instead of recommending surface polish
+- require a clear first marketing moment within the first 15 seconds
+- require music or SFX unless `preview.audioPolicy` intentionally declares `silent`
+- require each declared surface to be readable and controllable
 
 ## Outputs
 
 - review verdict
 - blocking issues
 - polish issues
+- surface and audio gate notes
 - next step recommendation
 
 ## Shared references
@@ -40,3 +45,4 @@ Use this skill when functional testing is not enough and the question is whether
 - concept or scope rethink -> `game-planning`
 - simplification before rebuild -> `scope-control`
 - listing prep after a strong build -> `store-listing`
+- complete marketing pack after a strong build -> `marketing-pack`

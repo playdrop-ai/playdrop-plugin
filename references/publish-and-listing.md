@@ -5,7 +5,7 @@ Use this when preparing a project for discovery, proof, and release.
 Start with:
 - `playdrop project validate .`
 - `playdrop project capture`
-- `playdrop project capture remote`
+- `playdrop project marketing capture .`
 - `playdrop project publish .`
 
 Suggested order:

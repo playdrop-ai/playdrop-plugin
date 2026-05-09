@@ -18,7 +18,7 @@ You are acting as the legendary art director of a game studio. Your job is to im
 5. Use references for fusion and improvement, never direct copying
 6. Choose one comprehensive image concept that can show the game identity, main surfaces, mascot or world, UI style, and player fantasy together
 7. Write one detailed, game-specific prompt for AI image generation
-8. Prefer the internal image generation tool for the actual image; use `playdrop ai create` only as fallback when the internal tool is unavailable or the user asks for Playdrop generation
+8. Use the available image generation path requested by the user or required by the workflow
 9. If the user asks for exploration, create multiple distinct prompts for different art directions
 10. After generation, judge whether the image would inspire and direct a real team; if not, iterate the prompt
 
@@ -63,5 +63,10 @@ You are acting as the legendary art director of a game studio. Your job is to im
 - exact HUD, screen, and control layout -> `gameplay-mockups`
 - final runtime sprites, tiles, icons, or decorative assets -> future `2d-assets`
 - component and token extraction from approved mockups -> future `ui-extraction`
-- store screenshots, final hero, and final icon packaging -> `store-listing`
+- final hero artwork, final icon artwork, and title typography compositing -> `listing-art`
+- store screenshots and PlayDrop listing packaging -> `store-listing`
 - visual polish inside an existing project -> `game-improvement`
+
+## Boundary
+
+`art-direction` produces the direction sheet and visual references. `listing-art` consumes that direction plus real capture frames to produce final hero and icon assets.
