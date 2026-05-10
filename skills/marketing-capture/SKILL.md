@@ -11,10 +11,12 @@ Use this skill to run local marketing capture through the Playdrop CLI.
 
 1. Run `playdrop project marketing doctor .`.
 2. Fix any missing local prerequisites, preview metadata, or audio policy issues.
-3. Run `playdrop project marketing capture .`.
-4. Confirm `assets/marketing/capture-manifest.json` and `assets/marketing/marketing-report.json` exist.
-5. Inspect captured videos for real gameplay, motion, music/SFX, correct surfaces, and correct window content.
-6. Reject and rerun capture when the capture is 30 fps, shorter than 12 seconds, from the wrong screen, quiet, missing music for `music-and-sfx`, visually boring, or not produced by the public CLI command.
+3. Before running a capture path that opens, focuses, or records a visible browser/window, get explicit user permission in the current thread.
+4. Run `playdrop project marketing capture .` only after the user has allowed foreground capture, or when the CLI supports a background-safe capture path.
+5. If a background-safe capture path is required by the user and unavailable, stop with a clear blocker instead of substituting Playwright video, screenshots, or a manual recording.
+6. Confirm `assets/marketing/capture-manifest.json` and `assets/marketing/marketing-report.json` exist.
+7. Inspect captured videos for real gameplay, motion, music/SFX, correct surfaces, correct window content, and at least two usable action moments.
+8. Reject and rerun capture when the capture is 30 fps, shorter than 12 seconds, from the wrong screen, quiet, missing music for `music-and-sfx`, visually boring, missing sellable moments, or not produced by the public CLI command.
 
 ## Rules
 
@@ -24,7 +26,11 @@ Use this skill to run local marketing capture through the Playdrop CLI.
 - ffmpeg and ffprobe are required system installs
 - do not use hosted capture, remote capture, or Playdrop server capture
 - do not use hidden capture commands or native Apple listing recorders
+- never silently bring a capture/browser window to the front
+- if foreground capture is necessary, ask first and say which window will open and be recorded
+- if the user forbids foreground capture, do not run visible local capture and do not fake a passed capture manifest
 - captures must be real preview gameplay, not menus or loading states
+- captures must contain visible moments worth editing: fail, save, reward, combo, danger, timer pressure, score change, unlock, win, or recovery
 - `music-and-sfx` and `sfx-only` require captured audio
 - accepted captures live under `assets/marketing/captures/`
 - accepted source captures must come from `playdrop project marketing capture`, not browser screenshots, Playwright video, manual recordings, or hidden/internal capture commands

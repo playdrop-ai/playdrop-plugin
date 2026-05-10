@@ -33,7 +33,11 @@ node scripts/render-marketing-screenshot.ts \\
   --out assets/marketing/screenshots/tiktok-cover.png \\
   --width 1080 --height 1920 --at 2 \\
   --frame-description "Final hit lands beside the reward" \\
+  --selected-frame-reason "The reward is visible and readable at phone size" \\
+  --viewer-promise "The viewer understands the risk and payoff in one glance" \\
+  --composition action-closeup --gameplay-fill 0.78 \\
   --text "Beat the boss" --font assets/fonts/title.ttf \\
+  [--zoom 1.15 --caption-position top] \\
   [--root . --manifest assets/marketing/asset-manifest.json --id tiktok-cover --platform tiktok]
 `;
 }
@@ -52,6 +56,44 @@ function parseNumber(args, name, defaultValue, min, max) {
     throw new Error(`Invalid --${name}: expected ${min} to ${max}`);
   }
   return raw;
+}
+
+function parseEnum(args, name, defaultValue, allowed) {
+  const value = args[name] === undefined ? defaultValue : String(args[name]);
+  if (!allowed.includes(value)) {
+    throw new Error(`Invalid --${name}: expected ${allowed.join(", ")}`);
+  }
+  return value;
+}
+
+function countWords(value) {
+  return String(value).trim().split(/\s+/).filter(Boolean).length;
+}
+
+function normalizeHook(value) {
+  return String(value || "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
+function rejectGenericHook(text, label) {
+  if (!text) return;
+  const normalized = normalizeHook(text);
+  const blocked = new Set([
+    "play now",
+    "try now",
+    "save the run",
+    "beat the clock",
+    "daily streak",
+    "new best",
+    "can you win",
+    "can you save it",
+    "keep the streak",
+  ]);
+  if (blocked.has(normalized)) {
+    throw new Error(`${label} is too generic for a final cover. Use a hook tied to a visible captured moment.`);
+  }
 }
 
 function ensureFile(file, label) {
@@ -138,31 +180,68 @@ try {
   const at = parseNumber(args, "at", 2, 0, 300);
   const text = args.text === undefined ? "" : String(args.text);
   const font = args.font === undefined ? "" : resolveFromRoot(projectRoot, String(args.font));
-  const fontSize = parseNumber(args, "font-size", Math.round(height * 0.052), 12, 360);
-  const bannerHeight = parseNumber(args, "banner-height", Math.round(height * 0.16), 0, height);
+  const fontSize = parseNumber(args, "font-size", Math.round(height * 0.044), 12, 360);
+  const bannerHeight = parseNumber(args, "banner-height", 0, 0, Math.round(height * 0.12));
+  const zoom = parseNumber(args, "zoom", 1.15, 1.05, 3);
+  const composition = parseEnum(args, "composition", "action-closeup", [
+    "action-closeup",
+    "full-bleed-gameplay",
+    "dynamic-follow",
+    "moment-replay",
+  ]);
+  const captionPosition = parseEnum(args, "caption-position", "top", ["top", "middle", "bottom"]);
+  const gameplayFill = parseNumber(args, "gameplay-fill", Number.NaN, 0.65, 1);
   const frameDescription = args["frame-description"] === undefined ? "" : String(args["frame-description"]).trim();
+  const selectedFrameReason = args["selected-frame-reason"] === undefined ? "" : String(args["selected-frame-reason"]).trim();
+  const viewerPromise = args["viewer-promise"] === undefined ? "" : String(args["viewer-promise"]).trim();
+  const overlayRole = parseEnum(args, "overlay-role", text ? "clarify-moment" : "none", ["clarify-moment", "none"]);
 
   ensureTool("ffmpeg");
   ensureFile(input, "Input video");
   if (!frameDescription) {
     throw new Error("Missing --frame-description explaining why this is a strong gameplay frame.");
   }
+  if (!selectedFrameReason) {
+    throw new Error("Missing --selected-frame-reason explaining why this exact frame sells the game.");
+  }
+  if (!viewerPromise) {
+    throw new Error("Missing --viewer-promise explaining what the viewer understands in one glance.");
+  }
+  if (text && countWords(text) > 10) {
+    throw new Error("Marketing screenshot overlay text must be short. Use 10 words or fewer and put detail in MARKETING.md copy.");
+  }
+  rejectGenericHook(text, "Marketing screenshot overlay text");
   if (text) {
+    if (overlayRole !== "clarify-moment") {
+      throw new Error("Overlay text is only allowed when --overlay-role clarify-moment.");
+    }
     if (!font) throw new Error("Missing --font for text overlay");
     ensureFile(font, "Font file");
   }
+  if (bannerHeight > 0) {
+    throw new Error("Marketing screenshots must not use banner/CTA bars. Crop gameplay first and use at most one light hook.");
+  }
 
+  const scaledWidth = Math.ceil((width * zoom) / 2) * 2;
+  const scaledHeight = Math.ceil((height * zoom) / 2) * 2;
   const filters = [
-    `scale=${width}:${height}:force_original_aspect_ratio=increase`,
+    `scale=${scaledWidth}:${scaledHeight}:force_original_aspect_ratio=increase`,
     `crop=${width}:${height}`,
   ];
 
   if (text) {
-    const y = Math.round(Math.max(24, bannerHeight * 0.28));
+    const yByPosition = {
+      top: Math.round(height * 0.075),
+      middle: Math.round(height * 0.42),
+      bottom: Math.round(height * 0.78),
+    };
+    const y = yByPosition[captionPosition];
     const textFile = createTextFile(text, tempDirs);
-    filters.push(`drawbox=x=0:y=0:w=iw:h=${bannerHeight}:color=black@0.55:t=fill`);
+    if (bannerHeight > 0) {
+      filters.push(`drawbox=x=0:y=0:w=iw:h=${bannerHeight}:color=black@0.45:t=fill`);
+    }
     filters.push(
-      `drawtext=fontfile='${escapeDraw(font)}':textfile='${escapeDraw(textFile)}':x=(w-text_w)/2:y=${y}:fontsize=${fontSize}:fontcolor=white:borderw=5:bordercolor=black@0.65:expansion=none`
+      `drawtext=fontfile='${escapeDraw(font)}':textfile='${escapeDraw(textFile)}':x=(w-text_w)/2:y=${y}:fontsize=${fontSize}:fontcolor=white:borderw=6:bordercolor=black@0.75:shadowx=0:shadowy=4:shadowcolor=black@0.65:expansion=none`
     );
   }
 
@@ -196,7 +275,19 @@ try {
     width,
     height,
     text: text || null,
+    renderer: "playdrop-render-marketing-screenshot",
+    composition,
+    gameplayFill,
+    zoom,
+    captionPosition: text ? captionPosition : null,
     frameDescription,
+    selectedFrameReason,
+    viewerPromise,
+    overlayRole,
+    overlayLineCount: text ? 1 : 0,
+    gameplayPrimary: true,
+    textDominant: false,
+    gameplayAsBackground: false,
   });
 } catch (error) {
   console.error(error instanceof Error ? error.message : String(error));

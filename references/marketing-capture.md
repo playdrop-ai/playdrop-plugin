@@ -11,6 +11,8 @@ playdrop project marketing capture .
 
 Marketing capture is local-only. It runs on the creator's computer through the PlayDrop CLI.
 
+When the CLI capture path needs a visible browser or screen recorder, get explicit user permission before opening, focusing, or recording that window. If the user requires background-only work and the CLI cannot capture safely in the background, stop with a blocker instead of substituting Playwright video, browser screenshots, or manual recording.
+
 ## Supported Platforms
 
 - macOS: ffmpeg `avfoundation` screen capture, cropped to the measured browser game frame.
@@ -58,3 +60,4 @@ Every accepted capture must validate:
 - no remote mode
 - no native Apple listing recorder dependency
 - no manual browser-frame capture, Playwright video, or screenshot sequence substituted for CLI capture
+- no silently opening, focusing, or recording foreground windows without user permission

@@ -1,6 +1,6 @@
 {
   "name": "playdrop",
-  "version": "0.7.26",
+  "version": "0.9.0",
   "description": "Public PlayDrop creator workflows",
   "author": {
     "name": "PlayDrop",
@@ -15,6 +15,8 @@
     "game-development",
     "game-design",
     "game-publishing",
+    "game-marketing",
+    "social-video",
     "asset-discovery",
     "creator-tools",
     "game-porting"
@@ -36,6 +38,7 @@
     "defaultPrompt": [
       "Plan a new PlayDrop game",
       "Prepare a store listing",
+      "Prepare marketing for my game",
       "Port an existing game"
     ],
     "brandColor": "#9D55F8",

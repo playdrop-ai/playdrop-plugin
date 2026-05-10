@@ -10,11 +10,12 @@ Use this skill after the game, preview, capture, and listing assets are strong e
 ## Workflow
 
 1. Confirm `assets/marketing/capture-manifest.json`, `asset-manifest.json`, and `marketing-report.json` exist.
-2. Run `node <plugin>/scripts/validate-marketing-manifest.ts --root .` before writing final approval language.
-3. Include PlayDrop listing title, short description, long description, tags, and listing asset map.
-4. Include per-platform file maps, captions, descriptions, hashtags, link sticker text, thumbnails, cover notes, and posting notes.
-5. Include audio source notes and any intentionally skipped outputs with reasons.
-6. Improve GitHub and public share surfaces only after the asset plan is complete.
+2. Confirm `marketing-report.json` includes `visualReview.sourceMomentContactSheet`, `visualReview.finalVideoContactSheet`, `visualReview.finalCoverContactSheet`, and visual review notes.
+3. Run `node <plugin>/scripts/validate-marketing-manifest.ts --root .` before writing final approval language.
+4. Include PlayDrop listing title, short description, long description, tags, and listing asset map.
+5. Include per-platform file maps, captions, descriptions, hashtags, link sticker text, thumbnails, cover notes, and posting notes.
+6. Include audio source notes and any intentionally skipped outputs with reasons.
+7. Improve GitHub and public share surfaces only after the asset plan is complete.
 
 ## Shared references
 
@@ -42,6 +43,7 @@ Use this skill after the game, preview, capture, and listing assets are strong e
 - explain reused files across platforms instead of duplicating assets unnecessarily
 - do not write "PASS with caveat", "WARNING", or similar approval language for required gates
 - failed or skipped required gates belong in a blocking action list, not in a finished marketing plan
+- do not call a pack finished when visual review contact sheets or one-glance review notes are missing
 - social copy should sell the game to players; process/dev copy is only for an explicitly developer-facing LinkedIn post
 
 ## Handoff

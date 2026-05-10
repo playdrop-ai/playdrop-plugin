@@ -1,6 +1,6 @@
 {
   "name": "playdrop",
-  "version": "0.7.26",
+  "version": "0.9.0",
   "displayName": "PlayDrop",
   "description": "Creator workflows for planning, building, improving, publishing, and maintaining PlayDrop games.",
   "author": {
@@ -17,6 +17,8 @@
     "game-development",
     "game-design",
     "game-publishing",
+    "game-marketing",
+    "social-video",
     "asset-discovery",
     "creator-tools",
     "game-porting"

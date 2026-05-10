@@ -11,6 +11,23 @@ const MAX_FINAL_VIDEO_SECONDS = 15;
 const MIN_FINAL_VIDEO_FPS = 30;
 const MIN_INTEGRATED_LUFS = -28;
 const MIN_PEAK_DB = -12;
+const MIN_GAMEPLAY_FILL = 0.65;
+const MAX_OVERLAY_LINES = 1;
+const ALLOWED_GAMEPLAY_COMPOSITIONS = new Set([
+  "action-closeup",
+  "full-bleed-gameplay",
+  "dynamic-follow",
+  "moment-replay",
+]);
+const BLOCKED_LAYOUTS = new Set([
+  "poster-layout",
+  "text-dominant",
+  "brand-headline-subtitle",
+  "decorative-card",
+  "phone-frame",
+  "cta-card",
+  "gameplay-background-texture",
+]);
 const REQUIRED_VIDEO_FAMILIES = [
   { id: "vertical short", width: 1080, height: 1920 },
   { id: "landscape short", width: 1920, height: 1080 },
@@ -164,6 +181,71 @@ function fileSha256(file) {
   return crypto.createHash("sha256").update(fs.readFileSync(file)).digest("hex");
 }
 
+function countWords(value) {
+  return String(value || "").trim().split(/\s+/).filter(Boolean).length;
+}
+
+function normalizeHook(value) {
+  return String(value || "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
+function isGenericHook(value) {
+  const normalized = normalizeHook(value);
+  return new Set([
+    "play now",
+    "try now",
+    "save the run",
+    "beat the clock",
+    "daily streak",
+    "new best",
+    "can you win",
+    "can you save it",
+    "keep the streak",
+  ]).has(normalized);
+}
+
+function validateGameplayPresentation(asset, expectedRenderer, label) {
+  if (asset.renderer !== expectedRenderer) {
+    throw new Error(`${label} ${asset.id || asset.path} must be rendered with ${expectedRenderer}`);
+  }
+  if (!ALLOWED_GAMEPLAY_COMPOSITIONS.has(asset.composition)) {
+    throw new Error(`${label} ${asset.id || asset.path} must use a gameplay-led composition, not a generic framed layout`);
+  }
+  if (!Number.isFinite(asset.gameplayFill) || asset.gameplayFill < MIN_GAMEPLAY_FILL) {
+    throw new Error(`${label} ${asset.id || asset.path} must declare gameplayFill >= ${MIN_GAMEPLAY_FILL}`);
+  }
+  if (asset.gameplayPrimary !== true) {
+    throw new Error(`${label} ${asset.id || asset.path} must declare gameplayPrimary=true`);
+  }
+  if (asset.textDominant !== false) {
+    throw new Error(`${label} ${asset.id || asset.path} must declare textDominant=false`);
+  }
+  if (asset.gameplayAsBackground === true) {
+    throw new Error(`${label} ${asset.id || asset.path} treats gameplay as background texture`);
+  }
+  if (asset.layout && BLOCKED_LAYOUTS.has(String(asset.layout))) {
+    throw new Error(`${label} ${asset.id || asset.path} uses blocked layout: ${asset.layout}`);
+  }
+  if (Number.isFinite(asset.overlayLineCount) && asset.overlayLineCount > MAX_OVERLAY_LINES) {
+    throw new Error(`${label} ${asset.id || asset.path} must use at most ${MAX_OVERLAY_LINES} overlay hook line`);
+  }
+  if (asset.text && asset.overlayRole !== "clarify-moment") {
+    throw new Error(`${label} ${asset.id || asset.path} overlay text must clarify the visible moment`);
+  }
+  if (asset.text && countWords(asset.text) > 10) {
+    throw new Error(`${label} ${asset.id || asset.path} overlay text must be 10 words or fewer`);
+  }
+  if (asset.text && isGenericHook(asset.text)) {
+    throw new Error(`${label} ${asset.id || asset.path} uses a generic hook not tied to a visible captured moment`);
+  }
+  if (typeof asset.viewerPromise !== "string" || !asset.viewerPromise.trim()) {
+    throw new Error(`${label} ${asset.id || asset.path} must declare viewerPromise`);
+  }
+}
+
 function assertUnderMarketing(projectRoot, relativePath, label) {
   if (typeof relativePath !== "string" || relativePath.trim() === "") {
     throw new Error(`${label} path is missing`);
@@ -263,6 +345,16 @@ function validateAssetManifest(projectRoot, file, audioPolicy) {
     hashes.get(hash).push({ ...asset, hash });
     if (kind === "video") {
       finalVideos.push(asset);
+      validateGameplayPresentation(asset, "playdrop-render-marketing-video", "Video");
+      if (asset.dynamicCamera !== true) {
+        throw new Error(`Video ${asset.id || asset.path} must use dynamic camera movement around the selected gameplay moment`);
+      }
+      if (typeof asset.momentDescription !== "string" || !asset.momentDescription.trim()) {
+        throw new Error(`Video ${asset.id || asset.path} must declare momentDescription`);
+      }
+      if (typeof asset.selectedMomentReason !== "string" || !asset.selectedMomentReason.trim()) {
+        throw new Error(`Video ${asset.id || asset.path} must declare selectedMomentReason`);
+      }
       const probe = probeVideo(assetPath);
       if (probe.width !== asset.width || probe.height !== asset.height) {
         throw new Error(`Video ${asset.id || asset.path} dimensions do not match manifest`);
@@ -284,6 +376,24 @@ function validateAssetManifest(projectRoot, file, audioPolicy) {
         if (audio.integratedLufs < MIN_INTEGRATED_LUFS || audio.peakDb < MIN_PEAK_DB) {
           throw new Error(`Video ${asset.id || asset.path} audio is too quiet: ${audio.integratedLufs} LUFS, peak ${audio.peakDb} dB`);
         }
+      }
+    }
+    if (kind === "screenshot") {
+      validateGameplayPresentation(asset, "playdrop-render-marketing-screenshot", "Screenshot");
+      if (typeof asset.frameDescription !== "string" || !asset.frameDescription.trim()) {
+        throw new Error(`Screenshot ${asset.id || asset.path} must declare frameDescription`);
+      }
+      if (typeof asset.selectedFrameReason !== "string" || !asset.selectedFrameReason.trim()) {
+        throw new Error(`Screenshot ${asset.id || asset.path} must declare selectedFrameReason`);
+      }
+    }
+    if (kind === "thumbnail") {
+      validateGameplayPresentation(asset, "playdrop-render-marketing-thumbnail", "Thumbnail");
+      if (typeof asset.frameDescription !== "string" || !asset.frameDescription.trim()) {
+        throw new Error(`Thumbnail ${asset.id || asset.path} must declare frameDescription`);
+      }
+      if (typeof asset.selectedFrameReason !== "string" || !asset.selectedFrameReason.trim()) {
+        throw new Error(`Thumbnail ${asset.id || asset.path} must declare selectedFrameReason`);
       }
     }
     if (kind.startsWith("playdrop-")) {
@@ -318,7 +428,7 @@ function validateAssetManifest(projectRoot, file, audioPolicy) {
   return manifest.assets.length;
 }
 
-function validateReport(file) {
+function validateReport(projectRoot, file) {
   const report = readJson(file);
   if (!["passed", "failed"].includes(report.status)) {
     throw new Error("marketing-report.json status must be passed or failed");
@@ -345,6 +455,24 @@ function validateReport(file) {
   }
   if (report.captureValidation?.audioValidated !== true) {
     throw new Error("marketing-report.json must validate audio");
+  }
+  if (!report.visualReview || typeof report.visualReview !== "object") {
+    throw new Error("marketing-report.json must include visualReview");
+  }
+  for (const key of ["sourceMomentContactSheet", "finalVideoContactSheet", "finalCoverContactSheet"]) {
+    if (typeof report.visualReview[key] !== "string" || !report.visualReview[key].trim()) {
+      throw new Error(`marketing-report.json visualReview.${key} is required`);
+    }
+    resolveExistingMarketingPath(projectRoot, report.visualReview[key], `visualReview.${key}`);
+  }
+  const notes = report.visualReview.notes;
+  if (!notes || typeof notes !== "object") {
+    throw new Error("marketing-report.json visualReview.notes is required");
+  }
+  for (const key of ["selectedMoment", "viewerFirstRead", "platformFit", "rejectedAlternatives"]) {
+    if (typeof notes[key] !== "string" || !notes[key].trim()) {
+      throw new Error(`marketing-report.json visualReview.notes.${key} is required`);
+    }
   }
   return report.gates.length;
 }
@@ -385,7 +513,7 @@ try {
   ensureTool("ffprobe");
   const captureValidation = validateCaptureManifest(projectRoot, capturePath);
   const assetCount = validateAssetManifest(projectRoot, assetPath, captureValidation.audioPolicy);
-  const gateCount = validateReport(reportPath);
+  const gateCount = validateReport(projectRoot, reportPath);
   validateMarketingMarkdown(projectRoot, marketingPath);
 
   console.log(`Marketing manifests valid: ${captureValidation.count} captures, ${assetCount} assets, ${gateCount} gates`);

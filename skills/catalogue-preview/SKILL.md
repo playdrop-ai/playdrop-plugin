@@ -16,9 +16,10 @@ Use this skill before capture or listing work when a game needs a real Playdrop 
 5. For `music-and-sfx` or `sfx-only`, confirm the game also implements `window.__listingCapture.startAudioCapture()` and `window.__listingCapture.stopAudioCapture()`.
 6. Confirm preview mode hides menus, debug UI, host UI, and nonessential HUD.
 7. Confirm the first seconds contain motion, stakes, effects, scoring, danger, success, or another exciting moment.
-8. Add or fix background music and SFX using PlayDrop catalogue audio or PlayDrop AI generation when the game lacks marketing-ready audio.
-9. Confirm preview music and SFX match the declared audio policy and are loud enough for social playback.
-10. Re-run `playdrop project validate .`.
+8. Confirm the first 12 seconds include at least two distinct sellable moments so the video skill can cut into real action instead of inventing copy.
+9. Add or fix background music and SFX using PlayDrop catalogue audio or PlayDrop AI generation when the game lacks marketing-ready audio.
+10. Confirm preview music and SFX match the declared audio policy and are loud enough for social playback.
+11. Re-run `playdrop project validate .`.
 
 ## Runtime contract
 
@@ -41,6 +42,7 @@ The preview hook receives:
 - use a seed or scripted scene for repeatable capture
 - update `catalogue.json` automatically when preview metadata is validated
 - do not treat a menu, loading screen, or normal play start as a marketing preview
+- do not accept a preview that requires text to explain why it is exciting; the footage needs visible cause and effect
 - `music-and-sfx` is the default for marketing because the same preview audio is captured into social videos
 - `sfx-only` is allowed only when the game intentionally has no music and `MARKETING.md` explains why
 - `silent` must be intentional and explained in `MARKETING.md`
