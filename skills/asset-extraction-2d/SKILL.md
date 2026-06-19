@@ -8,6 +8,7 @@ description: "Use when extracting 2D game assets, sprites, mascot poses, props, 
 Use this skill when the user provides an image, mockup, screenshot, or approved art direction and asks to extract one or more non-UI 2D game assets into game-ready bitmap files.
 
 This skill does the extraction. Do not stop at an extraction plan. If a requested asset cannot pass visual validation, leave it rejected in the run folder and do not register it as accepted.
+Do not ask AI image generation for a transparent background directly. Generate flat matte-background images, then remove the matte with the extraction script.
 
 ## Package Contract
 
@@ -21,18 +22,23 @@ This skill does the extraction. Do not stop at an extraction plan. If a requeste
 
 1. Identify every requested 2D asset and classify its game-asset role: `Sprite`, `Mascot`, `Character Pose`, `Prop`, `Pickup`, `Icon`, `Tile`, `Decoration`, `VFX Frame`, `Background Layer`, `Portrait`, or a tighter role that fits the game.
 2. Decide output shape:
+   - default to separate owned transparent PNG files for generated runtime gameplay assets
    - use one transparent PNG per asset when assets differ in size, purpose, or framing
-   - use a single grid/sprite-sheet PNG when several related assets should share the same size, style, pivot, and padding, such as tile variants, collectible icons, mascot poses, animation frames, or matching props
+   - use separate PNG files for small collectible sets such as gems, candies, coins, cards, icons, pickups, and simple props unless the creator explicitly requested a sheet
+   - use a single grid/sprite-sheet PNG only when several related assets truly need one shared grid, such as tile variants, mascot poses, animation frames, or tightly matched same-pivot props
+   - use a sprite sheet only when the creator explicitly requested a sheet, tilemap, or frame animation, or when matching frames genuinely need one shared grid
 3. Create a run folder under `tmp/asset-extraction-2d/<slug>/` for prompts, generated matte images, validation previews, reports, and experiments.
 4. Ensure transient files are not committed or uploaded: add `tmp/` to `.gitignore` and `.playdropignore` when those files exist or when creating them is appropriate for the game repo.
 5. For each single asset or grid sheet, use AI image generation/editing to isolate the requested art onto one flat-background matte image:
    - use pure black `#000000` when the asset does not contain black
    - otherwise use pure white `#ffffff` when the asset does not contain white
    - otherwise use bright green `#00ff00`, bright purple `#ff00ff`, or bright red `#ff0000`, choosing the color least present in the asset
+   - for runtime sprites and props, prefer opaque, hard-edged game-ready shapes with clean padding; avoid translucent streamers, glow washes, soft shadows, motion trails, and semi-transparent decorations that cross large parts of the canvas unless the asset is specifically a background layer or VFX sheet
 6. Pass that same generated matte image back to AI image generation/editing and strongly request that only the background changes to the second matte color:
    - default second matte is bright green `#00ff00`
    - if the first matte is bright green, use bright purple `#ff00ff` when safe, otherwise bright red `#ff0000`
    - require identical asset pixels, crop, grid, padding, scale, antialiasing, lighting, shadows, and color
+   - when using the PlayDrop CLI image generator for this edit, pass the first matte as a reference image with `--image1 tmp/asset-extraction-2d/<slug>/<asset>-matte-a.png`; do not ask for a second matte from text alone
 7. Run the shared background-swap alpha extractor from the PlayDrop plugin root. If the current working directory is the game repo, use the absolute path to the plugin script or copy the command path from the active skill cache; do not assume the game repo has this script:
    ```bash
    node <playdrop-plugin>/scripts/extract-alpha-background-swap.ts \
@@ -48,8 +54,10 @@ This skill does the extraction. Do not stop at an extraction plan. If a requeste
      --contact-sheet-out tmp/asset-extraction-2d/<slug>/<asset>-contact-sheet.png \
      --report tmp/asset-extraction-2d/<slug>/<asset>-report.json
    ```
-8. Validate the transparent PNG visually on bright contact-sheet backgrounds not used by the asset. Check for bleeding, holes, unwanted matte color, clipped shadows, lost interior details, incorrect padding, inconsistent scale, and broken grid alignment. Do not reject only because the report has many matte or semi-transparent pixels; antialiasing, fur, glow, shadows, soft VFX, and AI matte drift can legitimately create them.
+   The extractor must exit `0`. If it exits non-zero, or if the report `diagnostics.acceptance.automaticResult` starts with `rejected-`, the output is rejected and must not be registered or reported as generated.
+8. Validate the transparent PNG visually on bright contact-sheet backgrounds not used by the asset. Check for bleeding, holes, unwanted matte color, clipped shadows, lost interior details, incorrect padding, inconsistent scale, and broken grid alignment. Do not reject only because the report has many matte or semi-transparent pixels; antialiasing, fur, glow, shadows, soft VFX, and AI matte drift can legitimately create them. Reject the asset if the contact sheet or PNG still shows the matte background as a large solid or semi-transparent wash around the asset, or if it leaves visible cell borders, guide lines, colored matte seams, checkerboards, empty-cell outlines, or grid artifacts around sprite-sheet cells, even when the file technically has an alpha channel. Generated owned runtime PNGs for sprites, props, collectibles, particles, VFX, and UI-visible gameplay objects must have transparent non-asset pixels; solid matte, checkerboard, or preview backgrounds are invalid unless the asset is intentionally a full background layer.
 9. If the visual cut is not precise, retry in this order: adjust extractor thresholds, regenerate the second matte with stronger "change background only" instructions, then regenerate both isolated matte images. Threshold sweeps such as `--background-threshold 40`, `50`, and `60` are usually faster than regenerating and should be judged by the contact sheet.
+   If the extractor rejects the same asset twice for pair drift, preview background, or grid artifacts, simplify the generation prompt before trying again: ask for an opaque centered sprite/icon with no translucent materials, no soft shadow, no glow, no motion trail, no crossing ribbons, and no background effects. A simpler clean runtime asset is better than a detailed rejected one.
 10. For each accepted asset, define metadata: name, role, image, size, anchor/pivot, logical bounds, animation frame info if any, tags, source, prompt files, and validation report.
 11. Move only accepted transparent PNGs into `assets/2d/`.
 12. Add or update `images.json` in the game root.
@@ -65,6 +73,8 @@ Grid rules:
 - require consistent shadows and baseline alignment
 - leave enough transparent padding inside each cell for animation or runtime placement
 - do not mix unrelated roles in one sheet
+- final sheet cells must have transparent backgrounds only; reject and retry if any cell shows grid lines, cell borders, matte-colored seams, preview checkerboards, empty-cell boxes, or other extraction scaffolding
+- if a clean sheet cannot be produced quickly, split the assets into individual accepted transparent PNG files instead of shipping a flawed sheet
 - after extraction, validate the full sheet and at least one cell from each row on harsh backgrounds
 
 Grid prompt addition:
@@ -73,6 +83,7 @@ Grid prompt addition:
 Arrange the assets in a clean <columns>x<rows> grid.
 Every cell must be exactly the same size with consistent padding, scale, camera angle, shadow direction, and baseline.
 Do not overlap cells. Do not add labels, numbers, dividers, or background decorations.
+Do not include visible cell borders, guide lines, checkerboards, matte-color seams, empty-cell outlines, or preview-grid artifacts.
 The final image should function as a sprite sheet / tile sheet.
 ```
 

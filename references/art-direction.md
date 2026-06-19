@@ -14,7 +14,8 @@ Do not treat a written style guide, color list, wireframe, SVG diagram, or gener
 - state the intended artifact clearly, such as mobile app design sheet, key art sheet, world/style sheet, character-and-UI direction sheet, or store visual direction sheet
 - define the visual style, palette, rendering treatment, emotional tone, and production quality
 - describe the main surfaces that matter for the game, such as title, gameplay, reward, progression, world, inventory, or store surfaces
-- specify mascot, character, object, environment, UI, and typography direction when relevant
+- specify mascot, character, object, environment, UI, and title/logo direction when relevant
+- for store hero direction, include exact title, title/logo material, shape, icon motif, and approved-logo use
 - include exact screen labels or UI text only when the image needs them
 - include reference guidance when references are supplied, but forbid direct copying
 - include constraints that protect platform truth, such as portrait mobile proportions, phone frame accuracy, controller view, or browser canvas format
@@ -32,10 +33,9 @@ Do not treat a written style guide, color list, wireframe, SVG diagram, or gener
 
 - search online for visual references unless strong references were supplied by the user
 - prefer real market examples: app store pages, official sites, trailers, screenshots, press kits, art books, ArtStation/Behance when relevant, and known comparable games
-- Playdrop catalogue references are useful for platform fit and available assets, but they are not enough for art direction by themselves
-- local files on the user's machine are not a reference source unless the user explicitly supplied them
-- references are encouraged because game art direction is iterative and comparative
-- use references for composition, mood, polish level, camera, UI density, rendering language, or world treatment
+- Playdrop catalogue references are useful for platform fit and assets, but not enough by themselves
+- local files are not reference sources unless the user explicitly supplied them
+- use references for composition, mood, polish, camera, UI density, rendering language, or world treatment
 - never ask for a direct copy of another game or image
 - fuse references into a better direction that belongs to this game
 

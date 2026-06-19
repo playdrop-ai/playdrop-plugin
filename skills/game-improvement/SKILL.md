@@ -21,8 +21,12 @@ Use this skill for focused iteration on an existing Playdrop project.
 - do not polish around a broken or confusing core loop
 - if the strongest raw moment is still not worth clicking, step back before more surface polish
 - use this skill to improve a viable game, not to rescue a concept that never worked
+- initialize the PlayDrop SDK early, but call `await sdk.host.ready()` only after required runtime assets have loaded and the first playable frame is visibly populated with the board, player, enemies, props, or other primary gameplay objects
+- requested mechanics must be reachable in normal play; if an update adds or changes hits, physics collisions, particle bursts, combos, pickups, reveals, or attacks, a normal tap/click/key input must visibly trigger that mechanic within the first few seconds
 - add or fix background music and SFX before marketing unless `preview.audioPolicy` intentionally declares `silent`
 - make the first preview scene visually active enough for capture before generating assets
+- when adding or replacing PlayDrop packs, declare reused packs as `uses.packs` string refs only, for example `"uses": {"packs": ["pack:playdrop/zombie-apocalypse-kit-repack@1.0.1"]}`. Do not put objects, `ref`/`runtimeKey` pairs, runtimeKey fields, or local paths inside `uses.packs`; enumerate pack members at runtime with `sdk.assets.listAppAssets()`
+- when creating or replacing generated 2D runtime PNG assets, open/read `.playdrop/plugin/skills/asset-extraction-2d/SKILL.md` and follow that skill exactly; it is the only source of truth for output shape, transparent PNG extraction, sprite-sheet acceptance, and validation
 - keep changes in the creator project; do not change PlayDrop platform code for game-specific polish
 
 ## Shared references

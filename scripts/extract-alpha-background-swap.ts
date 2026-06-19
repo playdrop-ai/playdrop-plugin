@@ -241,6 +241,341 @@ function createContactSheet(source, colors) {
   return sheet;
 }
 
+function isMatteLikeColor(color) {
+  const { r, g, b } = color;
+  const dominant = Math.max(r, g, b);
+  const weakest = Math.min(r, g, b);
+  const chroma = dominant - weakest;
+  const brightGreenMatte = g >= 220 && g - Math.max(r, b) >= 65 && Math.max(r, b) >= 70;
+  const brightRedMatte = r >= 220 && r - Math.max(g, b) >= 65;
+  const brightBlueMatte = b >= 220 && b - Math.max(r, g) >= 65;
+  const brightTwoChannelMatte =
+    dominant >= 220 &&
+    chroma >= 65 &&
+    ((r >= 220 && g >= 220) || (r >= 220 && b >= 220) || (g >= 220 && b >= 220));
+  return brightGreenMatte || brightRedMatte || brightBlueMatte || brightTwoChannelMatte;
+}
+
+function detectBorderMatteWash(source) {
+  const border = Math.max(8, Math.floor(Math.min(source.width, source.height) * 0.18));
+  let sampled = 0;
+  let transparent = 0;
+  let matteLike = 0;
+  for (let y = 0; y < source.height; y += 1) {
+    for (let x = 0; x < source.width; x += 1) {
+      const inBorder =
+        x < border || y < border || x >= source.width - border || y >= source.height - border;
+      if (!inBorder) continue;
+      sampled += 1;
+      const index = (source.width * y + x) * 4;
+      const alpha = source.data[index + 3];
+      if (alpha < 32) {
+        transparent += 1;
+        continue;
+      }
+      if (
+        isMatteLikeColor({
+          r: source.data[index],
+          g: source.data[index + 1],
+          b: source.data[index + 2],
+        })
+      ) {
+        matteLike += 1;
+      }
+    }
+  }
+  const transparentRatio = sampled ? transparent / sampled : 0;
+  const matteLikeRatio = sampled ? matteLike / sampled : 0;
+  return {
+    sampled,
+    transparent,
+    matteLike,
+    transparentRatio,
+    matteLikeRatio,
+    rejected: sampled > 0 && transparentRatio <= 0.18 && matteLikeRatio > 0.58,
+  };
+}
+
+function looksLikeBakedCheckerboardPreview(source) {
+  const { data, width, height } = source;
+  if (width < 24 || height < 24) return false;
+
+  const border = Math.max(8, Math.floor(Math.min(width, height) * 0.16));
+  let sampled = 0;
+  let transparent = 0;
+  let opaqueGray = 0;
+  let lowGray = 0;
+  let highGray = 0;
+
+  for (let y = 0; y < height; y += 1) {
+    for (let x = 0; x < width; x += 1) {
+      const inBorder = x < border || y < border || x >= width - border || y >= height - border;
+      if (!inBorder) continue;
+      sampled += 1;
+      const offset = (y * width + x) * 4;
+      const red = data[offset];
+      const green = data[offset + 1];
+      const blue = data[offset + 2];
+      const alpha = data[offset + 3];
+      if (alpha < 32) {
+        transparent += 1;
+        continue;
+      }
+      const brightness = (red + green + blue) / 3;
+      const grayish = Math.max(Math.abs(red - green), Math.abs(red - blue), Math.abs(green - blue)) <= 10;
+      if (alpha > 240 && grayish && brightness >= 70 && brightness <= 210) {
+        opaqueGray += 1;
+        if (brightness < 125) {
+          lowGray += 1;
+        } else if (brightness > 145) {
+          highGray += 1;
+        }
+      }
+    }
+  }
+
+  if (sampled === 0 || transparent / sampled > 0.18) return false;
+  return opaqueGray / sampled > 0.58 && lowGray / sampled > 0.08 && highGray / sampled > 0.18;
+}
+
+function looksLikeBakedSolidMattePreview(source) {
+  const { data, width, height } = source;
+  if (width < 24 || height < 24) return false;
+
+  const border = Math.max(8, Math.floor(Math.min(width, height) * 0.18));
+  let sampled = 0;
+  let transparent = 0;
+  let matteLike = 0;
+
+  for (let y = 0; y < height; y += 1) {
+    for (let x = 0; x < width; x += 1) {
+      const inBorder = x < border || y < border || x >= width - border || y >= height - border;
+      if (!inBorder) continue;
+      sampled += 1;
+      const offset = (y * width + x) * 4;
+      const alpha = data[offset + 3];
+      if (alpha < 32) {
+        transparent += 1;
+        continue;
+      }
+      if (isMatteLikeColor({ r: data[offset], g: data[offset + 1], b: data[offset + 2] })) {
+        matteLike += 1;
+      }
+    }
+  }
+
+  if (sampled === 0 || transparent / sampled > 0.18) return false;
+  return matteLike / sampled > 0.58;
+}
+
+function looksLikeBakedNeutralSolidMattePreview(source) {
+  const { data, width, height } = source;
+  if (width < 24 || height < 24) return false;
+
+  const border = Math.max(8, Math.floor(Math.min(width, height) * 0.18));
+  let sampled = 0;
+  let transparent = 0;
+  let neutralMatteLike = 0;
+
+  for (let y = 0; y < height; y += 1) {
+    for (let x = 0; x < width; x += 1) {
+      const inBorder = x < border || y < border || x >= width - border || y >= height - border;
+      if (!inBorder) continue;
+      sampled += 1;
+      const offset = (y * width + x) * 4;
+      const red = data[offset];
+      const green = data[offset + 1];
+      const blue = data[offset + 2];
+      const alpha = data[offset + 3];
+      if (alpha < 32) {
+        transparent += 1;
+        continue;
+      }
+      const brightness = (red + green + blue) / 3;
+      const grayish = Math.max(Math.abs(red - green), Math.abs(red - blue), Math.abs(green - blue)) <= 12;
+      if (alpha > 240 && grayish && (brightness >= 235 || brightness <= 20)) {
+        neutralMatteLike += 1;
+      }
+    }
+  }
+
+  if (sampled === 0 || transparent / sampled > 0.18) return false;
+  return neutralMatteLike / sampled > 0.58;
+}
+
+function looksLikeResidualMatteGridArtifact(source) {
+  const { data, width, height } = source;
+  if (width < 48 || height < 48) return false;
+
+  const rowCounts = new Uint32Array(height);
+  const columnCounts = new Uint32Array(width);
+  let matteLike = 0;
+
+  for (let y = 0; y < height; y += 1) {
+    for (let x = 0; x < width; x += 1) {
+      const offset = (y * width + x) * 4;
+      const red = data[offset];
+      const green = data[offset + 1];
+      const blue = data[offset + 2];
+      const alpha = data[offset + 3];
+      if (alpha < 24 || alpha > 190) continue;
+
+      const greenMatte = green >= 35 && green - Math.max(red, blue) >= 25 && red <= 110 && blue <= 110;
+      const redMatte = red >= 35 && red - Math.max(green, blue) >= 25 && green <= 120 && blue <= 120;
+      const blueMatte = blue >= 35 && blue - Math.max(red, green) >= 25 && red <= 120 && green <= 120;
+      const purpleMatte = red >= 35 && blue >= 35 && Math.min(red, blue) - green >= 25 && green <= 120;
+      if (!greenMatte && !redMatte && !blueMatte && !purpleMatte) continue;
+
+      matteLike += 1;
+      rowCounts[y] += 1;
+      columnCounts[x] += 1;
+    }
+  }
+
+  const matteRatio = matteLike / (width * height);
+  if (matteRatio < 0.0015) return false;
+
+  let rowsWithLines = 0;
+  for (const count of rowCounts) {
+    if (count / width >= 0.12) rowsWithLines += 1;
+  }
+
+  let columnsWithLines = 0;
+  for (const count of columnCounts) {
+    if (count / height >= 0.12) columnsWithLines += 1;
+  }
+
+  return rowsWithLines + columnsWithLines >= 3 && (rowsWithLines >= 2 || columnsWithLines >= 2);
+}
+
+function looksLikeResidualTransparentGridLineArtifact(source) {
+  const { data, width, height } = source;
+  if (width < 48 || height < 48) return false;
+
+  const rowVisibleCounts = new Uint32Array(height);
+  const rowSemiCounts = new Uint32Array(height);
+  const columnVisibleCounts = new Uint32Array(width);
+  const columnSemiCounts = new Uint32Array(width);
+
+  for (let y = 0; y < height; y += 1) {
+    for (let x = 0; x < width; x += 1) {
+      const offset = (y * width + x) * 4;
+      const alpha = data[offset + 3];
+      if (alpha <= 0) continue;
+      rowVisibleCounts[y] += 1;
+      columnVisibleCounts[x] += 1;
+      if (alpha < 255) {
+        rowSemiCounts[y] += 1;
+        columnSemiCounts[x] += 1;
+      }
+    }
+  }
+
+  let rowsWithLines = 0;
+  for (let row = 0; row < height; row += 1) {
+    const visibleRatio = rowVisibleCounts[row] / width;
+    const semiRatio = rowSemiCounts[row] / width;
+    if (visibleRatio >= 0.94 && semiRatio >= 0.72) rowsWithLines += 1;
+  }
+
+  let columnsWithLines = 0;
+  for (let column = 0; column < width; column += 1) {
+    const visibleRatio = columnVisibleCounts[column] / height;
+    const semiRatio = columnSemiCounts[column] / height;
+    if (visibleRatio >= 0.94 && semiRatio >= 0.72) columnsWithLines += 1;
+  }
+
+  return rowsWithLines + columnsWithLines >= 3 && (rowsWithLines >= 2 || columnsWithLines >= 2);
+}
+
+function isResidualMatteArtifactPixel(red, green, blue, alpha) {
+  if (alpha < 24 || alpha > 190) return false;
+  const greenMatte = green >= 35 && green - Math.max(red, blue) >= 25 && red <= 110 && blue <= 110;
+  const redMatte = red >= 35 && red - Math.max(green, blue) >= 25 && green <= 120 && blue <= 120;
+  const blueMatte = blue >= 35 && blue - Math.max(red, green) >= 25 && red <= 120 && green <= 120;
+  const purpleMatte = red >= 35 && blue >= 35 && Math.min(red, blue) - green >= 25 && green <= 120;
+  return greenMatte || redMatte || blueMatte || purpleMatte;
+}
+
+function clearResidualMatteArtifactPixels(source) {
+  let cleared = 0;
+  for (let y = 0; y < source.height; y += 1) {
+    for (let x = 0; x < source.width; x += 1) {
+      const index = (source.width * y + x) * 4;
+      if (!isResidualMatteArtifactPixel(
+        source.data[index],
+        source.data[index + 1],
+        source.data[index + 2],
+        source.data[index + 3]
+      )) {
+        continue;
+      }
+      source.data[index] = 0;
+      source.data[index + 1] = 0;
+      source.data[index + 2] = 0;
+      source.data[index + 3] = 0;
+      cleared += 1;
+    }
+  }
+  return cleared;
+}
+
+function isNearAnyColor(color, colors, threshold) {
+  return colors.some((candidate) => dist(color, candidate) <= threshold);
+}
+
+function clearConnectedBorderMattePixels(source, matteColors, threshold) {
+  const { data, width, height } = source;
+  const visited = new Uint8Array(width * height);
+  const stack = [];
+  const enqueue = (x, y) => {
+    if (x < 0 || y < 0 || x >= width || y >= height) return;
+    const pixel = y * width + x;
+    if (visited[pixel]) return;
+    const index = pixel * 4;
+    const alpha = data[index + 3];
+    if (alpha <= 16) return;
+    if (
+      !isNearAnyColor(
+        { r: data[index], g: data[index + 1], b: data[index + 2] },
+        matteColors,
+        threshold
+      )
+    ) {
+      return;
+    }
+    visited[pixel] = 1;
+    stack.push(pixel);
+  };
+
+  for (let x = 0; x < width; x += 1) {
+    enqueue(x, 0);
+    enqueue(x, height - 1);
+  }
+  for (let y = 1; y < height - 1; y += 1) {
+    enqueue(0, y);
+    enqueue(width - 1, y);
+  }
+
+  let cleared = 0;
+  while (stack.length > 0) {
+    const pixel = stack.pop();
+    const x = pixel % width;
+    const y = Math.floor(pixel / width);
+    const index = pixel * 4;
+    data[index] = 0;
+    data[index + 1] = 0;
+    data[index + 2] = 0;
+    data[index + 3] = 0;
+    cleared += 1;
+    enqueue(x + 1, y);
+    enqueue(x - 1, y);
+    enqueue(x, y + 1);
+    enqueue(x, y - 1);
+  }
+  return cleared;
+}
+
 const args = parseArgs(process.argv.slice(2));
 const baseFile = args.base;
 const swapFile = args.swap;
@@ -281,6 +616,13 @@ const residueThreshold = readNumberArg(
   "residue-threshold",
   0,
   441
+);
+const maxPairDriftRatio = readNumberArg(
+  args["max-pair-drift-ratio"],
+  0.25,
+  "max-pair-drift-ratio",
+  0,
+  1
 );
 
 const base = readPng(baseFile);
@@ -366,6 +708,13 @@ for (let y = 0; y < base.height; y += 1) {
   }
 }
 
+const connectedBorderMattePixelsCleared = clearConnectedBorderMattePixels(
+  out,
+  [firstBg, secondBg],
+  residueThreshold
+);
+const residualMatteArtifactPixelsCleared = clearResidualMatteArtifactPixels(out);
+
 writePng(outFile, out);
 if (preview && typeof args["preview-out"] === "string") {
   writePng(args["preview-out"], preview);
@@ -379,14 +728,39 @@ const visiblePixels = Math.max(visible, 1);
 const pairDriftRatio = pairDrift / (base.width * base.height);
 const baseResidueRatio = potentialBaseResidue / visiblePixels;
 const swapResidueRatio = potentialSwapResidue / visiblePixels;
+const borderMatteWash = detectBorderMatteWash(out);
+const rejectedPairDrift = pairDriftRatio > maxPairDriftRatio;
+const previewBackground = {
+  checkerboard: looksLikeBakedCheckerboardPreview(out),
+  solidMatte: looksLikeBakedSolidMattePreview(out),
+  neutralSolidMatte: looksLikeBakedNeutralSolidMattePreview(out),
+  residualMatteGrid: looksLikeResidualMatteGridArtifact(out),
+  residualTransparentGridLines: looksLikeResidualTransparentGridLineArtifact(out),
+};
+const rejectedPreviewBackground = Object.values(previewBackground).some(Boolean);
 if (pairDriftRatio > 0.05) {
   warnings.push(
     "Matte pair drift detected. This is common with AI-generated matte pairs and is not a failure by itself; inspect visual previews."
   );
 }
+if (rejectedPairDrift) {
+  warnings.push(
+    "Rejected: the matte pair changed too much of the asset. Regenerate the second matte with strict change-background-only instructions, or regenerate both mattes with a simpler opaque sprite prompt."
+  );
+}
 if (baseResidueRatio > 0.01 || swapResidueRatio > 0.01) {
   warnings.push(
     "Potential matte-color residue detected in visible pixels. Inspect the contact sheet for halos, holes, or background blocks."
+  );
+}
+if (borderMatteWash.rejected) {
+  warnings.push(
+    "Rejected: the output border still contains a large matte-color wash. Regenerate or retry extraction before accepting this runtime asset."
+  );
+}
+if (rejectedPreviewBackground) {
+  warnings.push(
+    "Rejected: the output still looks like a baked checkerboard, matte, preview, or grid-background image. Regenerate or retry extraction before accepting this runtime asset."
   );
 }
 
@@ -403,6 +777,8 @@ const report = {
     pairDriftPixels: pairDrift,
     pairDriftRatio,
     opaqueDriftPixels: opaqueDrift,
+    connectedBorderMattePixelsCleared,
+    residualMatteArtifactPixelsCleared,
     potentialMatteResidue: {
       baseBgPixels: potentialBaseResidue,
       baseBgRatio: baseResidueRatio,
@@ -410,10 +786,18 @@ const report = {
       swapBgRatio: swapResidueRatio,
       threshold: residueThreshold,
     },
+    borderMatteWash,
+    previewBackground,
     warnings,
     acceptance: {
-      automaticResult: warnings.length ? "visual-review-required" : "no-obvious-script-detected-residue",
-      rule: "Do not reject only because matte/semiTransparent counts are high. Accept or retry based on visual contact-sheet inspection.",
+      automaticResult: rejectedPairDrift
+        ? "rejected-pair-drift"
+        : borderMatteWash.rejected || rejectedPreviewBackground
+          ? "rejected-preview-background"
+          : warnings.length
+            ? "visual-review-required"
+            : "no-obvious-script-detected-residue",
+      rule: "Do not reject only because matte/semiTransparent counts are high. Reject obvious matte-background washes; otherwise accept or retry based on visual contact-sheet inspection.",
     },
   },
   colors: { firstBg, secondBg, previewBg },
@@ -429,6 +813,7 @@ const report = {
     alphaFloor,
     opaqueDistanceThreshold,
     residueThreshold,
+    maxPairDriftRatio,
   },
 };
 
@@ -437,4 +822,16 @@ if (typeof args.report === "string") {
   fs.writeFileSync(args.report, `${JSON.stringify(report, null, 2)}\n`);
 } else {
   process.stdout.write(`${JSON.stringify(report, null, 2)}\n`);
+}
+
+if (rejectedPairDrift || borderMatteWash.rejected || rejectedPreviewBackground) {
+  try {
+    fs.unlinkSync(outFile);
+  } catch {
+    // The non-zero exit is the source of truth; missing output cleanup is non-fatal.
+  }
+  console.error(
+    "extract-alpha-background-swap rejected output: matte pair drift, baked checkerboard, matte, preview, grid, or matte-color wash remains."
+  );
+  process.exitCode = 2;
 }

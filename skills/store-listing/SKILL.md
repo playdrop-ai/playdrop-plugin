@@ -13,13 +13,14 @@ Use this skill for the PlayDrop listing itself. Full social launch kits route to
 2. Confirm `catalogue.json` references the final PlayDrop listing media.
 3. Improve tags and listing copy that explain the input, goal, and stakes.
 4. Confirm listing media matches the current runtime.
-5. Run `playdrop project validate .` before publish.
+5. Run `playdrop project validate .` before publish, except inside server-assigned agent tasks where the worker supervisor owns validation.
 
 ## Rules
 
 - use versioned assets from `assets/marketing/`, not temporary output folders
 - never ship a raw crop as the final icon or hero
 - icon and hero must be purpose-built marketing assets that match actual gameplay
+- hero art must show the exact game name front and center as large readable title/logo text
 - icon and hero must come from Playdrop AI-generated or AI-edited base artwork with real-font title compositing
 - do not reuse social covers, thumbnails, or gameplay screenshots as Playdrop hero/icon assets
 - listing media must match the actual runtime
@@ -27,6 +28,7 @@ Use this skill for the PlayDrop listing itself. Full social launch kits route to
 - copy should explain the core input and the success or fail rule when it could be misread
 - pick gameplay moments, not menus or loading states
 - update `catalogue.json` automatically when listing metadata or media paths are validated
+- inside server-assigned agent tasks, do not run `playdrop project validate`; finish the project and let the worker supervisor validate
 
 ## Shared references
 

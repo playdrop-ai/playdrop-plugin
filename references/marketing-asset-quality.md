@@ -12,7 +12,7 @@ Use this reference when accepting or rejecting generated marketing images, video
 - export dimensions match the target family
 - final accepted files live under `assets/marketing/`
 - final approval has no warning gates, rejected captures, or "pass with caveat" language
-- required assets are distinct for their role; PlayDrop hero/icon assets are not reused social thumbnails or covers
+- role assets are distinct; PlayDrop hero/icon assets are not reused social thumbnails or covers
 - gameplay fills at least 65% of the useful frame for social screenshots and videos
 - the first visible promise is in the footage itself, not only in the caption
 - accepted packs include visual review contact sheets for source moments, final videos, and final covers/thumbnails
@@ -53,12 +53,13 @@ Use this reference when accepting or rejecting generated marketing images, video
 
 ## Hero Art And Icon
 
-- generate or edit base artwork with PlayDrop AI image generation
-- validate artwork quality before compositing title typography
-- composite the game title using a real project or licensed font
-- reject AI-rendered title text when it is distorted or misspelled
+- generate or edit hero and icon artwork with PlayDrop AI
+- hero art integrates the title/logo, or uses an approved logo reference
+- hero art shows the exact game name front and center as large readable title/logo text
+- title/logo is exact, readable, and shaped by scene material, light, and perspective
+- reject misspelled, warped, extra, clipped, hidden, drawtext-like, or pasted-on title treatment
 - reject raw screenshots as icon or hero art
-- reject code-drawn listing cards, gameplay-frame composites, thumbnails, and social covers as icon or hero art
+- reject code-drawn listing cards, gameplay composites, thumbnails, and social covers as icon or hero art
 - hero art should feature the game name prominently and fit the shipped art direction
 - icon art should read clearly at small sizes without depending on tiny text
 
