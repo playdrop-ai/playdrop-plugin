@@ -13,7 +13,7 @@ Use this skill for the PlayDrop listing itself. Full social launch kits route to
 2. Confirm `catalogue.json` references the final PlayDrop listing media.
 3. Improve tags and listing copy that explain the input, goal, and stakes.
 4. Confirm listing media matches the current runtime.
-5. Run `playdrop project validate .` before publish, except inside server-assigned agent tasks where the worker supervisor owns validation.
+5. Run `playdrop project validate .` before publish. Inside server-assigned task workspaces, run the staged command as `./bin/playdrop project validate .`.
 
 ## Rules
 
@@ -28,7 +28,7 @@ Use this skill for the PlayDrop listing itself. Full social launch kits route to
 - copy should explain the core input and the success or fail rule when it could be misread
 - pick gameplay moments, not menus or loading states
 - update `catalogue.json` automatically when listing metadata or media paths are validated
-- inside server-assigned agent tasks, do not run `playdrop project validate`; finish the project and let the worker supervisor validate
+- inside server-assigned task workspaces, do not run `playdrop project publish`; use the task-scoped upload/done/fail commands from the server prompt after validation
 
 ## Shared references
 

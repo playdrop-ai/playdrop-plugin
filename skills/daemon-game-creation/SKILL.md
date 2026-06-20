@@ -1,11 +1,11 @@
 ---
 name: daemon-game-creation
-description: "Build a fast first playable PlayDrop Cloud game draft from a validated daemon task plan. Use when running inside the PlayDrop Cloud daemon or when a prompt mentions a cloud_game_plan, daemon task, private upload, or playdrop task report/complete."
+description: "Build a fast first playable PlayDrop game draft from a server-assigned agent task. Use when running inside a PlayDrop task workspace or when a prompt mentions task report, task upload, task done, or task fail."
 ---
 
 # Daemon Game Creation
 
-Use this skill only for PlayDrop Cloud daemon tasks. The goal is a complete private first playable draft with real gameplay assets and valid PlayDrop listing assets.
+Use this skill for server-assigned PlayDrop game creation tasks. The goal is a complete private first playable draft with real gameplay assets and valid PlayDrop listing assets.
 
 ## Workflow
 
@@ -13,11 +13,61 @@ Use this skill only for PlayDrop Cloud daemon tasks. The goal is a complete priv
 2. Create the smallest PlayDrop project that proves the requested core loop and target surface without dropping requested mechanics.
 3. Report progress with `./bin/playdrop task report --phase <phase> --pct <0-100> -m "<message>"`.
 4. Report a catalogue preview as soon as `catalogue.json` describes the intended build.
-5. Stop after the project is ready. The worker supervisor validates, uploads, and completes the task.
+5. Run and inspect/play the game locally, then iterate until the core loop feels good. Use the staged CLI browser wrapper for automated checks, for example `./bin/playdrop project capture . --surface mobile-portrait --dev-auth anonymous --timeout 20 --screenshot output/playwright/mobile-portrait.png`.
+6. Run `./bin/playdrop project validate .` before upload.
+7. Upload the private draft with `./bin/playdrop task upload` only after final local inspection and validation. Task upload is final for this task; later edits cannot replace the uploaded draft.
+8. Mark the task done with `./bin/playdrop task done`. If the build cannot be completed, run `./bin/playdrop task fail --message "<creator-friendly reason>"`.
 
 ## Build Rules
 
 - Build core gameplay, controls, HUD, restart, and basic UX.
+- `catalogue.json` must use the current PlayDrop CLI schema: one top-level JSON object with an `apps` array. Do not use top-level `app`, `appSlug`, `displayName`, `listing`, `surfaceTargets`, or a bare array. For a single new game, use exactly one app entry shaped like:
+
+```json
+{
+  "apps": [
+    {
+      "name": "reserved-slug-from-task",
+      "displayName": "Game Title",
+      "description": "One sentence describing the game.",
+      "emoji": "🎮",
+      "color": "#7C3AED",
+      "file": "index.html",
+      "type": "WEB",
+      "version": "1.0.0",
+      "releaseNotes": "First private playable draft.",
+      "surfaceTargets": {
+        "desktop": true,
+        "mobileLandscape": false,
+        "mobilePortrait": true
+      },
+      "listing": {
+        "heroPortrait": "assets/marketing/playdrop/hero-portrait.png",
+        "heroLandscape": "assets/marketing/playdrop/hero-landscape.png"
+      },
+      "ownedAssets": [
+        {
+          "name": "player",
+          "category": "IMAGE",
+          "subcategory": "generic",
+          "runtimeKey": "player",
+          "files": {
+            "primary": "assets/2d/player.png"
+          }
+        }
+      ],
+      "uses": {
+        "assets": [],
+        "packs": []
+      }
+    }
+  ]
+}
+```
+
+- Keep the task-reserved app slug in `apps[0].name`; the creator-facing title belongs in `apps[0].displayName`.
+- Declare generated owned runtime assets with `ownedAssets[].files` as a role-to-path object, for example `"files": {"primary": "assets/2d/player.png"}`. Do not use `file`/`type` shorthand fields and do not use a `files` array for owned runtime assets.
+- Browser games must include the PlayDrop SDK loader, initialize it explicitly, and only signal ready after the first visible frame. For plain HTML games, include `<script src="https://assets.playdrop.ai/sdk/playdrop.js"></script>` before game code and call `window.playdrop.init()` or the equivalent SDK init path.
 - Initialize the PlayDrop SDK early, but call `await sdk.host.ready()` only after required runtime assets have loaded and the first playable frame is visibly populated with the board, player, enemies, props, or other primary gameplay objects. Do not call host.ready from a wrapper page before importing game code or before GLB/PNG assets are resolved; the hosted launch check treats ready-plus-blank-canvas as a failed build.
 - When the creator requests physics, particles, 3D, an asset pack, or a specific visual subject, implement those as visible runtime features. Do not reduce them to static shapes, text labels, or background decoration.
 - Requested mechanics must be reachable in normal play. If the game has hits, physics collisions, particle bursts, combos, pickups, reveals, or attacks, a normal tap/click/key input must visibly trigger that mechanic within the first few seconds. Do not ship impossible collision geometry, offscreen targets, unreachable hitboxes, or timing windows that make the requested mechanic effectively inaccessible.
@@ -29,6 +79,7 @@ Use this skill only for PlayDrop Cloud daemon tasks. The goal is a complete priv
 - Keep mobile-only only when the game truly depends on phone-only touch, multi-touch, device orientation, or a portrait-only layout that cannot be converted cheaply.
 - Use licensed PlayDrop assets whenever the creator asks for PlayDrop assets, PlayDrop packs, or when a matching first-party pack exists. Discover packs with the staged CLI refs from `./bin/playdrop search` or `./bin/playdrop browse`, for example `playdrop/asset-pack/graveyard-kit-repack`. For materially 3D games, start with `./bin/playdrop search --kind asset-pack --creator playdrop --pack-contains-category MODEL_3D --json` and choose from those model-compatible first-party packs before doing keyword searches. Pass CLI refs to `./bin/playdrop detail <cli-ref>` and `./bin/playdrop versions browse <cli-ref>`, then copy the exact current version into the catalogue ref. Declare reused packs in `catalogue.json` as `uses.packs` string refs only, for example `"uses": {"packs": ["pack:playdrop/graveyard-kit-repack@5.0.1"]}`. Never guess pack versions or assume `1.0.0`. Do not put objects, `ref`/`runtimeKey` pairs, runtimeKey fields, or local paths inside `uses.packs`. Do not list pack member assets under `uses.assets` to represent that pack; `uses.assets` is only for exact standalone asset refs such as `asset:creator/name@r3`.
 - Browse the PlayDrop catalogue with the staged worker CLI: `./bin/playdrop search <query>`, `./bin/playdrop browse`, `./bin/playdrop detail <ref>`, and `./bin/playdrop versions browse <ref>`. Do not rely on a global `playdrop` binary, because login shells may resolve an older CLI. Do not use nonexistent commands such as `./bin/playdrop catalogue search`, and do not run `./bin/playdrop --help` from inside the worker task.
+- For browser testing inside a worker task, use `./bin/playdrop project capture` and the capture screenshots/logs it produces. Do not run raw Node scripts that `require("playwright")`; the isolated task workspace may not have local Node dependencies. Do not start ad hoc foreground servers such as `python -m http.server`, `npm run dev`, `vite`, or `next dev` from an agent command; a foreground server blocks the agent and leaves the task running without progress. If a server must be started manually for diagnosis, start it with a bounded timeout and stop it before continuing.
 - If no suitable PlayDrop asset exists for a requested primary character, toy, prop, obstacle, or collectible, generate real image assets with the available agent image generation tool or `./bin/playdrop ai create image`.
 - For 2D runtime sprites, characters, toys, props, collectibles, particles, and UI-visible gameplay objects, do not declare direct PlayDrop AI JPEG image assets as runtime dependencies. Those catalogue images can have baked backgrounds or checkerboard previews. Use a PlayDrop asset pack when there is a suitable pack; otherwise open/read `.playdrop/plugin/skills/asset-extraction-2d/SKILL.md` and apply that skill to create accepted game-ready owned PNG assets, declare them in `ownedAssets`, and load those owned assets through `sdk.assets`.
 - Open/read `.playdrop/plugin/skills/asset-extraction-2d/SKILL.md` before creating generated 2D runtime PNGs, then follow it exactly. That skill is the only source of truth for output shape, transparent PNG extraction, sprite-sheet acceptance, and validation; do not recreate that workflow from memory. For generated gameplay objects, prefer separate owned PNG files by runtimeKey. Do not create a sprite sheet unless the creator explicitly asked for a sprite sheet, tilemap, or frame animation, or the skill says a shared grid is truly required. Small collectible sets such as gems, candies, coins, cards, icons, and pickups should be separate accepted PNG assets by default.
@@ -60,11 +111,12 @@ Use short progress events at real milestones:
 ./bin/playdrop task report --phase build --pct 75 -m "Polishing gameplay and listing assets"
 ```
 
-If the build cannot be completed, exit non-zero with a concise reason. The worker supervisor owns task failure.
+If the build cannot be completed, run `./bin/playdrop task fail --message "<creator-friendly reason>"` and exit non-zero. Keep the message clear for the creator.
 
 ## Output Requirements
 
-- The task result is uploaded as a private draft by the worker supervisor.
+- The task result is uploaded as a private draft by the agent with `./bin/playdrop task upload`, after the final local playtest and validation pass.
 - The catalogue must declare at least one real gameplay asset through `ownedAssets`, `uses.assets`, or `uses.packs`.
 - New games must reference portrait and landscape hero PNG files under `assets/marketing/playdrop/` through `listing.heroPortrait` and `listing.heroLandscape`.
-- Do not run `./bin/playdrop project validate`, `./bin/playdrop project publish`, `./bin/playdrop task complete`, or `./bin/playdrop task fail` unless the server prompt explicitly says otherwise. The worker supervisor owns validation, upload, billing, completion, and failure.
+- Do not run `./bin/playdrop project publish`, public publish commands, or legacy `./bin/playdrop task complete`.
+- In server-assigned task workspaces, finish only with `./bin/playdrop task upload` followed by `./bin/playdrop task done`, or `./bin/playdrop task fail --message "<creator-friendly reason>"`.
