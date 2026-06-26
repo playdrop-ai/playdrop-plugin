@@ -1,0 +1,20 @@
+{
+  "name": "playdrop",
+  "interface": {
+    "displayName": "PlayDrop"
+  },
+  "plugins": [
+    {
+      "name": "playdrop",
+      "source": {
+        "source": "local",
+        "path": "./plugins/playdrop"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Coding"
+    }
+  ]
+}
