@@ -1,0 +1,71 @@
+{
+  "version": 1,
+  "taskFiles": {
+    "NEW_GAME": [
+      "skills/daemon-game-creation/SKILL.md",
+      "skills/game-improvement/SKILL.md",
+      "skills/asset-discovery/SKILL.md",
+      "skills/asset-extraction-2d/SKILL.md",
+      "skills/listing-art/SKILL.md",
+      "references/asset-reuse.md",
+      "references/assets-and-generation.md",
+      "references/code-reuse.md",
+      "scripts/extract-alpha-background-swap.ts",
+      "scripts/compose-listing-icon.ts",
+      "scripts/compose-listing-title.ts"
+    ],
+    "REMIX_GAME": [
+      "skills/daemon-game-creation/SKILL.md",
+      "skills/game-improvement/SKILL.md",
+      "skills/asset-discovery/SKILL.md",
+      "skills/asset-extraction-2d/SKILL.md",
+      "skills/listing-art/SKILL.md",
+      "references/asset-reuse.md",
+      "references/assets-and-generation.md",
+      "references/code-reuse.md",
+      "scripts/extract-alpha-background-swap.ts",
+      "scripts/compose-listing-icon.ts",
+      "scripts/compose-listing-title.ts"
+    ],
+    "GAME_UPDATE": [
+      "skills/daemon-game-creation/SKILL.md",
+      "skills/game-improvement/SKILL.md",
+      "skills/asset-discovery/SKILL.md",
+      "skills/asset-extraction-2d/SKILL.md",
+      "skills/listing-art/SKILL.md",
+      "references/asset-reuse.md",
+      "references/assets-and-generation.md",
+      "references/code-reuse.md",
+      "scripts/extract-alpha-background-swap.ts",
+      "scripts/compose-listing-icon.ts",
+      "scripts/compose-listing-title.ts"
+    ],
+    "GAME_REVIEW": [
+      "skills/game-review/SKILL.md",
+      "references/game-review-criteria.md",
+      "references/game-review-comparative-method.md",
+      "references/game-review-evidence-capture.md",
+      "references/game-review-rating-scale.md",
+      "references/game-review-score-caps.md",
+      "references/game-review-gates.md",
+      "references/game-review-gates/concept.md",
+      "references/game-review-gates/gameplay-prototype.md",
+      "references/game-review-gates/demo.md",
+      "references/game-review-gates/vertical-slice.md",
+      "references/game-review-gates/first-release.md",
+      "references/game-review-gates/mature-live-version.md",
+      "references/game-review-outcomes.md",
+      "references/game-review-feedback-format.md",
+      "references/game-review-dimensions/gameplay-core-loop.md",
+      "references/game-review-dimensions/depth-replayability.md",
+      "references/game-review-dimensions/controls-input.md",
+      "references/game-review-dimensions/ux-usability.md",
+      "references/game-review-dimensions/first-time-user-experience.md",
+      "references/game-review-dimensions/visuals-art-direction.md",
+      "references/game-review-dimensions/audio-feedback.md",
+      "references/game-review-dimensions/store-listing-metadata-accuracy.md",
+      "references/game-review-dimensions/safety-age-rating-compliance.md",
+      "references/game-review-dimensions/performance-stability.md"
+    ]
+  }
+}
