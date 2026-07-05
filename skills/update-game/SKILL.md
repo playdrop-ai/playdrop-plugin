@@ -17,6 +17,8 @@ Follow `references/phases/update-game.md`. If this is a worker task, also read `
 ## Required References
 
 - `references/phases/update-game.md`
+- `references/catalogue-json.md`
+- `references/asset-pack-index.md`
 - `references/dimensions.md`
 - `references/quality-bars.md`
 - `references/tech/playdrop-sdk.md`

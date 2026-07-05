@@ -10,6 +10,7 @@ Use this only when the prompt provides `./bin/playdrop task ...` commands.
 ## Protocol
 
 - Use `./bin/playdrop`, not a global `playdrop` binary.
+- If command syntax is unclear, use read-only help such as `./bin/playdrop help search` or `./bin/playdrop project capture --help`.
 - Report meaningful progress with done and current state:
   `./bin/playdrop task report --phase <phase> --done "<what changed>" --current "<what is happening now>"`.
 - Report the catalogue plan after `catalogue.json` has the intended app entry:

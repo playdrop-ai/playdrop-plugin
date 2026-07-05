@@ -16,7 +16,45 @@ Capture on the primary surface:
 - `win-or-progression`: win, wave clear, level clear, lap, solved step, or best meaningful progression.
 - `loss`: failure, restart, timeout, missed objective, or documented endless-game equivalent.
 
-Use `./bin/playdrop project capture . --surface <surface> --dev-auth anonymous --timeout 20 --screenshot <path> --log <path>`.
+Use `./bin/playdrop project capture . --surface <surface> --dev-auth anonymous --timeout 30 --log-level info --screenshot <path>`.
+
+Write `playtest-evidence.json` after the captures. This is validation evidence, not a design document. Include:
+
+- `url`
+- `surface`
+- `captures`
+- `actions`
+- `statesObserved`
+- `consoleErrors`
+- `environment`
+- `checkedAt`
+
+Example:
+
+```json
+{
+  "version": 1,
+  "entries": [
+    {
+      "environment": "local",
+      "url": "http://localhost:8080/creators/playdrop/apps/game/sky-orchard-glider/dev",
+      "surface": "mobilePortrait",
+      "captures": [
+        "assets/marketing/playdrop/screenshots/portrait/01-start.png",
+        "assets/marketing/playdrop/screenshots/portrait/02-core.png",
+        "assets/marketing/playdrop/screenshots/portrait/03-progression.png",
+        "assets/marketing/playdrop/screenshots/portrait/04-loss.png"
+      ],
+      "actions": ["started play", "steered through rings", "missed a ring", "used restart"],
+      "statesObserved": ["preview", "play", "progression", "loss", "restart"],
+      "consoleErrors": [],
+      "checkedAt": "2026-07-05T00:00:00.000Z"
+    }
+  ]
+}
+```
+
+The final self-playtest must happen after the last source-code change.
 
 ## Checklist
 

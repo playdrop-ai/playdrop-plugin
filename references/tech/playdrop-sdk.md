@@ -8,4 +8,5 @@
 - Respect `sdk.host.isPaused`, `onPause`, and `onResume`.
 - Gate custom audio on `sdk.host.audioEnabled` and `onAudioPolicyChange`.
 - Use `sdk.assets.listAppAssets()` and file roles/content types for declared runtime assets.
+- Runtime declarations are promises. If `catalogue.json` declares packs or assets, the game must load and render or play them through the SDK asset manifest.
 - Throw clear errors when required assets fail. Do not render hidden fallbacks.

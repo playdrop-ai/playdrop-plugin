@@ -9,8 +9,7 @@ description: "Create PlayDrop listing assets and metadata that match the real ga
 
 - App icon PNG when available.
 - Portrait and landscape hero PNG.
-- Screenshots for supported surfaces when practical.
-- Video preview when practical.
+- Screenshots for supported surfaces.
 - Accurate title, description, tags, surfaces, `previewable`, `uses`, and `design` in `catalogue.json`.
 
 ## Rules
@@ -20,3 +19,16 @@ description: "Create PlayDrop listing assets and metadata that match the real ga
 - Prefer built-in agent image generation for hero/icon art when available. Use PlayDrop CLI AI generation only when the agent has no native capability for that asset type.
 - Do not use misleading stock-like art, raw screenshots as hero art, or title text that gets clipped in common listing crops.
 - Store listing work is not optional polish; it is part of the shipped draft.
+- Worker-scope listing does not include video capture in this round.
+
+## Screenshot Commands
+
+Use gameplay screenshots, not loading screens. Store them under the paths upload validation expects:
+
+```sh
+./bin/playdrop project capture . --surface mobile-portrait --dev-auth anonymous --timeout 30 --screenshot assets/marketing/playdrop/screenshots/portrait/01-core.png
+./bin/playdrop project capture . --surface mobile-landscape --dev-auth anonymous --timeout 30 --screenshot assets/marketing/playdrop/screenshots/landscape/01-core.png
+./bin/playdrop project capture . --surface desktop --dev-auth anonymous --timeout 30 --screenshot assets/marketing/playdrop/screenshots/landscape/01-core.png
+```
+
+Then list the files in `catalogue.json` under `listing.screenshotsPortrait` and `listing.screenshotsLandscape`.
