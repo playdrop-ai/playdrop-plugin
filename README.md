@@ -66,17 +66,15 @@ then restart Cursor or run `Developer: Reload Window`.
 
 Use short representative checks instead of treating discovery alone as sufficient.
 
-- Codex: verify `playdrop:task-routing`, `playdrop:game-planning`, `playdrop:art-direction`, `playdrop:scope-control`, and `playdrop:store-listing`
-- Claude Code: verify `/playdrop`, `/playdrop:game-planning`, `/playdrop:scope-control`, and `/playdrop:store-listing`
-- Cursor: verify `playdrop:task-routing`, `playdrop:game-planning`, `playdrop:art-direction`, `playdrop:scope-control`, and `playdrop:store-listing`
-- Marketing: verify `playdrop:marketing-pack`, `playdrop:catalogue-preview`, `playdrop:marketing-capture`, `playdrop:marketing-screenshots`, `playdrop:marketing-videos`, and `playdrop:listing-art`
+- Codex: verify `playdrop:task-routing`, `playdrop:create-game`, `playdrop:update-game`, `playdrop:remix-game`, and `playdrop:make-listing`
+- Claude Code: verify `/playdrop`, `/playdrop:create-game`, `/playdrop:update-game`, and `/playdrop:make-listing`
+- Cursor: verify `playdrop:task-routing`, `playdrop:create-game`, `playdrop:update-game`, `playdrop:remix-game`, and `playdrop:make-listing`
+- Marketing: verify `playdrop:make-listing` and `playdrop:market-game`
 - Workflow smoke tests:
-  - `game-planning` -> `art-direction` -> `gameplay-mockups`
-  - `game-planning` -> `scope-control` -> `gameplay-mockups`
-  - `dev-testing` -> `gameplay-review` -> `store-listing`
-  - `marketing-pack` -> `catalogue-preview` -> `marketing-capture` -> `marketing-screenshots` / `marketing-videos` / `listing-art` -> `game-marketing`
-  - `project-updates` -> `service-integration`
-  - `engine-porting` -> `dev-testing`
+  - `create-game` -> `discover-assets` -> `make-assets` -> `playtest-game` -> `make-listing`
+  - `remix-game` -> `playtest-game` -> `make-listing`
+  - `update-game` -> `playtest-game` -> `make-listing`
+  - `review-game` with the staged game-review references
 
 ## Versioning
 
