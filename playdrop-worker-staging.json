@@ -78,6 +78,14 @@
       "references/game-review-dimensions/store-listing-metadata-accuracy.md",
       "references/game-review-dimensions/safety-age-rating-compliance.md",
       "references/game-review-dimensions/performance-stability.md"
+    ],
+    "GAME_EVAL": [
+      "skills/game-eval/SKILL.md",
+      "references/game-review-evidence-capture.md",
+      "references/game-review-rating-scale.md",
+      "references/game-review-score-caps.md",
+      "references/dimensions.md",
+      "references/quality-bars.md"
     ]
   }
 }
