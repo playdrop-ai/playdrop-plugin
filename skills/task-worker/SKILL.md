@@ -17,7 +17,8 @@ Use this only when the prompt provides `./bin/playdrop task ...` commands.
   `./bin/playdrop task report-catalogue --file catalogue.json --message "Planned the version"`.
 - Validate before upload: `./bin/playdrop project validate .`.
 - Upload only when the version is final for this task: `./bin/playdrop task upload`.
-- Finish with `./bin/playdrop task done --next-steps next-steps.json`.
+- Finish with `./bin/playdrop task done --summary "<one-sentence creator recap>" --next-steps next-steps.json`.
+- Write the summary as a chat reply to the creator, naming what you built with no jargon, for example: "Your neon courier runner is ready: dodge the sparks and chase your best score."
 - If blocked by tooling, access, validation, or an impossible request, run `./bin/playdrop task fail --message "<creator-friendly reason>"`.
 
 ## Next Steps
