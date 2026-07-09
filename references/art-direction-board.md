@@ -20,11 +20,13 @@ Template: "Create one single high-resolution landscape art-direction sheet for a
 
 ## Step 3: generate and register
 
-Generate the board with your built-in image generation capability, saving the result to `assets/art-direction/board.png`. Built-in generation is the normal path for Codex and other agents that expose native image generation; it is faster and does not spend PlayDrop credits.
+Generate the board with your built-in image generation capability FIRST, then persist it: built-in tools may save outside the workspace (Codex saves under `$CODEX_HOME/generated_images`, default `~/.codex/generated_images`), so copy the newest produced file to `assets/art-direction/board.png` and verify it with `file`. Retry native generation once on failure. Native generation is the normal path: fast and free of PlayDrop credits.
 
-The board only counts when the native generator writes a real local file. If your native generator only returns an unpersisted preview or cannot save an image file in the workspace, do not call PlayDrop CLI AI. Use the concept block as the visual source of truth, use packs, CC0, or owned designed runtime assets, and record `native_image_generation_artifact_missing` in your working notes.
+If native generation is unavailable or failed after the retry, use the PlayDrop CLI path:
 
-Record which path you used in your working notes. If the game scope requires a generated board and native generation cannot save one, fail the phase loudly with the error. Do not spend PlayDrop credits to make the board.
+./bin/playdrop ai create image "<board prompt>" --ratio 16:9 --asset-name <slug>-art-direction --visibility private --timeout 600 --output assets/art-direction/board.png
+
+If the CLI path also fails (including `insufficient_funds`), do NOT fail the game. The concept block becomes the visual source of truth: record `art_board_generation_unavailable` with the exact error in your working notes, and build with packs, CC0, or deliberately designed owned assets that follow the concept block. Record which path you used in every case.
 
 ## Step 4: extract into the design
 
