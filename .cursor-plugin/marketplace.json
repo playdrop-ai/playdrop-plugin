@@ -10,7 +10,7 @@
   "plugins": [
     {
       "name": "playdrop",
-      "version": "0.11.9",
+      "version": "0.12.0",
       "description": "Creator workflows for planning, building, improving, publishing, and maintaining PlayDrop games.",
       "source": "plugins/playdrop"
     }
