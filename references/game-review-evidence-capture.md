@@ -16,16 +16,43 @@ If `surfaceTargets` is missing or empty in the claimed payload, stop with `ERROR
 
 ## Browser lifecycle
 
-Every capture run must close its browser resources. Use the PlayDrop CLI capture command instead of importing Playwright directly.
+Drive the scored play session through Claude Code `--chrome`. Do not import Playwright or use another browser driver for review decisions. Do not use AppleScript, `osascript`, `cliclick`, CGEvent tools, JavaScript input injection, or coordinate scripts to force gameplay. Before scoring, the canary must know the exact expected host GPU renderer string recorded for this machine, record the actual WebGL renderer string in evidence, and require an exact match. The production mini expects `ANGLE Metal: Apple M4 Pro`; local runs use the exact renderer recorded for that machine. If the expected value is missing, the actual renderer mismatches, SwiftShader appears, or ordinary Claude Code `--chrome` clicks, taps, and key presses cannot create the needed visible input effect, submit `instrument_error`.
 
 Required cleanup order:
 
 1. stop tracing or video if enabled
-2. close the page if it exists
-3. close the context if it exists
-4. close the browser if it exists
+2. close every Claude `--chrome` tab opened for this task
+3. close every visible Chrome artifact window opened with `open -na`
+4. close any direct iframe, local probe, or blank troubleshooting tab opened for this task
+5. verify no task-owned Chrome window remains
 
-If cleanup itself fails, report the cleanup error in the run output. Do not leave a Chrome instance running.
+Leave pre-existing user tabs alone. AppleScript or `osascript` is allowed only for this final cleanup, never for gameplay or input. If cleanup itself fails, report the cleanup error in the run output. Do not leave a task-owned Chrome instance running.
+
+## Saving screenshot files
+
+Use Claude Code `--chrome` for gameplay decisions. For PNG files, open the same launch URL in a visible Chrome artifact window while the task is still `RUNNING`, then save evidence with the native recorder helper. Review tokens are task-state scoped; if you open the URL after cancellation or completion, a `404` is expected and is not evidence.
+
+```bash
+open -na "Google Chrome" --args --new-window "<launch-url>"
+```
+
+Then find the Chrome process and capture window:
+
+```bash
+pgrep -x "Google Chrome"
+./bin/playdrop review list-windows --pid <chrome-pid>
+```
+
+Choose the window whose title matches the target game, then save each gameplay moment:
+
+```bash
+./bin/playdrop review screenshot \
+  --pid <chrome-pid> \
+  --window-id <window-id> \
+  --out .tmp/game-review/<version-id>/core.png
+```
+
+Repeat for `win.png` and `loss.png`. The helper uses the approved native recorder, writes metadata beside the PNG, times out instead of hanging, and fails if the screenshot is blank. If you cannot get a nonblank screenshot of the visible Chrome artifact window while the task is running, submit `instrument_error`; do not score the game from memory and do not use full-screen `screencapture`, Playwright, `project check`, or listing capture output as a substitute.
 
 ## Gameplay screenshots
 
