@@ -9,7 +9,7 @@ Use phases flexibly. Skip research that is irrelevant, but do not skip design, s
 5. `art-direction`: make a concrete visual target. Use real assets or screenshots as references for any generated hero/mockup art.
 6. `art-production`: follow `skills/make-assets` preference order: PlayDrop packs and catalogue assets first per asset need, then CC0, then agent-native generation, then PlayDrop CLI AI generation. The mascot/hero and all primary interactive objects must be real image assets. Never ship primitive shapes, emoji, or plain CSS shapes as the primary identity.
 7. `core-loop`: build the smallest loop that has action, challenge, feedback, scoring/progression, restart, and a visible payoff.
-8. `playtest`: run the self-playtest checklist and fix broken controls, invisible entities, impossible goals, blank first frames, and console errors.
+8. `playtest`: run `./bin/playdrop project check .` with focused-frame actions when input is needed, then fix broken controls, invisible entities, impossible goals, blank first frames, renderer failures, and console errors.
 9. `store-listing`: create accurate listing assets and metadata in `catalogue.json`.
 10. `wrap-up`: validate, upload/publish as instructed, write next-step suggestions when in a task.
 

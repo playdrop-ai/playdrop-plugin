@@ -29,13 +29,16 @@ Read the staged game-review references before scoring:
 
 ## Workflow
 
-1. Open the launch URL with `./bin/playdrop project capture remote`.
+1. Open the launch URL with Claude Code `--chrome` attached to the work Chrome profile.
 2. Choose the primary scored surface from the target support: mobile portrait, mobile landscape, then desktop.
-3. Capture core play, win or meaningful progression, and loss or failure. Use best progression for long games and say so.
-4. Build the composite with `./bin/playdrop review compose-evidence`.
-5. Write internal assessment and creator feedback in the public review format.
-6. Generate the rating card with `./bin/playdrop review rating-card`.
-7. Validate with `./bin/playdrop review validate-result`.
-8. Submit with `./bin/playdrop task submit-review --state <STATE> --message-file <path> --creator-feedback-file <path> --evidence-dir <dir>`.
+3. Run the browser canary: real hardware WebGL renderer, one click with visible effect, one relevant key press with visible effect, and screenshot capture. If it fails, stop and submit `instrument_error` instead of scoring.
+4. Capture core play, win or meaningful progression, and loss or failure through real adaptive play. Use best progression for long games and say so.
+5. Build the composite with `./bin/playdrop review compose-evidence`.
+6. Write internal assessment and creator feedback in the public review format.
+7. Generate the rating card with `./bin/playdrop review rating-card`.
+8. Validate with `./bin/playdrop review validate-result`.
+9. Submit with `./bin/playdrop task submit-review --state <STATE> --message-file <path> --creator-feedback-file <path> --evidence-dir <dir>`.
+
+Do not use `project capture remote`, Playwright CLI, fixed action files, `playdrop project check`, or alternate browser drivers for review evidence. `playdrop project check` output is development evidence only; never cite it for gameplay or review conclusions.
 
 Use `./bin/playdrop task fail --message "<clear operational reason>"` only for operational failures that prevent a meaningful review.
