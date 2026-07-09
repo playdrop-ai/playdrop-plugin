@@ -4,19 +4,15 @@ Use this when catalogue packs and individual assets cannot cover an asset need (
 
 ## Generation path
 
-Use your built-in image generation capability FIRST for both individual assets and sheets, saving the PNGs to the paths below. Only if your agent has no built-in image generation, or it failed after one retry, use the PlayDrop CLI commands in this reference. Record which path you used.
+Use your built-in image generation capability for both individual assets and sheets only when it can save PNG files in the workspace. Builder tasks must never call PlayDrop CLI AI generation or spend PlayDrop credits. If native generation cannot write files, use packs, CC0 assets, or owned designed runtime assets. If the requested scope requires generated media and no native file output exists, fail loudly with `native_image_generation_artifact_missing`.
 
 ## Small needs: individual assets
 
-For 6 or fewer needed images, generate them individually, each conditioned on the board for style consistency:
-
-./bin/playdrop ai create image "<one asset description, style matching the board: palette, rendering, mood>. Single isolated game asset, centered, complete silhouette, on a perfectly flat pure #00ff00 matte background, no text, no frame, soft shadow attached to the object only." --image1 assets/art-direction/board.png --ratio 1:1 --visibility private --timeout 600 --output assets/generated/<asset-name>.png
+For 6 or fewer needed images, generate them individually with native tooling, each conditioned on the board or concept block for style consistency. Save each PNG under `assets/generated/<asset-name>.png`. Use isolated centered assets with complete silhouettes, transparent or easily removable flat backgrounds, no text, no frame, and consistent lighting.
 
 ## Larger needs: one sheet
 
-For more than 6 images, generate one grid sheet (more consistent):
-
-./bin/playdrop ai create image "Create one high-resolution square 2D game asset sheet for <NAME>, derived exactly from the attached approved art direction: <palette, style, mascot traits>. Clean <C> columns x <R> rows grid on a perfectly flat pure #00ff00 matte background, equal invisible cells, consistent padding, lighting, and scale, no overlapping assets, no labels, numbers, dividers, frames, or captions. Every asset isolated, centered, complete, readable at mobile size. Assets, left to right, top to bottom: <numbered list>. Same mascot design in all mascot cells. Clean silhouettes, extraction-friendly edges, no text, no photorealism." --image1 assets/art-direction/board.png --ratio 1:1 --visibility private --timeout 600 --output assets/generated/sheet.png
+For more than 6 images, generate one grid sheet with native tooling and save it to `assets/generated/sheet.png` (more consistent). The sheet must be a clean grid on a removable flat background, equal invisible cells, consistent padding, lighting, and scale, no overlapping assets, no labels, numbers, dividers, frames, or captions. Every asset must be isolated, centered, complete, and readable at mobile size.
 
 ## Extraction
 

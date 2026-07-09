@@ -20,14 +20,12 @@ Template: "Create one single high-resolution landscape art-direction sheet for a
 
 ## Step 3: generate and register
 
-Generate the board with your built-in image generation capability FIRST (for example imagegen), saving the result to `assets/art-direction/board.png`. Built-in generation is the normal path for Codex and other agents that expose native image generation; it is faster and does not spend PlayDrop credits.
+Generate the board with your built-in image generation capability, saving the result to `assets/art-direction/board.png`. Built-in generation is the normal path for Codex and other agents that expose native image generation; it is faster and does not spend PlayDrop credits.
 
-Only if your agent has no built-in image generation, or it failed after one retry, use the PlayDrop CLI path:
+The board only counts when the native generator writes a real local file. If your native generator only returns an unpersisted preview or cannot save an image file in the workspace, do not call PlayDrop CLI AI. Use the concept block as the visual source of truth, use packs, CC0, or owned designed runtime assets, and record `native_image_generation_artifact_missing` in your working notes.
 
-./bin/playdrop ai create image "<board prompt>" --ratio 16:9 --asset-name <slug>-art-direction --visibility private --timeout 600 --output assets/art-direction/board.png
-
-Record which path you used in your working notes. If both paths fail, fail the phase loudly with the error. Do not proceed without a board.
+Record which path you used in your working notes. If the game scope requires a generated board and native generation cannot save one, fail the phase loudly with the error. Do not spend PlayDrop credits to make the board.
 
 ## Step 4: extract into the design
 
-Record in catalogue.json design: the palette (design.artStyle should name the colors), and reference the board asset ref. Every later visual decision (assets, UI, hero art) must match the board. If the shipped game would not be recognizable as phone 2 of the board, the build is not done.
+Record in catalogue.json design: the palette (design.artStyle should name the colors), and reference the board file only when it exists. Every later visual decision (assets, UI, hero art) must match the concept block or board. If the shipped game would not be recognizable as phone 2 of that direction, the build is not done.

@@ -16,7 +16,7 @@ description: "Create PlayDrop listing assets and metadata that match the real ga
 
 - Base hero art on real screenshots, runtime assets, and final art direction.
 - Hero art may be more polished than gameplay, but it must depict the actual game fantasy and key entities.
-- Prefer built-in agent image generation for hero/icon art when available. Use PlayDrop CLI AI generation only when the agent has no native capability for that asset type.
+- Prefer built-in agent image generation for hero/icon art when it can save local files. Never use PlayDrop CLI AI generation for listing art in builder tasks; compose from recorder stills, runtime assets, packs, CC0 assets, or owned designed assets instead.
 - Do not use misleading stock-like art, raw screenshots as hero art, or title text that gets clipped in common listing crops.
 - Store listing work is not optional polish; it is part of the shipped draft.
 - Final listing media for PlayDrop Cloud games must come from the native recorder and include `listing.captureReport`.
