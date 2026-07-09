@@ -26,6 +26,7 @@ const COMMAND_PATHS = [
   ['project', 'capture', 'remote'],
   ['project', 'capture'],
   ['project', 'check'],
+  ['project', 'build'],
   ['project', 'validate'],
   ['ai', 'create'],
   ['task', 'report-catalogue'],

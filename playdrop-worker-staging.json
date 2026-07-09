@@ -16,7 +16,9 @@
       "references/tech/playdrop-sdk.md",
       "references/tech/phaser-2d.md",
       "references/tech/three-js.md",
-      "references/tech/rapier.md"
+      "references/tech/rapier.md",
+      "references/art-direction-board.md",
+      "references/asset-sheet.md"
     ],
     "REMIX_GAME": [
       "skills/task-worker/SKILL.md",
