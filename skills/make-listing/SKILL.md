@@ -21,14 +21,12 @@ description: "Create PlayDrop listing assets and metadata that match the real ga
 - Store listing work is not optional polish; it is part of the shipped draft.
 - Worker-scope listing does not include video capture in this round.
 
-## Screenshot Commands
+## Screenshot Command
 
-Use gameplay screenshots, not loading screens. Store them under the paths upload validation expects:
+Use a gameplay screenshot, not a loading screen. Store it under a path upload validation expects:
 
 ```sh
-./bin/playdrop project capture . --surface mobile-portrait --dev-auth anonymous --timeout 30 --screenshot assets/marketing/playdrop/screenshots/portrait/01-core.png
-./bin/playdrop project capture . --surface mobile-landscape --dev-auth anonymous --timeout 30 --screenshot assets/marketing/playdrop/screenshots/landscape/01-core.png
-./bin/playdrop project capture . --surface desktop --dev-auth anonymous --timeout 30 --screenshot assets/marketing/playdrop/screenshots/landscape/01-core.png
+./bin/playdrop project check . --timeout 30 --screenshot assets/marketing/playdrop/screenshots/landscape/01-core.png
 ```
 
 Then list the files in `catalogue.json` under `listing.screenshotsPortrait` and `listing.screenshotsLandscape`.
