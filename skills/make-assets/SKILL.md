@@ -13,6 +13,8 @@ description: "Choose, create, and declare PlayDrop gameplay assets with the buil
 4. PlayDrop CLI AI generation only when native generation is unavailable or unsuitable.
 5. Deliberate simple shapes, icons, letters, or prototype assets only when that is the right scope call.
 
+This order is BINDING for every image or audio generation anywhere in the build, including art-direction boards, asset sheets, and listing art. A reference or phase doc that names a `playdrop ai create` command does not override it: always attempt your built-in generation first, and use the PlayDrop CLI path only when built-in generation is unavailable for the asset type or has failed after one retry. Record which path you used.
+
 ## Rules
 
 - Declare reused packs in `uses.packs` as exact version refs such as `pack:playdrop/forest-kit@1.0.0`.
