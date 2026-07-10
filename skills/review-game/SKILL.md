@@ -13,8 +13,8 @@ Use this only inside a PlayDrop `GAME_REVIEW` worker task. The task prompt provi
 - Use only the staged public PlayDrop plugin, the task workspace, and `./bin/playdrop`.
 - Do not inspect platform source, admin sessions, API keys, Slack tokens, or internal repositories.
 - Do not upload a game and do not run `task done`.
-- Wake the host display at most once, before the browser session starts. Never wake, re-wake, or re-focus the host between captures or during play.
-- Do not scan the host recursively. Read only the task workspace and the staged plugin files named here.
+- Before the browser canary, if no Chrome browser is connected, run `open -a "Google Chrome"`, wait up to 30 seconds, and re-check once. If Chrome is still disconnected after that single re-check, clean up and exit with `./bin/playdrop task instrument-error --reason browser_control`. Never loop this wake.
+- Do not run recursive filesystem searches or scans outside the task workspace. Evidence lives in the task workspace and the browser.
 
 ## Browser evidence surface
 

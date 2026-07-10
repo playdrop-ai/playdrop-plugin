@@ -12,8 +12,8 @@ Use this only inside a PlayDrop `GAME_EVAL` worker task. The server work order i
 - Evaluate only the target app versions named in the task.
 - Use only the staged public PlayDrop plugin, the task workspace, the launch URLs, and `./bin/playdrop`.
 - Do not upload games, submit publish reviews, run `task done`, inspect platform source, or read credentials.
-- Wake the host display at most once, before the browser session starts. Never wake, re-wake, or re-focus the host between captures or during play.
-- Do not scan the host recursively. Read only the task workspace and the staged plugin files named here.
+- Before the browser canary, if no Chrome browser is connected, run `open -a "Google Chrome"`, wait up to 30 seconds, and re-check once. If Chrome is still disconnected after that single re-check, clean up and exit with `./bin/playdrop task instrument-error --reason browser_control`. Never loop this wake.
+- Do not run recursive filesystem searches or scans outside the task workspace. Evidence lives in the task workspace and the browser.
 - If tooling, access, validation, or submission fails, run `./bin/playdrop task fail --message "<clear operational reason>"`.
 
 ## Browser evidence surface

@@ -36,6 +36,8 @@ const COMMAND_PATHS = [
   ['task', 'upload'],
   ['task', 'done'],
   ['task', 'fail'],
+  ['task', 'evidence'],
+  ['task', 'instrument-error'],
   ['review', 'list-windows'],
   ['review', 'screenshot'],
   ['review', 'compose-evidence'],
