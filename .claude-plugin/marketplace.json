@@ -11,7 +11,7 @@
     {
       "name": "playdrop",
       "description": "Creator workflows for planning, building, improving, publishing, and maintaining PlayDrop games.",
-      "version": "0.12.1",
+      "version": "0.12.2",
       "source": "./"
     }
   ]
