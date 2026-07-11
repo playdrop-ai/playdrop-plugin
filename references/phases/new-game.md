@@ -10,7 +10,7 @@ Use phases flexibly. Skip research that is irrelevant, but do not skip design, s
 6. `art-production`: Follow `skills/make-assets` preference order against the board: packs and catalogue assets first per asset need; for uncovered needs use `references/asset-sheet.md`. The mascot/hero and all primary interactive objects must be real image assets consistent with the board. Never ship primitive shapes, emoji, or plain CSS shapes as the primary identity.
 7. `core-loop`: build the smallest loop that has action, challenge, feedback, scoring/progression, restart, and a visible payoff.
 8. `playtest`: run `./bin/playdrop project check .` with focused-frame actions when input is needed, then fix broken controls, invisible entities, impossible goals, blank first frames, renderer failures, and console errors.
-9. `store-listing`: follow `skills/make-listing/SKILL.md`; create accurate listing assets and metadata in `catalogue.json`, implement recorder-ready preview hooks, run native capture with the final build hash, and store `listing.captureReport`.
+9. `store-listing`: follow `skills/make-listing/SKILL.md`; create accurate listing assets and metadata in `catalogue.json`, implement recorder-ready preview hooks, run native capture, and store `listing.captureReport`.
 10. `wrap-up`: validate, upload/publish as instructed, write next-step suggestions when in a task.
 
 Design comes before scaffold choice. Durable project files still come from the CLI scaffold, never from hand-created scratch files.

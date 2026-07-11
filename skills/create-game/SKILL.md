@@ -15,7 +15,7 @@ Follow `references/phases/new-game.md`. If this is a worker task, also read `ski
 - Before scaffolding, choose the template, `design.assetStrategy`, and any core pack refs, but do not write a nonempty root `catalogue.json`. After scaffolding, keep the scaffold structure, write the scaffolded app catalogue, report it with `task report-catalogue`, and replace the sample loop with the game.
 - Keep scope small enough to be fun and shippable as a first draft. Scope cuts become next-step suggestions.
 - Run the deterministic `project check` flow from `skills/playtest-game/SKILL.md` before upload.
-- Follow `skills/make-listing/SKILL.md` before upload: implement real preview support, run native capture with the build hash, and include `listing.captureReport`.
+- Follow `skills/make-listing/SKILL.md` before upload: implement real preview support, run native capture, and include `listing.captureReport`.
 
 ## Required References
 
