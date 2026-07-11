@@ -32,16 +32,10 @@ Before capture, make the app preview-ready:
 - Call `sdk.host.ready()` after the preview scene and capture hooks are installed.
 - Do not branch on validation, local routes, launch-check flags, or capture markers to change gameplay.
 
-First build the app and copy the `bundleHash=<sha256>` value from the output:
+Run the native recorder once for the declared surface set:
 
 ```sh
-./bin/playdrop project build .
-```
-
-Then run the native recorder once for the declared surface set:
-
-```sh
-./bin/playdrop project capture . --output-dir assets/marketing/playdrop/capture --content-hash <bundle-sha256>
+./bin/playdrop project capture . --output-dir assets/marketing/playdrop/capture
 ```
 
 Use gameplay stills, not loading screens. Add every recorder poster and video from the output directory to `catalogue.json`:
