@@ -5,14 +5,16 @@ description: "Self-playtest a PlayDrop game before upload or publish, including 
 
 # Playtest Game
 
-Use this before upload, publish, or task completion.
+Requires the PlayDrop CLI. If the `playdrop` command is unavailable, follow the PlayDrop `setup` skill first.
+
+Use this before uploading or publishing.
 
 ## Deterministic Check
 
 Run the real hosted shell with installed headed Chrome:
 
 ```sh
-./bin/playdrop project check . --screenshot assets/marketing/playdrop/screenshots/landscape/01-check.png
+playdrop project check . --screenshot assets/marketing/playdrop/screenshots/landscape/01-check.png
 ```
 
 For input-dependent games, add a small action file and rerun the check:
@@ -26,7 +28,7 @@ For input-dependent games, add a small action file and rerun the check:
 ```
 
 ```sh
-./bin/playdrop project check . --actions playtest-actions.json --screenshot assets/marketing/playdrop/screenshots/landscape/01-check.png
+playdrop project check . --actions playtest-actions.json --screenshot assets/marketing/playdrop/screenshots/landscape/01-check.png
 ```
 
 `project check` focuses the game frame before dispatching actions, validates the WebGL renderer, records console/page/request failures, and exits nonzero on failure. Fix failures before upload. Do not use an agent browser, `project capture remote`, Playwright CLI, or an alternate browser driver for builder playtest evidence.
@@ -79,4 +81,4 @@ The final self-playtest must happen after the last source-code change.
 - Console logs contain no uncaught errors.
 - HUD is small, safe-area aware, and does not steal game space.
 
-Fix failures before upload. If a task cannot be fixed in scope, fail clearly.
+Fix failures before upload. If a problem cannot be fixed in scope, say so clearly instead of shipping it.

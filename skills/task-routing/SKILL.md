@@ -8,7 +8,7 @@ description: "Route PlayDrop requests to the smallest relevant builder v2 skill.
 - New game: `create-game`.
 - Remix: `remix-game`.
 - Existing game update: `update-game`.
-- Worker task protocol: `task-worker`.
+- Working inside a PlayDrop worker task: the task work order governs the lifecycle.
 - Playtest or QA: `playtest-game`.
 - Asset/packs: `discover-assets` then `make-assets`.
 - Listing art/metadata: `make-listing`.

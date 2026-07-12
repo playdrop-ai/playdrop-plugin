@@ -11,4 +11,4 @@ Use this after the game is playable and the listing is accurate.
 - Show the strongest mechanic within the first seconds.
 - Do not market features that are absent or broken.
 - Keep social copy concrete: player action, tension, payoff, and surface.
-- If marketing work is out of scope for a task, add it as a next-step suggestion.
+- If marketing work is out of scope right now, record it as a next-step suggestion.

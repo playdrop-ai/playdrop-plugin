@@ -5,6 +5,8 @@ description: "Choose, create, and declare PlayDrop gameplay assets with the buil
 
 # Make Assets
 
+Requires the PlayDrop CLI. If the `playdrop` command is unavailable, follow the PlayDrop `setup` skill first.
+
 ## Preference Order
 
 1. PlayDrop packs or exact assets that match style and runtime needs.
@@ -13,7 +15,7 @@ description: "Choose, create, and declare PlayDrop gameplay assets with the buil
 4. PlayDrop CLI AI generation (`playdrop ai create ...`) when native generation is unavailable for the asset type or failed after one retry.
 5. Plan C, only after BOTH generation paths failed (including `insufficient_funds` on the CLI path): deliberately designed owned vector/canvas assets or a reduced asset scope, recorded honestly in `design.assetStrategy` and your notes. Never as a first resort.
 
-This order is BINDING for every image or audio generation anywhere in the build, including art-direction boards, asset sheets, and listing art; a reference or phase doc that names one command does not override it. Native generation mechanics: built-in tools may save outside the workspace (Codex saves under `$CODEX_HOME/generated_images`, default `~/.codex/generated_images`); after generating, copy the newest produced file into the workspace target and verify it with `file`. Native counts as failed only when generation or that copy fails. A media generation failure, including running out of PlayDrop credits, must NEVER fail a NEW_GAME, GAME_UPDATE, or REMIX_GAME task: record the reason, apply plan C, and surface "add credits to regenerate art" as a creator next step.
+This order is BINDING for every image or audio generation anywhere in the build, including art-direction boards, asset sheets, and listing art; a reference or phase doc that names one command does not override it. Native generation mechanics: built-in tools may save outside the workspace (Codex saves under `$CODEX_HOME/generated_images`, default `~/.codex/generated_images`); after generating, copy the newest produced file into the workspace target and verify it with `file`. Native counts as failed only when generation or that copy fails. A media generation failure, including running out of PlayDrop credits, must never fail a game creation, update, or remix: record the reason, apply plan C, and surface "add credits to regenerate art" as a creator next step.
 
 ## Rules
 

@@ -8,7 +8,7 @@
       "name": "playdrop",
       "source": {
         "source": "local",
-        "path": "./plugins/playdrop"
+        "path": "./"
       },
       "policy": {
         "installation": "AVAILABLE",

@@ -7,20 +7,20 @@ Search before choosing to make assets. Use medium filters so the result is usabl
 2D or sprite games:
 
 ```sh
-./bin/playdrop search "<genre or theme>" --kind asset-pack --creator playdrop --pack-contains-category IMAGE --limit 10
+playdrop search "<genre or theme>" --kind asset-pack --creator playdrop --pack-contains-category IMAGE --limit 10
 ```
 
 3D games:
 
 ```sh
-./bin/playdrop search "<genre or theme>" --kind asset-pack --creator playdrop --pack-contains-category MODEL_3D --limit 10
+playdrop search "<genre or theme>" --kind asset-pack --creator playdrop --pack-contains-category MODEL_3D --limit 10
 ```
 
 Inspect a candidate before copying its ref:
 
 ```sh
-./bin/playdrop detail playdrop/asset-pack/<pack-name>
-./bin/playdrop versions browse playdrop/asset-pack/<pack-name> --json
+playdrop detail playdrop/asset-pack/<pack-name>
+playdrop versions browse playdrop/asset-pack/<pack-name> --json
 ```
 
 ## Starting Points

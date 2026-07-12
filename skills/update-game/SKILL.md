@@ -5,7 +5,9 @@ description: "Update an existing PlayDrop game without breaking current behavior
 
 # Update Game
 
-Follow `references/phases/update-game.md`. If this is a worker task, also read `skills/task-worker/SKILL.md`.
+Requires the PlayDrop CLI. If the `playdrop` command is unavailable, follow the PlayDrop `setup` skill first.
+
+Follow `references/phases/update-game.md`.
 
 ## Rules
 

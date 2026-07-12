@@ -4,7 +4,7 @@
 2. `understand`: inspect the current game and identify what must keep working.
 3. `plan`: update `catalogue.json.design` for the intended version and scope the change.
 4. `implement`: change only what the request needs.
-5. `playtest`: run `./bin/playdrop project check .` with focused-frame actions that exercise current behavior plus the new behavior on the primary surface.
+5. `playtest`: run `playdrop project check .` with focused-frame actions that exercise current behavior plus the new behavior on the primary surface.
 6. `listing-refresh`: update listing assets only when the experience or promise changed.
 7. `wrap-up`: validate, upload/publish as instructed, and suggest next steps.
 

@@ -4,7 +4,7 @@ Use this fixed order every time. Do not reorder dimensions in either internal as
 
 Rating syntax and anchor rules live in [game-review-rating-scale.md](game-review-rating-scale.md).
 Benchmarking method lives in [game-review-comparative-method.md](game-review-comparative-method.md).
-Evidence capture and surface selection live in [game-review-evidence-capture.md](game-review-evidence-capture.md).
+Evidence capture and surface selection are covered by the worker review instructions.
 Hard maximums live in [game-review-score-caps.md](game-review-score-caps.md).
 
 Dimension source files:

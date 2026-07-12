@@ -24,7 +24,7 @@ Generate the board with your built-in image generation capability FIRST, then pe
 
 If native generation is unavailable or failed after the retry, use the PlayDrop CLI path:
 
-./bin/playdrop ai create image "<board prompt>" --ratio 16:9 --asset-name <slug>-art-direction --visibility private --timeout 600 --output assets/art-direction/board.png
+playdrop ai create image "<board prompt>" --ratio 16:9 --asset-name <slug>-art-direction --visibility private --timeout 600 --output assets/art-direction/board.png
 
 If the CLI path also fails (including `insufficient_funds`), do NOT fail the game. The concept block becomes the visual source of truth: record `art_board_generation_unavailable` with the exact error in your working notes, and build with packs, CC0, or deliberately designed owned assets that follow the concept block. Record which path you used in every case.
 

@@ -5,6 +5,8 @@ description: "Create PlayDrop listing assets and metadata that match the real ga
 
 # Make Listing
 
+Requires the PlayDrop CLI. If the `playdrop` command is unavailable, follow the PlayDrop `setup` skill first.
+
 ## Required For New Games
 
 - App icon PNG when available.
@@ -16,10 +18,10 @@ description: "Create PlayDrop listing assets and metadata that match the real ga
 
 - Base hero art on real screenshots, runtime assets, and final art direction.
 - Hero art may be more polished than gameplay, but it must depict the actual game fantasy and key entities.
-- Prefer built-in agent image generation for hero/icon art (copy the produced file from the generator's output directory, for Codex `$CODEX_HOME/generated_images`, into the workspace and verify with `file`). If native generation is unavailable or failed after one retry, use PlayDrop CLI AI generation. If both fail (including `insufficient_funds`), compose from recorder stills, runtime assets, packs, CC0, or owned designed assets and record the reason; never fail the task over listing art generation.
+- Prefer built-in agent image generation for hero/icon art (copy the produced file from the generator's output directory, for Codex `$CODEX_HOME/generated_images`, into the workspace and verify with `file`). If native generation is unavailable or failed after one retry, use PlayDrop CLI AI generation. If both fail (including `insufficient_funds`), compose from recorder stills, runtime assets, packs, CC0, or owned designed assets and record the reason; never fail the work over listing art generation.
 - Do not use misleading stock-like art, raw screenshots as hero art, or title text that gets clipped in common listing crops.
 - Store listing work is not optional polish; it is part of the shipped draft.
-- Final listing media for PlayDrop Cloud games must come from the native recorder and include `listing.captureReport`.
+- PlayDrop Cloud tasks: final listing media must come from the native recorder and include `listing.captureReport` (the work order enforces this). Direct creators: video recording is OPTIONAL; when you want it, use the PlayDrop desktop app for quality capture, take screenshots with `playdrop project check`, and never use a script-based or in-browser recording path.
 
 ## Listing Capture
 
@@ -35,7 +37,7 @@ Before capture, make the app preview-ready:
 Run the native recorder once for the declared surface set:
 
 ```sh
-./bin/playdrop project capture . --output-dir assets/marketing/playdrop/capture
+playdrop project capture . --output-dir assets/marketing/playdrop/capture
 ```
 
 Use gameplay stills, not loading screens. Add every recorder poster and video from the output directory to `catalogue.json`:
