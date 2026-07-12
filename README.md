@@ -1,8 +1,10 @@
 # playdrop-plugin
 
-Canonical public PlayDrop plugin source for Codex, Claude Code, and Cursor.
+Public PlayDrop plugin mirror for Codex, Claude Code, and Cursor.
 
-This repository is the source of truth for the public `playdrop` plugin. It contains the plugin manifests, public creator-facing skills, shared references, and shared assets used to support PlayDrop creator workflows.
+This repository is published automatically from `plugins/playdrop-creator/` in the private PlayDrop monorepo. The monorepo directory is the only source of truth. Do not commit changes directly to this mirror because the next publication will replace them.
+
+Open public bug reports and feature requests in this repository's [issue tracker](https://github.com/playdrop-ai/playdrop-plugin/issues). Maintainers make accepted source changes in the monorepo and publish the generated creator artifact back to this mirror.
 
 ## Public links
 
@@ -17,10 +19,10 @@ This repository is the source of truth for the public `playdrop` plugin. It cont
 - `.codex-plugin/`: Codex manifest
 - `.claude-plugin/`: Claude manifest
 - `.cursor-plugin/`: Cursor manifest
+- `.github/`: mirror ownership and contribution policy
 - `skills/`: specialist public PlayDrop skills
 - `references/`: shared public workflow references
 - `assets/`: plugin icons and branding assets
-- `plugins/playdrop`: compatibility symlink used by marketplace catalogs that require plugin sources below the repository root
 
 ## Install the Plugin
 
@@ -78,7 +80,7 @@ Use short representative checks instead of treating discovery alone as sufficien
 
 ## Versioning
 
-Plugin manifests in this repository are on the same release train as the PlayDrop platform and must match the platform version. Version alignment and legacy sync are maintained from the private PlayDrop monorepo.
+Plugin manifests in this repository are on the same release train as the PlayDrop platform and must match the platform version. Version alignment and legacy sync are maintained from the private PlayDrop monorepo. Publication is bot-owned and direct commits to this mirror are frozen.
 
 ## Legacy sync
 
