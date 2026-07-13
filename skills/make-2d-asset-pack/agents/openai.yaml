@@ -1,0 +1,4 @@
+interface:
+  display_name: "Make 2D Asset Pack"
+  short_description: "Build consistent transparent 2D asset packs."
+  default_prompt: "Use $make-2d-asset-pack to build a consistent transparent 2D asset pack from approved references."

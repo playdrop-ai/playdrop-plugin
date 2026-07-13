@@ -1,21 +1,31 @@
 # Generated Asset Sheet
 
-Use this when catalogue packs and individual assets cannot cover an asset need (mascot, unique props, themed tiles). Derive everything from the approved art-direction board.
+Use this when catalogue packs and individual assets cannot cover a coherent gameplay need. Derive the visual language from the approved art-direction board or a creator-owned canonical style anchor.
 
-## Generation path
+## Choose The Workflow
 
-Use your built-in image generation capability for both individual assets and sheets only when it can save PNG files in the workspace. Builder tasks must never call PlayDrop CLI AI generation or spend PlayDrop credits. If native generation cannot write files, use packs, CC0 assets, or owned designed runtime assets. If the requested scope requires generated media and no native file output exists, fail loudly with `native_image_generation_artifact_missing`.
+- For six or fewer unrelated images, generate individual assets with native tooling.
+- For a production pack, more than one sheet, repeated families, paired large/small variants, transparent PNG extraction, or repair and approval rounds, use the `make-2d-asset-pack` skill.
+- For one lightweight game sheet with more than six assets, follow the same source and extraction rules below even when the full pack workflow would be excessive.
 
-## Small needs: individual assets
+## Generation Path
 
-For 6 or fewer needed images, generate them individually with native tooling, each conditioned on the board or concept block for style consistency. Save each PNG under `assets/generated/<asset-name>.png`. Use isolated centered assets with complete silhouettes, transparent or easily removable flat backgrounds, no text, no frame, and consistent lighting.
+Use built-in image generation when it can persist PNG files. Builder tasks must never spend PlayDrop credits. If the task requires generated media and native generation cannot produce a file, fail clearly with `native_image_generation_artifact_missing`.
 
-## Larger needs: one sheet
+Use an exact slot list and a clean invisible grid. Every asset must be isolated, centered, complete, and readable at its gameplay size. Forbid labels, numbers, dividers, frames, overlaps, clipping, floor planes, and every exterior cast or contact shadow. Internal form shading is allowed.
 
-For more than 6 images, generate one grid sheet with native tooling and save it to `assets/generated/sheet.png` (more consistent). The sheet must be a clean grid on a removable flat background, equal invisible cells, consistent padding, lighting, and scale, no overlapping assets, no labels, numbers, dividers, frames, or captions. Every asset must be isolated, centered, complete, and readable at mobile size.
+Pick a saturated solid matte that is absent from every subject in the sheet. Green is not a universal choice. Never ask the model to change only the background of an existing sheet and then treat both results as pixel-identical; AI edits redraw subjects.
 
 ## Extraction
 
-Slice the sheet yourself in the workspace (npm install pngjs, then a small script): chroma-key everything within distance ~120 of pure #00ff00 to alpha, despill remaining green fringes (g = min(g, max(r,b)) on semi-transparent edge pixels), find connected bounding boxes, expect one per requested asset, export trimmed alpha PNGs named from the asset list. HARD CHECK: if the count of extracted boxes does not match the requested list, regenerate the sheet exactly once with the count problem named in the prompt; if it still mismatches, fail the phase loudly and fall back to individual assets for the missing items only.
+Do not crop on nominal equal-grid boundaries. Generated sheets can drift across cell boundaries and can differ from template dimensions. Scale the intended layout to the actual source and find row and column gaps from the measured matte.
 
-Load extracted assets in the game like any owned asset and register them in catalogue.json. The mascot and all primary interactive objects must come from the board, a pack, or this pipeline. Never primitives.
+Select one extraction method explicitly:
+
+- soft chroma when the requested matte is absent from every subject
+- hard color key when the matte is flat and safely separated
+- `rembg` when chroma extraction conflicts with valid subject color
+
+Measure the matte and record thresholds. Use the requested matte as the removal key. Keep despill disabled unless a visible fringe is proven and cleanup cannot damage valid subject color.
+
+Generate checker, white, purple, and black review boards. Check output count, dimensions, alpha occupancy, edge contact, disconnected fragments, matte residue, and provenance before visual review. When extraction or identity fails, preserve the evidence and create a new named round. Repair only failed assets or variants after two full-sheet attempts.

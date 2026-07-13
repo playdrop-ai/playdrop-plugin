@@ -7,6 +7,8 @@ description: "Choose, create, and declare PlayDrop gameplay assets with the buil
 
 Requires the PlayDrop CLI. If the `playdrop` command is unavailable, follow the PlayDrop `setup` skill first.
 
+For an original coherent 2D pack with more than six assets, multiple families or sheets, paired size variants, transparent-background extraction, or approval rounds, use the `make-2d-asset-pack` skill. Return here after approval to declare the pack in the game.
+
 ## Preference Order
 
 1. PlayDrop packs or exact assets that match style and runtime needs.

@@ -10,7 +10,8 @@ description: "Route PlayDrop requests to the smallest relevant builder v2 skill.
 - Existing game update: `update-game`.
 - Working inside a PlayDrop worker task: the task work order governs the lifecycle.
 - Playtest or QA: `playtest-game`.
-- Asset/packs: `discover-assets` then `make-assets`.
+- Existing asset discovery and normal game assets: `discover-assets` then `make-assets`.
+- Original consistent 2D packs, multi-item sheets, paired large/small variants, transparent sprite families, or extraction repairs: `make-2d-asset-pack`.
 - Listing art/metadata: `make-listing`.
 - Game review task: `review-game`.
 - Creator support: `creator-help`.

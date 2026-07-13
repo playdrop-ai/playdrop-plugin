@@ -37,6 +37,7 @@
     "termsOfServiceURL": "https://www.playdrop.ai/legal/terms",
     "defaultPrompt": [
       "Plan a new PlayDrop game",
+      "Build a consistent transparent 2D asset pack",
       "Prepare a store listing",
       "Prepare marketing for my game",
       "Port an existing game"

@@ -68,7 +68,7 @@ then restart Cursor or run `Developer: Reload Window`.
 
 Use short representative checks instead of treating discovery alone as sufficient.
 
-- Codex: verify `playdrop:task-routing`, `playdrop:create-game`, `playdrop:update-game`, `playdrop:remix-game`, and `playdrop:make-listing`
+- Codex: verify `playdrop:task-routing`, `playdrop:create-game`, `playdrop:update-game`, `playdrop:remix-game`, `playdrop:make-2d-asset-pack`, and `playdrop:make-listing`
 - Claude Code: verify `/playdrop`, `/playdrop:create-game`, `/playdrop:update-game`, and `/playdrop:make-listing`
 - Cursor: verify `playdrop:task-routing`, `playdrop:create-game`, `playdrop:update-game`, `playdrop:remix-game`, and `playdrop:make-listing`
 - Marketing: verify `playdrop:make-listing` and `playdrop:market-game`
@@ -76,6 +76,7 @@ Use short representative checks instead of treating discovery alone as sufficien
   - `create-game` -> `discover-assets` -> `make-assets` -> `playtest-game` -> `make-listing`
   - `remix-game` -> `playtest-game` -> `make-listing`
   - `update-game` -> `playtest-game` -> `make-listing`
+  - `discover-assets` -> `make-2d-asset-pack` -> `make-assets`
   - `review-game` with the staged game-review references
 
 ## Versioning
