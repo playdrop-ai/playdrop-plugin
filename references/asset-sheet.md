@@ -1,6 +1,6 @@
 # Generated Asset Sheet
 
-Use this when catalogue packs and individual assets cannot cover an asset need (mascot, unique props, themed tiles). Derive everything from the approved art-direction board.
+Use this when catalogue packs and individual assets cannot cover an asset need (mascot, unique props, themed tiles, background layers). Derive everything from the approved hero art and art-direction board.
 
 ## Generation path
 
