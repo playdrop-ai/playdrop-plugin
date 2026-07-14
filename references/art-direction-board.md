@@ -5,7 +5,7 @@ Every new game produces its art direction as an ordered chain of artifacts, each
 1. Hero art (always): the game fantasy as key art, generated first; reused by the store listing.
 2. Art mockup board (always): the game's real screens.
 3. Asset sheet (when packs and catalogue assets cannot cover a need): `references/asset-sheet.md`.
-4. Game background (when scenes have a visible backdrop): produced in art-production, step 5 below.
+4. Game background (always for 2D games; 3D backdrops come from the environment): produced in art-production, step 5 below.
 
 Hero art and the mockup board come before any gameplay code. Do not skip them, including for simple UI games. Every generation follows the `skills/make-assets` preference order.
 
@@ -47,7 +47,7 @@ If the CLI path also fails (including `insufficient_funds`), do NOT fail the gam
 
 ## Step 5: game background (in art-production)
 
-Any scene with a visible backdrop uses a real background image asset. Never ship a code-drawn gradient, flat fill, or primitives as the backdrop of a real game; `assetStrategy: procedural` prototypes are the only exception.
+Every 2D game has a background image, always: gameplay happens on real background art, never on a code-drawn gradient, flat fill, or primitives; `assetStrategy: procedural` prototypes are the only exception. 3D games are different: the backdrop comes from the 3D environment (skybox or horizon, lighting, environment geometry), no 2D background image required, but it must match the direction.
 
 - Default: one flattened background image per distinct scene or room type, matching the hero art and palette, in the aspect of the primary surface. Source it per the `skills/make-assets` preference order: a pack or CC0 backdrop that fits the direction beats generating one; generated backgrounds go under `assets/generated/background-<scene>.png`.
 - Parallax or depth only when the direction calls for it: generate the layers as one sheet per `references/asset-sheet.md`, compose them at runtime, and verify the composition visually during playtest (take a screenshot; check alignment, full coverage, no seams, readable gameplay on top).
