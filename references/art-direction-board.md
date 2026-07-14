@@ -9,6 +9,8 @@ Every new game produces its art direction as an ordered chain of artifacts, each
 
 Hero art and the mockup board come before any gameplay code. Do not skip them, including for simple UI games. Every generation follows the `skills/make-assets` preference order.
 
+Identity is carried by image conditioning, not prose: `hero-portrait.png` is the canonical identity image, and every downstream generation (landscape hero, board, asset sheets, backgrounds, icon, listing art) passes it as a reference image (native reference editing, or CLI `--image1`). Never regenerate the mascot's identity from text alone.
+
 ## Step 1: concept block
 
 Expand the creator prompt into a concept block inside your working notes before prompting the image model. Creator prompts are often one line; the concept block is where you make the game specific. Write:
@@ -23,7 +25,7 @@ Expand the creator prompt into a concept block inside your working notes before 
 
 Hero art is one illustration that sells the fantasy: the mascot/hero with locked traits, mid-action at the most exciting moment of the core loop, in the setting. It is key art, not a screenshot: no UI, no HUD, no phone frames, no text, no logo, no watermark.
 
-Generate two files: `assets/art-direction/hero-portrait.png` (9:16) and `assets/art-direction/hero-landscape.png` (16:9).
+Generate `assets/art-direction/hero-portrait.png` (9:16) first from the template below; it becomes the canonical identity image. Then derive `assets/art-direction/hero-landscape.png` (16:9) from it with reference conditioning (native reference editing, or CLI `--source-mode IMAGE --image1 assets/art-direction/hero-portrait.png`), recomposing for landscape rather than regenerating.
 
 Template: "Create high-resolution key art for an original premium casual mobile game. <fantasy sentence>. <Mascot with locked traits> <doing the core action> in <setting and mood>, dynamic composition, <palette colors by name>, polished stylized illustration, high production value, not photorealistic. No text, no logo, no user interface, no phone frames, no watermark."
 
@@ -31,7 +33,7 @@ The store listing reuses these files as the base of the listing hero art. Never 
 
 ## Step 3: mockup board
 
-The board shows ONLY in-game screens, visually consistent with the hero art (same mascot, palette, materials). No branding area, no app icon, no logo lockup: branding belongs to hero art and listing work, not the mockup. Mockup orientation MUST match the game's primary surface (portrait phones for portrait games, landscape for landscape/desktop). Screens are ONLY the ones scoped v1 will actually ship: title, core gameplay, success state, failure/mistake state. Never invent meta-game screens the build will not include.
+The board shows ONLY in-game screens, visually consistent with the hero art: generate it with `hero-portrait.png` as the reference image so mascot, palette, and materials carry over. No branding area, no app icon, no logo lockup: branding belongs to the app icon and listing work, not the mockup. DESKTOP-primary games: use desktop browser-window mockups instead of phone mockups, same four screens. Mockup orientation MUST match the game's primary surface (portrait phones for portrait games, landscape for landscape/desktop). Screens are ONLY the ones scoped v1 will actually ship: title, core gameplay, success state, failure/mistake state. Never invent meta-game screens the build will not include.
 
 Template: "Create one single high-resolution landscape art-direction sheet for an original premium casual mobile game called '<NAME>'. One cohesive presentation board, not separate files. Exactly 4 accurate iPhone 15 <portrait|landscape> mockups arranged <in a row | in a 2x2 grid>, correct proportions, visible Dynamic Island, undistorted. Overall concept: <fantasy, mascot, setting from the concept block>. Overall visual style: premium casual mobile game quality, polished stylized illustration, <palette colors by name>, consistent mascot, consistent UI materials across all screens, high production value, not photorealistic. Phone 1: title screen with logo, mascot, large button labeled 'Play'. Phone 2: core gameplay screen showing <the real core loop, HUD, controls>, clearly playable and uncluttered. Phone 3: success state '<success headline>' with mascot celebrating and rewards. Phone 4: <failure/mistake state> that is encouraging, not punishing. Under the phones, four feature captions: <4 short real features>. Constraints: readable game name and button labels, no distorted phones, no extra screens, no photorealism, no cluttered UI, no inconsistent mascot."
 
@@ -41,7 +43,9 @@ Generate hero art first, then the board, with your built-in image generation cap
 
 If native generation is unavailable or failed after the retry, use the PlayDrop CLI path (ratio 9:16 for hero-portrait, 16:9 for hero-landscape and the board):
 
-playdrop ai create image "<prompt>" --ratio <ratio> --asset-name <slug>-<artifact> --visibility private --timeout 600 --output <target path>
+playdrop ai create image "<prompt>" --ratio <ratio> --source-mode IMAGE --image1 <reference image> --asset-name <slug>-<artifact> --visibility private --timeout 600 --output <target path>
+
+Omit `--source-mode IMAGE --image1` only for the canonical hero-portrait itself; every other artifact passes its reference.
 
 If the CLI path also fails (including `insufficient_funds`), do NOT fail the game. The concept block becomes the visual source of truth: record `art_direction_generation_unavailable` with the artifact name and exact error in your working notes, and build with packs, CC0, or deliberately designed owned assets that follow the concept block. Record which path you used for every artifact.
 
@@ -49,9 +53,14 @@ If the CLI path also fails (including `insufficient_funds`), do NOT fail the gam
 
 Every 2D game has a background image, always: gameplay happens on real background art, never on a code-drawn gradient, flat fill, or primitives; `assetStrategy: procedural` prototypes are the only exception. 3D games are different: the backdrop comes from the 3D environment (skybox or horizon, lighting, environment geometry), no 2D background image required, but it must match the direction.
 
-- Default: one flattened background image per distinct scene or room type, matching the hero art and palette, in the aspect of the primary surface. Source it per the `skills/make-assets` preference order: a pack or CC0 backdrop that fits the direction beats generating one; generated backgrounds go under `assets/generated/background-<scene>.png`.
-- Parallax or depth only when the direction calls for it: generate the layers as one sheet per `references/asset-sheet.md`, compose them at runtime, and verify the composition visually during playtest (take a screenshot; check alignment, full coverage, no seams, readable gameplay on top).
+Choose the treatment from the camera; all of them are real image art, sourced per the `skills/make-assets` preference order (a pack or CC0 backdrop that fits the direction beats generating one; generated files go under `assets/generated/`):
+
+- Fixed screen: one flattened background image per distinct scene or room type, in the aspect of the primary surface (`background-<scene>.png`).
+- Scrolling camera: a seamlessly tiling background image sized for the engine's tiling object (for example Phaser TileSprite); verify the seam by scrolling at least two full widths.
+- Parallax or depth, only when the direction calls for it: 2-4 full-canvas alpha layers with identical dimensions, generated individually with the hero art as reference, named `background-<scene>-layer<N>.png` back to front, seamless horizontally when scrolling, composed at runtime. Never produce layers through the chroma-key sheet pipeline; component extraction splits and misaligns them.
+
+Verify every treatment visually during playtest: take a screenshot, check alignment, full coverage, no seams, and readable gameplay on top.
 
 ## Step 6: extract into the design
 
-Record in catalogue.json design: the palette (design.artStyle should name the colors), and reference the hero art and board files only when they exist. Every later visual decision (assets, UI, backgrounds, listing art) must match the hero art and concept block. If the shipped game would not be recognizable as phone 2 of that direction, the build is not done.
+Record the palette in catalogue.json design (design.artStyle should name the colors). The chain artifacts live at the canonical paths above; do not invent catalogue fields for them. Every later visual decision (assets, UI, backgrounds, listing art) must match the hero art and concept block. If the shipped game would not be recognizable as phone 2 of that direction, the build is not done.

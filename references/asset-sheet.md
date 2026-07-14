@@ -4,7 +4,7 @@ Use this when catalogue packs and individual assets cannot cover an asset need (
 
 ## Generation path
 
-Use your built-in image generation capability for both individual assets and sheets only when it can save PNG files in the workspace. Builder tasks must never call PlayDrop CLI AI generation or spend PlayDrop credits. If native generation cannot write files, use packs, CC0 assets, or owned designed runtime assets. If the requested scope requires generated media and no native file output exists, fail loudly with `native_image_generation_artifact_missing`.
+Generation follows the `skills/make-assets` preference order, like every other media generation. Condition every asset generation on `assets/art-direction/hero-portrait.png` (and the board when helpful) as reference images for style consistency. Background parallax layers do NOT use this sheet pipeline: they are full-canvas alpha layers per `references/art-direction-board.md` step 5.
 
 ## Small needs: individual assets
 
