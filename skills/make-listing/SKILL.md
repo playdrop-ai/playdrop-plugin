@@ -17,6 +17,7 @@ Requires the PlayDrop CLI. If the `playdrop` command is unavailable, follow the 
 ## Rules
 
 - Start listing hero art from the art-direction hero files (`assets/art-direction/hero-portrait.png`, `hero-landscape.png`); refine or recompose against real screenshots and runtime assets as needed. Never use the art mockup board, or any crop of it, as hero art.
+- App icon: the mascot/hero from the hero art, close up, bold silhouette readable at small sizes, flat background from the palette, no text.
 - Hero art may be more polished than gameplay, but it must depict the actual game fantasy and key entities.
 - For icon art, or hero art when the art-direction hero files are missing (older games), prefer built-in agent image generation (copy the produced file from the generator's output directory, for Codex `$CODEX_HOME/generated_images`, into the workspace and verify with `file`). If native generation is unavailable or failed after one retry, use PlayDrop CLI AI generation. If both fail (including `insufficient_funds`), compose from recorder stills, runtime assets, packs, CC0, or owned designed assets and record the reason; never fail the work over listing art generation.
 - Do not use misleading stock-like art, raw screenshots as hero art, or title text that gets clipped in common listing crops.

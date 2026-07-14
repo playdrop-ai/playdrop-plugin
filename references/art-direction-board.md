@@ -49,7 +49,7 @@ If the CLI path also fails (including `insufficient_funds`), do NOT fail the gam
 
 Any scene with a visible backdrop uses a real background image asset. Never ship a code-drawn gradient, flat fill, or primitives as the backdrop of a real game; `assetStrategy: procedural` prototypes are the only exception.
 
-- Default: one flattened background image per distinct scene or room type, derived from the hero art and palette, in the aspect of the primary surface, saved under `assets/generated/background-<scene>.png`.
+- Default: one flattened background image per distinct scene or room type, matching the hero art and palette, in the aspect of the primary surface. Source it per the `skills/make-assets` preference order: a pack or CC0 backdrop that fits the direction beats generating one; generated backgrounds go under `assets/generated/background-<scene>.png`.
 - Parallax or depth only when the direction calls for it: generate the layers as one sheet per `references/asset-sheet.md`, compose them at runtime, and verify the composition visually during playtest (take a screenshot; check alignment, full coverage, no seams, readable gameplay on top).
 
 ## Step 6: extract into the design
