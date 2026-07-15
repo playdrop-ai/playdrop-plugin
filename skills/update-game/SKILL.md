@@ -23,4 +23,6 @@ Follow `references/phases/update-game.md`.
 - `references/asset-pack-index.md`
 - `references/dimensions.md`
 - `references/quality-bars.md`
+- `references/art-direction-board.md`
+- `references/asset-sheet.md`
 - `references/tech/playdrop-sdk.md`
