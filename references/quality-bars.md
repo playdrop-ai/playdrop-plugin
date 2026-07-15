@@ -1,7 +1,9 @@
 # Builder V2 Quality Bars
 
-- Fullscreen gameplay first. Do not put the game in a card or spend large space on title/stats/controls.
+- Fullscreen gameplay first. The play canvas fills the entire surface: no letterbox bars, no dead zones, no page scroll, no card framing, no large title/stats/controls zones.
 - No in-game title on the play surface unless it is part of a short preview/menu state.
+- HUD is a minimal overlay rendered on top of gameplay: icons and numbers only, no text labels, no instructional sentences parked on screen.
+- Dialogs and overlays (win, loss, pause) are centered on the play canvas.
 - Optimize for the creator surface by default. Escape only when the requested game is a terrible fit for that surface.
 - Primary entities must be visible, correctly scaled, and stylistically coherent.
 - A simple coherent asset set beats a large mismatched one.
