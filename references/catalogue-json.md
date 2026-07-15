@@ -105,6 +105,11 @@ Replace names, refs, paths, and notes. Keep the shape.
         "input": { "values": ["one-thumb", "tap", "drag"] },
         "progression": { "value": "levels" },
         "artStyle": { "value": "bright orchard cartoon" },
+        "fantasy": { "value": "glide a fruit-orchard courier between floating sky islands" },
+        "mascot": { "value": "round teal glider-fox", "note": "Locked traits: teal scarf, brass goggles, cream belly." },
+        "setting": { "value": "sunny floating orchards, late afternoon light" },
+        "palette": { "values": ["#F4A93B amber", "#2E8C6A orchard green", "#7FD1E8 sky blue", "#4A3325 bark"] },
+        "uiMaterial": { "value": "rounded wooden panels, soft shadows, chunky friendly type" },
         "assetStrategy": { "value": "mixed", "note": "Pack art for scenery, one owned player sprite, optional SFX." },
         "engine": { "value": "phaser-2d" },
         "coreAssets": { "values": ["pack:playdrop/platformer-art-deluxe-repack@1.0.0"] },
@@ -120,6 +125,7 @@ Replace names, refs, paths, and notes. Keep the shape.
 Rules:
 
 - `design.coreAssets.values` must be a subset of `uses.packs`.
+- The art-direction concept block lives in `design.fantasy`, `design.mascot`, `design.setting`, `design.palette`, and `design.uiMaterial`, written at the start of the art-direction phase (see `references/art-direction-board.md`).
 - `assetStrategy: "procedural"` is allowed only when you deliberately render procedural visuals and do not declare fake packs/assets.
 - Every declared runtime pack or asset must be loaded and rendered or played in the game.
 - Listing screenshots are required for new games. Put them under `assets/marketing/playdrop/screenshots/portrait/` or `assets/marketing/playdrop/screenshots/landscape/`.

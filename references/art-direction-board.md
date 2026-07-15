@@ -13,7 +13,7 @@ Identity is carried by image conditioning, not prose: `hero-portrait.png` is the
 
 ## Step 1: concept block
 
-Expand the creator prompt into a concept block at `assets/art-direction/concept.md` before prompting the image model; it is a chain artifact and ships with the upload like the rest. Creator prompts are often one line; the concept block is where you make the game specific. Write:
+Expand the creator prompt into a concept block recorded as `catalogue.json.design` fields (`fantasy`, `mascot`, `setting`, `palette`, `uiMaterial`; see `references/catalogue-json.md`) before prompting the image model. catalogue.json is the only design source of truth and always ships with the upload. Creator prompts are often one line; the concept block is where you make the game specific. Write:
 
 - Fantasy: one sentence, what the player gets to be or do.
 - Mascot or hero identity: species/object, 2-3 locked visual traits (colors, accessory, expression), personality in 3 words.
@@ -65,4 +65,4 @@ Verify every treatment visually during playtest: take a screenshot, check alignm
 
 ## Step 6: extract into the design
 
-Record the palette in catalogue.json design (design.artStyle should name the colors). The chain artifacts live at the canonical paths above; do not invent catalogue fields for them. They are project files and MUST ship with the uploaded app, never excluded: the judge and reviewer audit them in the shipped files. Every later visual decision (assets, UI, backgrounds, listing art) must match the hero art and concept block. If the shipped game would not be recognizable as phone 2 of that direction, the build is not done.
+The concept block already lives in `catalogue.json.design`; keep `design.artStyle` consistent with `design.palette`. The image artifacts live at the canonical paths above; do not invent catalogue fields for them. They are project files and MUST ship with the uploaded app, never excluded: the judge and reviewer audit them in the shipped files. Every later visual decision (assets, UI, backgrounds, listing art) must match the hero art and concept block. If the shipped game would not be recognizable as phone 2 of that direction, the build is not done.
