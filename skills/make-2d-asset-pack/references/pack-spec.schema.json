@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://playdrop.ai/schemas/2d-asset-pack-spec-v1.json",
+  "title": "PlayDrop 2D Asset Pack Spec",
+  "type": "object",
+  "required": ["schemaVersion", "pack", "styleAnchor", "variants", "families"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "pack": {
+      "type": "object",
+      "required": ["id", "name", "publicationRights"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" },
+        "name": { "type": "string", "minLength": 1 },
+        "publicationRights": { "enum": ["cleared", "blocked", "private-only"] }
+      },
+      "additionalProperties": true
+    },
+    "styleAnchor": {
+      "type": "object",
+      "required": ["ownership", "stylePrompt"],
+      "properties": {
+        "path": { "type": "string", "minLength": 1 },
+        "ownership": { "enum": ["creator-owned", "licensed", "unknown"] },
+        "stylePrompt": { "type": "string", "minLength": 1 },
+        "origin": { "enum": ["reference-image", "text-only", "generated-bootstrap"] }
+      },
+      "additionalProperties": true
+    },
+    "variants": {
+      "type": "object",
+      "required": ["large", "small"],
+      "properties": {
+        "large": { "$ref": "#/$defs/variant" },
+        "small": { "$ref": "#/$defs/variant" }
+      },
+      "additionalProperties": false
+    },
+    "families": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/family" }
+    },
+    "retryLimits": {
+      "type": "object",
+      "properties": {
+        "fullSheetsPerFamilyMaximum": { "type": "integer", "minimum": 1, "default": 2 },
+        "individualRepairsPerAssetMaximum": { "type": "integer", "minimum": 1, "default": 2 }
+      },
+      "additionalProperties": false
+    }
+  },
+  "$defs": {
+    "variant": {
+      "type": "object",
+      "required": ["width", "height", "padding", "contract"],
+      "properties": {
+        "width": { "type": "integer", "minimum": 16 },
+        "height": { "type": "integer", "minimum": 16 },
+        "padding": { "type": "integer", "minimum": 0 },
+        "contract": { "type": "string", "minLength": 1 }
+      },
+      "additionalProperties": false
+    },
+    "family": {
+      "type": "object",
+      "required": ["id", "name", "items"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" },
+        "name": { "type": "string", "minLength": 1 },
+        "items": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 16,
+          "items": { "$ref": "#/$defs/item" }
+        }
+      },
+      "additionalProperties": true
+    },
+    "item": {
+      "type": "object",
+      "required": ["id", "name", "referenceType", "payloads"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" },
+        "name": { "type": "string", "minLength": 1 },
+        "referenceType": { "enum": ["visual-reference", "semantic-only"] },
+        "references": {
+          "type": "object",
+          "properties": {
+            "large": { "type": "string" },
+            "small": { "type": "string" }
+          },
+          "additionalProperties": false
+        },
+        "payloads": {
+          "type": "object",
+          "required": ["large", "small"],
+          "properties": {
+            "large": { "type": "string", "minLength": 1 },
+            "small": { "type": "string", "minLength": 1 }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

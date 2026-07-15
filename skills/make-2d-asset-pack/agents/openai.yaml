@@ -1,0 +1,4 @@
+interface:
+  display_name: "Make 2D Asset Pack"
+  short_description: "Create validated transparent game-asset sheets and packs."
+  default_prompt: "Use $make-2d-asset-pack to create a consistent transparent 2D game-asset sheet or multi-family pack from my item list, style description or reference image, and optional source folder."

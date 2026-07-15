@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "kind": "sheet",
+  "id": "game-objects",
+  "name": "Game Objects",
+  "description": "A coherent gameplay sheet for a friendly puzzle game.",
+  "style": {
+    "description": "Polished casual mobile-game art with rounded readable silhouettes and controlled dimensional shading.",
+    "referenceImages": []
+  },
+  "sourceFolder": null,
+  "metadata": {
+    "version": "1.0.0",
+    "license": "PLAYDROP",
+    "visibility": "PRIVATE",
+    "publicationRights": "private-only",
+    "tags": ["asset-purpose/prop"]
+  },
+  "families": [
+    {
+      "id": "objects",
+      "name": "Objects",
+      "mode": "paired",
+      "columns": 2,
+      "matte": "auto",
+      "items": ["Chair", "Table", "Lamp"]
+    }
+  ]
+}

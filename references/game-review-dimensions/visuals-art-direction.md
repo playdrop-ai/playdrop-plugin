@@ -47,6 +47,7 @@ The key question is whether the current visual language helps the player play an
 - placeholder assets mixed with final-looking assets in a way that destroys coherence
 - effects that feel exciting in isolation but reduce clarity in actual play
 - screenshots or icons promising a stronger visual product than the runtime delivers
+- sprite images with baked transparency checkerboards, flat matte-color backgrounds, or preview-grid artifacts that visibly weaken the runtime
 - production-grade references paired with prototype-grade runtime visuals
 - camera or perspective choices that make the core action visually misleading
 

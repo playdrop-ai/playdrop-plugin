@@ -13,6 +13,8 @@ Use phases flexibly: skip what is genuinely irrelevant to the request, but never
 9. `store-listing`: exit per `skills/make-listing/SKILL.md`: accurate listing assets and metadata, preview hooks, capture per your task type.
 10. `wrap-up`: validate, upload/publish as instructed, write next-step suggestions when in a task.
 
+Local Agent and other direct-creator tasks never run `project capture` in the worker and omit `listing.captureReport`; use the `project check` screenshot flow instead.
+
 ## Route by game type
 
 - `phaser-2d` games: engine mechanics live in `references/tech/phaser-2d.md`; real background art per `references/art-direction-board.md` step 5.

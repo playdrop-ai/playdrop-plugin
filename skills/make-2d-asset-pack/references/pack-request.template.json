@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "kind": "pack",
+  "id": "puzzle-collection",
+  "name": "Puzzle Collection",
+  "description": "A consistent multi-family asset pack for a collection puzzle game.",
+  "style": {
+    "description": "Polished casual mobile-game art with rounded readable silhouettes and controlled dimensional shading.",
+    "referenceImages": []
+  },
+  "sourceFolder": null,
+  "metadata": {
+    "version": "1.0.0",
+    "license": "PLAYDROP",
+    "visibility": "PRIVATE",
+    "publicationRights": "private-only",
+    "tags": ["asset-purpose/prop"]
+  },
+  "families": [
+    {
+      "id": "furniture",
+      "name": "Furniture",
+      "mode": "paired",
+      "columns": 2,
+      "matte": "auto",
+      "items": ["Chair", "Table", "Sofa"]
+    },
+    {
+      "id": "plants",
+      "name": "Plants",
+      "mode": "paired",
+      "columns": 2,
+      "matte": "auto",
+      "items": ["Fern", "Cactus", "Flower"]
+    }
+  ]
+}
