@@ -24,7 +24,7 @@ Requires the PlayDrop CLI. If the `playdrop` command is unavailable, follow the 
 - Primary gameplay screenshots show active core play with the primary interactive entities visible (the player-controlled entity when one exists), never a game-over, pause, or menu overlay.
 - Inspect every capture yourself: it must contain only the game canvas, no browser chrome or surrounding page. A clean capture report does not replace looking.
 - Store listing work is not optional polish; it is part of the shipped draft.
-- PlayDrop Cloud tasks: final listing media must come from the native recorder and include `listing.captureReport` (the work order enforces this).
+- FIRST_PARTY PlayDrop Cloud tasks: final listing media must come from the native recorder and include `listing.captureReport` (the work order enforces this). Personal-target cloud tasks follow the direct-creator path.
 - Local Agent and other direct-creator tasks: do not run `playdrop project capture` from the worker, and omit `listing.captureReport`. Take listing screenshots with `playdrop project check`. Video is optional and can be added later through the PlayDrop desktop app; never substitute a script-based or in-browser recording path.
 
 ## Listing Capture
@@ -38,15 +38,15 @@ Before capture, make the app preview-ready:
 - Call `sdk.host.ready()` after the preview scene and capture hooks are installed.
 - Do not branch on validation, local routes, launch-check flags, or capture markers to change gameplay.
 
-For PlayDrop Cloud tasks only, run the native recorder once for the declared surface set. Local Agent and other direct-creator tasks skip the rest of this section.
+For FIRST_PARTY PlayDrop Cloud tasks only, run the native recorder once for the declared surface set. Local Agent and other direct-creator tasks skip the rest of this section.
 
 ```sh
 playdrop project capture . --output-dir assets/marketing/playdrop/capture
 ```
 
-Use gameplay stills, not loading screens. Add every recorder poster and video from the output directory to `catalogue.json`:
+Use gameplay stills, not loading screens. Copy each recorder `*poster.png` into `assets/marketing/playdrop/screenshots/portrait/` or `.../landscape/` per surface as a byte-identical copy (production validates screenshot paths there, and identical bytes keep the recorder-hash binding); videos stay in the capture directory. Then add the media to `catalogue.json`:
 
-- `listing.screenshotsPortrait` or `listing.screenshotsLandscape`: every `*poster.png`
+- `listing.screenshotsPortrait` or `listing.screenshotsLandscape`: the copied poster PNGs under `screenshots/portrait|landscape/`
 - `listing.videosPortrait` or `listing.videosLandscape`: every `*listing.mp4`
 - `listing.captureReport`: `assets/marketing/playdrop/capture/capture-report.json`
 

@@ -1,6 +1,6 @@
 # catalogue.json Reference
 
-Use `catalogue.json` as the only design and metadata source of truth. Do not create GDD, PLAN, README-like task notes, or other metadata files for game design decisions.
+Use `catalogue.json` as the only design and metadata source of truth. Do not create GDD, PLAN, README-like task notes, or other metadata files for game design decisions. The only permitted extra JSON files are working evidence, not design: `next-steps.json`, `playtest-evidence.json`, `playtest-actions.json`.
 
 ## Allowed Values
 
@@ -92,7 +92,7 @@ Replace names, refs, paths, and notes. Keep the shape.
         "heroPortrait": "assets/marketing/playdrop/hero/hero-portrait.png",
         "heroLandscape": "assets/marketing/playdrop/hero/hero-landscape.png",
         "screenshotsPortrait": [
-          "assets/marketing/playdrop/screenshots/portrait/01-start.png",
+          "assets/marketing/playdrop/screenshots/portrait/01-core.png",
           "assets/marketing/playdrop/screenshots/portrait/02-core.png"
         ],
         "screenshotsLandscape": []
@@ -125,8 +125,9 @@ Replace names, refs, paths, and notes. Keep the shape.
 Rules:
 
 - `design.coreAssets.values` must be a subset of `uses.packs`.
-- The art-direction concept block lives in `design.fantasy`, `design.mascot`, `design.setting`, `design.palette`, and `design.uiMaterial`, written at the start of the art-direction phase (see `references/art-direction-board.md`).
+- The art-direction concept block lives in `design.fantasy`, `design.mascot`, `design.setting`, `design.palette`, and `design.uiMaterial`: decided during game-design, written at the scaffold-phase exit (`references/art-direction-board.md` step 1 owns the timing).
+- Validation caps: `coreAssets` max 2 values, `references` max 2 values, `palette` max 6 values, every `note` max 140 chars; `features` values only from: multiplayer, avatars, achievements, leaderboard, saves, ai-generation, shop, ads.
 - `assetStrategy: "procedural"` is allowed only when you deliberately render procedural visuals and do not declare fake packs/assets.
 - Every declared runtime pack or asset must be loaded and rendered or played in the game.
-- Listing screenshots are required for new games. Put them under `assets/marketing/playdrop/screenshots/portrait/` or `assets/marketing/playdrop/screenshots/landscape/`.
-- Audio SFX and listing art are non-blocking assets. Gameplay-required images, sprites, and 3D models should fail loudly if missing.
+- Listing screenshots are required for new games and live under `assets/marketing/playdrop/screenshots/portrait/` or `assets/marketing/playdrop/screenshots/landscape/` (production validates these paths; on cloud tasks, copy recorder posters into them per `skills/make-listing`).
+- Audio SFX and listing art are non-blocking at runtime (warn, keep play unblocked). Gameplay-required images, sprites, and 3D models should fail loudly if missing.

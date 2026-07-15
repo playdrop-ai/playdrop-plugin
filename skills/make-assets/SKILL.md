@@ -15,9 +15,9 @@ For an original coherent 2D pack with more than six assets, multiple families or
 2. CC0 assets from the web, converted and attributed correctly.
 3. Agent-native asset/image generation when available for the asset type.
 4. PlayDrop CLI AI generation (`playdrop ai create ...`) when native generation is unavailable for the asset type or failed after one retry.
-5. Plan C, only after BOTH generation paths failed (including `insufficient_funds` on the CLI path): deliberately designed owned vector/canvas assets or a reduced asset scope, recorded honestly in `design.assetStrategy` and your notes. Never as a first resort.
+5. Plan C, only after BOTH generation paths failed (including `insufficient_funds` on the CLI path): deliberately designed owned vector/canvas assets or a reduced asset scope, recorded honestly in the `design.assetStrategy` note field. Never as a first resort.
 
-This order is BINDING for every image or audio generation anywhere in the build, including hero art, art-direction boards, generated assets, game backgrounds, and listing art; a reference or phase doc that names one command does not override it. Steps 1-2 do not apply to bespoke identity artifacts (hero art, mockup board): those start at native generation. Every generation downstream of the canonical hero passes `assets/art-direction/hero-portrait.png` (and the board when relevant) as reference images. Native generation mechanics: built-in tools may save outside the workspace (Codex saves under `$CODEX_HOME/generated_images`, default `~/.codex/generated_images`); after generating, copy the newest produced file into the workspace target and verify it with `file`. Native counts as failed only when generation or that copy fails.
+This order is BINDING for every image or audio generation anywhere in the build, including hero art, art-direction boards, generated assets, game backgrounds, and listing art; a reference or phase doc that names one command does not override it. Steps 1-2 do not apply to bespoke identity artifacts (hero art, mockup board, app icon, and listing heroes derived from the canonical hero): those start at native generation. Every generation downstream of the canonical hero passes `assets/art-direction/hero-portrait.png` (and the board when relevant) as reference images. Native generation mechanics: built-in tools may save outside the workspace (Codex saves under `$CODEX_HOME/generated_images`, default `~/.codex/generated_images`); after generating, copy the newest produced file into the workspace target and verify it with `file`. Native counts as failed only when generation or that copy fails.
 
 Media failure policy: for a direct creator's game work, a media generation failure, including running out of PlayDrop credits, must never fail the work: record the reason, apply Plan C, and surface "add credits to regenerate art" as a creator next step. In a PlayDrop Cloud NEW_GAME task, the artifacts production upload requires (hero pair, board, listing heroes) are the exception: if one cannot be produced after the documented retries, fail the phase clearly instead of continuing toward an upload that will reject it.
 
@@ -29,8 +29,8 @@ Media failure policy: for a direct creator's game work, a media generation failu
 - For 3D, prove selected assets expose GLB/GLTF runtime files before choosing them.
 - Never render primitives, emoji, or plain CSS/canvas shapes as the player character, identity subject, or primary interactive objects in a real game. `assetStrategy: procedural` is only acceptable for deliberately abstract prototypes.
 - Backgrounds: `references/art-direction-board.md` step 5 owns the rule.
-- Before generating, your research notes must already show which packs and assets you considered for reuse and why each was used or rejected (the research phase owns this).
-- Every generated gameplay file is declared in `ownedAssets`, loaded by the runtime, and visibly rendered in playtest (`references/asset-sheet.md`).
+- Do not generate before the research phase's reuse notes exist (`references/phases/new-game.md` phase 2).
+- Register every generated gameplay file per `references/asset-sheet.md`.
 - Gameplay-required images, sprites, and models must fail clearly if missing. Audio SFX and listing-only assets should warn and keep play unblocked.
 - If a declared pack or asset is not loaded and rendered or played at runtime, remove the declaration or fix the runtime.
 - Keep the visual set coherent. A small matching set beats a large mismatched set.
