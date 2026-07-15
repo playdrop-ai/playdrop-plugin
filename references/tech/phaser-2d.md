@@ -3,7 +3,7 @@
 Use the official Phaser 2D template when the game needs sprites, tweens, tile-like scenes, collisions, or fast 2D iteration.
 
 - Load Phaser from `sdk.libs.phaser.load()` instead of bundling a separate engine copy.
-- Use `Phaser.Scale.RESIZE` and an edge-to-edge parent.
+- Keep the scaffold's scale block exactly as the template ships it (`Phaser.Scale.EXPAND` + `CENTER_BOTH`, base size per primary surface). Never switch to `RESIZE` and never hand-roll viewport fitting with camera zoom or bounds; Phaser keeps pointer input aligned for you.
 - Keep HUD small and safe-area aware.
 - Pause the active scene on host pause and resume on host resume.
 - For mobile, make the main verb work with one thumb unless the request needs more.
