@@ -13,7 +13,7 @@ Identity is carried by image conditioning, not prose: `hero-portrait.png` is the
 
 ## Step 1: concept block
 
-Expand the creator prompt into a concept block recorded as `catalogue.json.design` fields (`fantasy`, `mascot`, `setting`, `palette`, `uiMaterial`; see `references/catalogue-json.md`) before prompting the image model. catalogue.json is the only design source of truth and always ships with the upload. Creator prompts are often one line; the concept block is where you make the game specific. Write:
+The concept block was written during `game-design` as `catalogue.json.design` fields (`fantasy`, `mascot`, `setting`, `palette`, `uiMaterial`; see `references/catalogue-json.md`). Verify it exists before prompting the image model; every prompt below fills from it. Its contents:
 
 - Fantasy: one sentence, what the player gets to be or do.
 - Mascot or hero identity: species/object, 2-3 locked visual traits (colors, accessory, expression), personality in 3 words.

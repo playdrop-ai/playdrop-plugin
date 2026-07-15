@@ -1,6 +1,7 @@
 # Builder V2 Quality Bars
 
 - Fullscreen gameplay first. The play canvas fills the entire surface: no letterbox bars, no dead zones, no page scroll, no card framing, no large title/stats/controls zones. Fill by responsive scaling and camera bounds, never by stretching.
+- Use the chosen engine purely and idiomatically: never hand-roll scaling, camera, or input mapping the engine already provides, and never overlay DOM controls on canvas gameplay.
 - No in-game title on the play surface unless it is part of a short preview/menu state.
 - HUD is a minimal status overlay rendered on top of gameplay: icons and numbers, no text labels, no instructional sentences parked on screen. Interactive buttons and dialogs may use short labels when an icon would be ambiguous.
 - Dialogs and overlays (win, loss, pause) are centered within the safe area of the play canvas.
