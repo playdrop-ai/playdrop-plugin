@@ -63,6 +63,10 @@ Choose the treatment from the camera; all of them are real image art, sourced pe
 
 Verify every treatment visually during playtest: take a screenshot, check alignment, full coverage, no seams, readable gameplay on top, and that entities sit ON the background's structures (ledges, openings, surfaces) rather than floating over them, matching its light.
 
-## Step 6: extract into the design
+## Step 6: UI chrome (in art-production)
+
+Buttons, dialog panels, and meter/bar frames are image assets in the board's material language, never engine-drawn boxes. Generate up to 3 chrome images conditioned on the board (`--image1 board.png`): a button plate, a dialog/panel frame, and a meter frame, each isolated on a transparent or flat removable background, no text (`assets/generated/ui-button.png`, `ui-panel.png`, `ui-meter.png`). Reuse them across every screen and dialog; scale or nine-slice as needed.
+
+## Step 7: extract into the design
 
 The concept block already lives in `catalogue.json.design`; keep `design.artStyle` consistent with `design.palette`. The image artifacts live at the canonical paths above; do not invent catalogue fields for them. They are project files and MUST ship with the uploaded app, never excluded: the judge and reviewer audit them in the shipped files. Every later visual decision (assets, UI, backgrounds, listing art) must match the hero art and concept block. If the shipped game would not be recognizable as phone 2 of that direction, the build is not done.
