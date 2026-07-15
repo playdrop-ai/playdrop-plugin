@@ -13,7 +13,7 @@ Identity is carried by image conditioning, not prose: `hero-portrait.png` is the
 
 ## Step 1: concept block
 
-Expand the creator prompt into a concept block inside your working notes before prompting the image model. Creator prompts are often one line; the concept block is where you make the game specific. Write:
+Expand the creator prompt into a concept block at `assets/art-direction/concept.md` before prompting the image model; it is a chain artifact and ships with the upload like the rest. Creator prompts are often one line; the concept block is where you make the game specific. Write:
 
 - Fantasy: one sentence, what the player gets to be or do.
 - Mascot or hero identity: species/object, 2-3 locked visual traits (colors, accessory, expression), personality in 3 words.
