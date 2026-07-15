@@ -57,7 +57,7 @@ Every 2D game has a background image, always: gameplay happens on real backgroun
 
 Choose the treatment from the camera; all of them are real image art, sourced per the `skills/make-assets` preference order (a pack or CC0 backdrop that fits the direction beats generating one; generated files go under `assets/generated/`). Backgrounds never contain text or logos:
 
-- Fixed screen: one flattened background per distinct scene or room type, derived from the board: image-edit phone 2's scene (pass `board.png` as the reference image) to remove the mascot, all interactive items, and the HUD, keeping only the environment, extended to the primary surface's full aspect (`background-<scene>.png`). A pack or CC0 backdrop may substitute only when it already matches the board.
+- Fixed screen: one flattened background per distinct scene or room type (`background-<scene>.png`), in the primary surface's full aspect. The background IS phone 2's environment with the mascot, interactive items, and HUD absent. A reliable way to get it: image-edit the board (`--image1 board.png`) asking for exactly that. A pack or CC0 backdrop may substitute only when it already matches the board.
 - Scrolling camera: a seamlessly tiling background image sized for the engine's tiling object (for example Phaser TileSprite); verify the seam by scrolling at least two full widths.
 - Parallax or depth, only when the direction calls for it: 2-4 full-canvas alpha layers with identical dimensions, generated individually with the hero art as reference, named `background-<scene>-layer<N>.png` back to front, seamless horizontally when scrolling, composed at runtime. Never produce layers through the chroma-key sheet pipeline; component extraction splits and misaligns them.
 
