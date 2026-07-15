@@ -12,7 +12,7 @@ Requires the PlayDrop CLI. If the `playdrop` command is unavailable, follow the 
 - App icon PNG when available.
 - Portrait and landscape hero PNG.
 - Screenshots for supported surfaces.
-- Accurate title, description, tags, surfaces, `previewable`, `uses`, and `design` in `catalogue.json`.
+- Accurate title, description, tags, surfaces, `previewable`, `uses`, and any populated optional `design` refs in `catalogue.json`.
 
 ## Rules
 

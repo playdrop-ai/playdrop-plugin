@@ -33,13 +33,13 @@ playdrop versions browse playdrop/asset-pack/<pack-name> --json
 
 Known current refs can change. Always confirm with `detail` or `versions browse` before writing `uses.packs`.
 
-## Design Rule
+## Asset Plan
 
-At design time, choose one of:
+At design time, make one honest scope call:
 
-- `assetStrategy: "pack-first"` when a medium-matched pack supplies the core entities.
-- `assetStrategy: "mixed"` when a pack supplies the world or entities and you add a few owned assets.
-- `assetStrategy: "owned-assets"` when no suitable pack exists but you have a small coherent owned set.
-- `assetStrategy: "procedural"` when simple procedural visuals are the honest scope call.
+- Use a medium-matched pack when it supplies the core entities.
+- Mix a pack with a few owned assets when it supplies only part of the visual set.
+- Use a small coherent owned set when no suitable pack exists.
+- Use procedural visuals only when a deliberately abstract prototype is the honest scope call.
 
-Do not declare a pack just to satisfy metadata. If it is in `uses.packs`, the game must load and render assets from it at runtime.
+Record the choice only when it will help continued work. Do not declare a pack just to satisfy metadata. If it is in `uses.packs`, the game must load and render assets from it at runtime.

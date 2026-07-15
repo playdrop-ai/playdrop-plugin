@@ -15,7 +15,7 @@ Follow `references/phases/remix-game.md`.
 - Scaffold with `playdrop project create app <slug> --remix <source-ref>` after claiming the new slug when the task requires it.
 - Study the source mechanics, assets, and listing before changing them.
 - Make a meaningful transformation: new loop, constraint, level structure, fantasy, or input feel.
-- Keep source ancestry in `catalogue.json` and refresh `catalogue.json.design`.
+- Keep source ancestry in `catalogue.json` and refresh any populated optional `design` tag refs that changed.
 - Run the deterministic `project check` playtest before upload.
 
 ## Required References

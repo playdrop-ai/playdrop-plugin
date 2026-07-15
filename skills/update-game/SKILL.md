@@ -13,7 +13,7 @@ Follow `references/phases/update-game.md`.
 
 - Update the staged project in place. Do not change the app slug unless the task explicitly says so.
 - Preserve working gameplay before adding polish.
-- Refresh `catalogue.json.design` so it describes the new version.
+- Refresh any populated `catalogue.json.design` tag refs that no longer describe the version; all seven fields remain optional.
 - Validate and run the deterministic `project check` playtest before upload or publish.
 
 ## Required References
