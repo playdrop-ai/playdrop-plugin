@@ -65,4 +65,4 @@ Verify every treatment visually during playtest: take a screenshot, check alignm
 
 ## Step 6: extract into the design
 
-Record the palette in catalogue.json design (design.artStyle should name the colors). The chain artifacts live at the canonical paths above; do not invent catalogue fields for them. Every later visual decision (assets, UI, backgrounds, listing art) must match the hero art and concept block. If the shipped game would not be recognizable as phone 2 of that direction, the build is not done.
+Record the palette in catalogue.json design (design.artStyle should name the colors). The chain artifacts live at the canonical paths above; do not invent catalogue fields for them. They are project files and MUST ship with the uploaded app, never excluded: the judge and reviewer audit them in the shipped files. Every later visual decision (assets, UI, backgrounds, listing art) must match the hero art and concept block. If the shipped game would not be recognizable as phone 2 of that direction, the build is not done.
