@@ -21,13 +21,15 @@ If npm is missing or the install fails with a permission error, report the exact
 
 ## 3. Authenticate
 
-Authentication is the CREATOR'S action, never yours. Ask them to run:
+Use the browser flow by default:
 
 ```bash
 playdrop auth login
 ```
 
-in their own terminal and complete the browser flow. Never request, read, store, or enter credentials, tokens, or API keys yourself. If login fails, show the creator the error and point them at `skills/creator-help/SKILL.md`.
+When the owner explicitly authorizes direct login and provides or identifies configured credentials, agents may use the CLI's `--username` and `--password`, `--key`, or `--handoff-token` options. Read only the credential source the owner identified. Never echo secrets, repeat them in user-facing output, copy them into new files, or commit them. Prefer shell-local variables or command substitution so secrets are not embedded literally in commands or logs.
+
+If login fails, show the creator the non-secret error and point them at `skills/creator-help/SKILL.md`.
 
 ## 4. Verify
 
