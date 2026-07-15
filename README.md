@@ -77,7 +77,7 @@ Use short representative checks instead of treating discovery alone as sufficien
   - `remix-game` -> `playtest-game` -> `make-listing`
   - `update-game` -> `playtest-game` -> `make-listing`
   - `discover-assets` -> `make-2d-asset-pack` -> `make-assets`
-  - `review-game` with the staged game-review references
+  - `review-game` with the staged game-review references (PlayDrop Cloud worker tasks only)
 
 ## Versioning
 

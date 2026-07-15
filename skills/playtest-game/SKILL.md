@@ -47,7 +47,7 @@ The final self-playtest must happen after the last source-code change.
 
 ## Checklist
 
-- First frame is a designed screen of the game (the board's title or gameplay screen, real art), never blank, loading leftovers, default chrome, or offscale; core gameplay is reachable within one input.
+- First frame is a designed screen per the direction contract, never blank, loading leftovers, default chrome, or offscale; core gameplay is reachable within one input.
 - Input works through focused game-frame actions.
 - Primary input produces a concrete visible response captured after the input.
 - Core loop completes or progresses visibly.
@@ -59,6 +59,6 @@ The final self-playtest must happen after the last source-code change.
 - Pause/resume does not advance play-critical state.
 - Console logs contain no uncaught errors.
 - HUD is small, safe-area aware, and does not steal game space.
-- One gameplay screenshot is recognizably the board's gameplay screen (or the hero direction when the board is advisory).
+- One gameplay screenshot recognizably matches the direction contract (`references/art-direction-board.md` step 3).
 
 Fix failures before upload. If a problem cannot be fixed in scope, say so clearly instead of shipping it.

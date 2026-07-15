@@ -12,7 +12,7 @@ Outcome bars: each says what must be true on screen, never how to build it. Engi
 - Entities visibly belong to their background: sitting on its structures, matching its light.
 - A simple coherent asset set beats a large mismatched one.
 - Core actions give immediate feedback: movement, hit, collect, win, loss, restart.
-- The first frame is a designed screen of the game (the board's title or gameplay screen, real art), never blank space, loading leftovers, default engine chrome, or an offscale canvas; core gameplay is reachable within one input.
+- The first frame is a designed screen of the game per the direction contract (title or gameplay, real art), never blank space, loading leftovers, default engine chrome, or an offscale canvas; core gameplay is reachable within one input.
 - The loop has designed pressure fitting its declared progression: stakes, timer, difficulty, or mastery. Endless loops still need tension or failure, and restart.
 - The game must be previewable when marked previewable.
 - Listing art depicts the real game fantasy and core entities: aspirational is fine, dishonest is not.
