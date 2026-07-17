@@ -19,4 +19,4 @@ Use `playdrop search`, `browse`, `detail`, and `versions browse`.
 6. Reject packs that match the theme but not the runtime file type.
 
 Do not guess pack versions. Do not list all pack members in `uses.assets` to represent a pack.
-Read `references/asset-pack-index.md` before deciding that no useful pack exists.
+Read `../../references/asset-pack-index.md` before deciding that no useful pack exists.

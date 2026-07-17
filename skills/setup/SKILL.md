@@ -29,7 +29,7 @@ playdrop auth login
 
 When the owner explicitly authorizes direct login and provides or identifies configured credentials, agents may use the CLI's `--username` and `--password`, `--key`, or `--handoff-token` options. Read only the credential source the owner identified. Never echo secrets, repeat them in user-facing output, copy them into new files, or commit them. Prefer shell-local variables or command substitution so secrets are not embedded literally in commands or logs.
 
-If login fails, show the creator the non-secret error and point them at `skills/creator-help/SKILL.md`.
+If login fails, show the creator the non-secret error and point them at `../creator-help/SKILL.md`.
 
 ## 4. Verify
 

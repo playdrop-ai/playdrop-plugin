@@ -1,6 +1,6 @@
 {
   "name": "playdrop",
-  "version": "0.12.8",
+  "version": "0.12.35",
   "description": "Public PlayDrop creator workflows",
   "skills": "./skills/",
   "author": {

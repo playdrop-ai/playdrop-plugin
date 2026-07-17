@@ -1,6 +1,6 @@
 {
   "name": "playdrop",
-  "version": "0.12.8",
+  "version": "0.12.35",
   "description": "Public PlayDrop creator workflows",
   "author": {
     "name": "PlayDrop",
@@ -38,9 +38,7 @@
     "defaultPrompt": [
       "Plan a new PlayDrop game",
       "Build a consistent transparent 2D asset pack",
-      "Prepare a store listing",
-      "Prepare marketing for my game",
-      "Port an existing game"
+      "Prepare a store listing"
     ],
     "brandColor": "#9D55F8",
     "composerIcon": "./assets/playdrop-icon-small.svg",

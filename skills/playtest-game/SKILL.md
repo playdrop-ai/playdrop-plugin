@@ -59,6 +59,6 @@ The final self-playtest must happen after the last source-code change.
 - Pause/resume does not advance play-critical state.
 - Console logs contain no uncaught errors.
 - HUD is small, safe-area aware, and does not steal game space.
-- One gameplay screenshot recognizably matches the direction contract (`references/art-direction-board.md` step 3).
+- One gameplay screenshot recognizably matches the direction contract (`../../references/art-direction-board.md` step 3).
 
 Fix failures before upload. If a problem cannot be fixed in scope, say so clearly instead of shipping it.

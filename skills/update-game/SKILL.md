@@ -7,7 +7,7 @@ description: "Update an existing PlayDrop game without breaking current behavior
 
 Requires the PlayDrop CLI. If the `playdrop` command is unavailable, follow the PlayDrop `setup` skill first.
 
-Follow `references/phases/update-game.md`.
+Follow `../../references/phases/update-game.md`.
 
 ## Rules
 
@@ -18,11 +18,11 @@ Follow `references/phases/update-game.md`.
 
 ## Required References
 
-- `references/phases/update-game.md`
-- `references/catalogue-json.md`
-- `references/asset-pack-index.md`
-- `references/dimensions.md`
-- `references/quality-bars.md`
-- `references/art-direction-board.md`
-- `references/asset-sheet.md`
-- `references/tech/playdrop-sdk.md`
+- `../../references/phases/update-game.md`
+- `../../references/catalogue-json.md`
+- `../../references/asset-pack-index.md`
+- `../../references/dimensions.md`
+- `../../references/quality-bars.md`
+- `../../references/art-direction-board.md`
+- `../../references/asset-sheet.md`
+- `../../references/tech/playdrop-sdk.md`

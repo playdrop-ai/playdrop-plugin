@@ -7,7 +7,7 @@ description: "Create a new PlayDrop remix by scaffolding from the source app and
 
 Requires the PlayDrop CLI. If the `playdrop` command is unavailable, follow the PlayDrop `setup` skill first.
 
-Follow `references/phases/remix-game.md`.
+Follow `../../references/phases/remix-game.md`.
 
 ## Rules
 
@@ -20,11 +20,11 @@ Follow `references/phases/remix-game.md`.
 
 ## Required References
 
-- `references/phases/remix-game.md`
-- `references/catalogue-json.md`
-- `references/asset-pack-index.md`
-- `references/dimensions.md`
-- `references/quality-bars.md`
-- `references/art-direction-board.md`
-- `references/asset-sheet.md`
-- `references/tech/playdrop-sdk.md`
+- `../../references/phases/remix-game.md`
+- `../../references/catalogue-json.md`
+- `../../references/asset-pack-index.md`
+- `../../references/dimensions.md`
+- `../../references/quality-bars.md`
+- `../../references/art-direction-board.md`
+- `../../references/asset-sheet.md`
+- `../../references/tech/playdrop-sdk.md`

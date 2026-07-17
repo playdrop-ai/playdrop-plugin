@@ -28,9 +28,9 @@ Media failure policy: for a direct creator's game work, a media generation failu
 - Declare a whole pack only when the runtime genuinely uses the pack. Never add a pack merely to satisfy validation or an asset-use requirement.
 - For 3D, prove selected assets expose GLB/GLTF runtime files before choosing them.
 - Temporary primitives and plain shapes are allowed during the planned greybox phase to tune the loop, then must be replaced before upload. Never ship them as the player character, identity subject, or primary interactive objects in a real game. Procedural primary visuals are only acceptable for deliberately abstract prototypes.
-- Backgrounds: `references/art-direction-board.md` step 5 owns the rule.
+- Backgrounds: `../../references/art-direction-board.md` step 5 owns the rule.
 - Do not generate before your reuse notes exist: which packs and assets you considered and why each was used or rejected (for new games, the research phase owns this).
-- Register every generated gameplay file per `references/asset-sheet.md`.
+- Register every generated gameplay file per `../../references/asset-sheet.md`.
 - Gameplay-required images, sprites, and models must fail clearly if missing. Audio SFX and listing-only assets should warn and keep play unblocked.
 - If a declared pack or asset is not loaded and rendered or played at runtime, remove the declaration or fix the runtime.
 - Keep the visual set coherent. A small matching set beats a large mismatched set.
