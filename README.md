@@ -68,12 +68,12 @@ then restart Cursor or run `Developer: Reload Window`.
 
 Use short representative checks instead of treating discovery alone as sufficient.
 
-- Codex: verify `playdrop:task-routing`, `playdrop:create-game`, `playdrop:update-game`, `playdrop:remix-game`, `playdrop:make-2d-asset-pack`, and `playdrop:make-listing`
+- Codex: verify `playdrop:task-routing`, `playdrop:create-game`, `playdrop:phaser-2d-game`, `playdrop:three-js-game`, `playdrop:update-game`, `playdrop:remix-game`, `playdrop:make-2d-asset-pack`, and `playdrop:make-listing`
 - Claude Code: verify `/playdrop`, `/playdrop:create-game`, `/playdrop:update-game`, and `/playdrop:make-listing`
 - Cursor: verify `playdrop:task-routing`, `playdrop:create-game`, `playdrop:update-game`, `playdrop:remix-game`, and `playdrop:make-listing`
 - Marketing: verify `playdrop:make-listing` and `playdrop:market-game`
 - Workflow smoke tests:
-  - `create-game` -> `discover-assets` -> `make-assets` -> `playtest-game` -> `make-listing`
+  - `create-game` -> exactly one of `phaser-2d-game` or `three-js-game` -> `discover-assets` -> `make-assets` -> `playtest-game` -> `make-listing`
   - `remix-game` -> `playtest-game` -> `make-listing`
   - `update-game` -> `playtest-game` -> `make-listing`
   - `discover-assets` -> `make-2d-asset-pack` -> `make-assets`

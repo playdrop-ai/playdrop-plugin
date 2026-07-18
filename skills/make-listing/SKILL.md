@@ -7,6 +7,8 @@ description: "Create PlayDrop listing assets and metadata that match the real ga
 
 Requires the PlayDrop CLI. If the `playdrop` command is unavailable, follow the PlayDrop `setup` skill first.
 
+Do not begin listing production until `../../references/greybox-report.md` has a complete passing `prototype` section.
+
 ## Required For New Games
 
 - App icon PNG when available.
@@ -26,6 +28,7 @@ Requires the PlayDrop CLI. If the `playdrop` command is unavailable, follow the 
 - Store listing work is not optional polish; it is part of the shipped draft.
 - FIRST_PARTY PlayDrop Cloud tasks: final listing media must come from the native recorder and include `listing.captureReport` (the task context enforces this). Personal-target cloud tasks follow the direct-creator path.
 - Local Agent and other direct-creator tasks: do not run `playdrop project capture` from the worker, and omit `listing.captureReport`. Take listing screenshots with `playdrop project check`. Video is optional and can be added later through the PlayDrop desktop app; never substitute a script-based or in-browser recording path.
+- For those local screenshots, capture to an unreferenced evidence path first, copy the validated image into `assets/marketing/playdrop/screenshots/portrait/` or `.../landscape/`, and only then add that path to `catalogue.json`. `playdrop project check` validates existing listing paths before it performs a new capture.
 
 ## Listing Capture
 

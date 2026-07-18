@@ -9,6 +9,8 @@ Requires the PlayDrop CLI. If the `playdrop` command is unavailable, follow the 
 
 Use this before uploading or publishing.
 
+Follow `../../references/greybox-report.md`. The prototype checks happen before assets and listing; the final checks happen before the final deterministic check below. Both report sections must pass.
+
 ## Deterministic Check
 
 Run the real hosted shell with installed headed Chrome:
@@ -17,21 +19,15 @@ Run the real hosted shell with installed headed Chrome:
 playdrop project check . --screenshot evidence/01-check.png
 ```
 
-For input-dependent games, add a small action file and rerun the check:
-
-```json
-[
-  { "type": "click", "x": 640, "y": 360 },
-  { "type": "press", "key": "ArrowRight" },
-  { "type": "wait", "ms": 500 }
-]
-```
+Every new game declares top-level `primarySurface` and one complete `playtestTapes` entry per enabled surface in `catalogue.json`. Run the command once for every enabled surface before upload:
 
 ```sh
-playdrop project check . --actions playtest-actions.json --screenshot evidence/02-check.png
+playdrop project check . --tape <surface> --screenshot evidence/02-check.png
 ```
 
-`project check` focuses the game frame before dispatching actions, validates the WebGL renderer, records console/page/request failures, and exits nonzero on failure. Fix failures before upload. Do not use an agent browser, Playwright CLI, or any capture path other than `playdrop project check` for builder playtest evidence.
+Each tape check opens two clean runs on the declared surface: zero input for the tape duration, then the supplied timed tape. Inspect both captures. Every tape passes only when it meaningfully beats idle by surviving longer, scoring above idle, making visible progress, or reaching a state idle never reaches. Use the declared primary-surface pair as the required acceptance proof. If any tape does not beat idle, fix the game or tape and rerun it. A dead game cannot pass because both runs look the same.
+
+`project check` focuses the game frame before dispatching tape input, validates the WebGL renderer, records console/page/request failures, and exits nonzero on delivery or runtime failure. Fix failures before upload. Do not use an agent browser, Playwright CLI, or any capture path other than `playdrop project check` for builder playtest evidence.
 
 ## Evidence
 
@@ -50,6 +46,7 @@ The final self-playtest must happen after the last source-code change.
 - First frame is a designed screen per the direction contract, never blank, loading leftovers, default chrome, or offscale; core gameplay is reachable within one input.
 - Input works through focused game-frame actions.
 - Primary input produces a concrete visible response captured after the input.
+- Every supported-surface tape produces a visibly better outcome than its matched zero-input run; the primary-surface pair is retained as the acceptance proof.
 - Core loop completes or progresses visibly.
 - A real player path reaches and captures the success state.
 - A real player path reaches and captures the failure or pressure state.

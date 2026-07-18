@@ -12,6 +12,8 @@ These files are encouraged working memory, never CLI, API, upload, or phase gate
 
 - Template keys: `playdrop/template/html_single_file_template`, `playdrop/template/phaser_2d_template`, `playdrop/template/three_js_template`.
 - Surface targets in `catalogue.json`: `desktop`, `mobileLandscape`, `mobilePortrait`.
+- `primarySurface`: `DESKTOP`, `MOBILE_LANDSCAPE`, or `MOBILE_PORTRAIT`. It must also be enabled in `surfaceTargets`.
+- `playtestTapes`: one version-1 tape keyed by uppercase surface for every enabled surface. Mobile tapes use pointer or tap events. Desktop tapes may also use key events.
 - `design` is optional. When present, it accepts only the seven optional keys below, each containing one exact APP tag ref from its corresponding group:
   - `genre`: `game-genre`
   - `coreGameplay`: `core-gameplay`
@@ -44,6 +46,23 @@ Replace names, refs, paths, and notes. Keep the shape.
         "desktop": false,
         "mobileLandscape": false,
         "mobilePortrait": true
+      },
+      "primarySurface": "MOBILE_PORTRAIT",
+      "playtestTapes": {
+        "MOBILE_PORTRAIT": {
+          "version": 1,
+          "durationMs": 5000,
+          "successSignals": [
+            {
+              "kind": "VISIBLE_PROGRESS",
+              "description": "The glider visibly clears the first wind ring while idle does not."
+            }
+          ],
+          "events": [
+            { "type": "tap", "atMs": 500, "x": 0.75, "y": 0.65, "durationMs": 80 },
+            { "type": "tap", "atMs": 1800, "x": 0.25, "y": 0.65, "durationMs": 80 }
+          ]
+        }
       },
       "uses": {
         "packs": [
@@ -124,6 +143,9 @@ Replace names, refs, paths, and notes. Keep the shape.
 
 Rules:
 
+- New games set top-level `primarySurface` to exactly one enabled surface: `DESKTOP`, `MOBILE_LANDSCAPE`, or `MOBILE_PORTRAIT`. Existing catalogue content may omit it until updated.
+- New games provide exactly one `playtestTapes` entry for every enabled surface. Each tape uses normalized `x` and `y` coordinates from `0` to `1`, ordered millisecond timestamps, at least one success signal, and a complete input sequence with no pointer or key left down. Keyboard events are valid only in `DESKTOP` tapes. Existing catalogue content may omit tapes until updated.
+- A tape is evidence only when its run meaningfully beats a matched zero-input run by surviving longer, scoring above idle, making visible progress, or reaching a state idle never reaches. Run `playdrop project check . --tape <surface>` for every enabled surface and inspect both captures before upload.
 - Every `design` field is optional. Omit `design`, use `{}`, or supply only the primary classifications that are useful and honest.
 - Each populated field is one string tag ref, never a `{ "value": ... }`, `{ "values": [...] }`, free-form label, or list. Secondary values may be expressed as normal explicit `tags` until the contract grows secondary fields.
 - The platform automatically adds populated design refs to the game's effective tags. You do not need to repeat them in `tags`, but doing so is accepted and deduplicated.

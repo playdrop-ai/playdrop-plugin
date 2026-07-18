@@ -7,6 +7,8 @@ description: "Choose, create, and declare PlayDrop gameplay assets with the buil
 
 Requires the PlayDrop CLI. If the `playdrop` command is unavailable, follow the PlayDrop `setup` skill first.
 
+Do not begin asset production until `../../references/greybox-report.md` has a complete passing `prototype` section.
+
 For an original coherent 2D pack with more than six assets, multiple families or sheets, paired size variants, transparent-background extraction, or approval rounds, use the `make-2d-asset-pack` skill as its own job: it has its own review flow. Cloud game workers do not have it staged: use existing packs, reduce scope, and record bespoke pack creation as a suggested follow-up job. Return here after a pack is approved to declare it in the game.
 
 ## Preference Order

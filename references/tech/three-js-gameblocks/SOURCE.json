@@ -1,0 +1,22 @@
+{
+  "sourceRepository": "xt4d/GameBlocks",
+  "sourceCommit": "668b7d8a558e23c800e619b33a72c5f8844c4b75",
+  "license": "MIT",
+  "copyright": "Copyright (c) 2026 Weihao Cheng",
+  "vendoredPaths": [
+    "gameblocks/modules/actor-motion/PlateTiltController.js",
+    "gameblocks/modules/behavior/AgentPathNavigator.js",
+    "gameblocks/modules/behavior/GridPathPlanner.js",
+    "gameblocks/modules/camera/BaseCameraRig.js",
+    "gameblocks/modules/camera/PoseFollowCameraRig.js",
+    "gameblocks/modules/camera/PositionFollowCameraRig.js",
+    "gameblocks/modules/gameplay/RaceCheckpointLapPlay.js",
+    "gameblocks/modules/gameplay/WaveSpawnDirector.js",
+    "gameblocks/modules/math/RandomUtils.js",
+    "gameblocks/modules/math/ScalarUtils.js",
+    "gameblocks/modules/math/TimeUtils.js",
+    "gameblocks/modules/math/Vector3Utils.js",
+    "gameblocks/modules/math/WorldBasis.js",
+    "gameblocks/modules/world/Object3DUtils.js"
+  ]
+}
