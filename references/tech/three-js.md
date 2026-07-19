@@ -28,6 +28,8 @@ Choose one right, up, and forward world basis before implementing movement, phys
 
 Design the camera and controls together for the primary surface. Frame the player and immediate objective, not the player alone. Recompute aspect and projection on every resize, then prove the important play area remains visible at the primary surface dimensions. For side-on gameplay, keep the play plane fixed and use an orthographic or fixed-azimuth perspective camera that cannot reveal or hide targets through depth drift.
 
+The official Three.js template includes `src/side-on-camera-rig.ts`. Pass the controlled entity and immediate objective together to `frameObjects(...)`; copy the local GameBlocks follow-camera patterns only when the camera must move through the world.
+
 Use the pinned local blocks in `three-js-gameblocks/INDEX.md` when a camera or gameplay helper fits. Adapt their source to the Three instance returned by the SDK instead of importing the full library or adding another Three package.
 
 ## Input and update order
