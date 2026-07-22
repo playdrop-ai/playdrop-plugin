@@ -22,7 +22,7 @@ Start with the smallest plain-shape playable loop and follow `../../references/g
 - If the request names an existing game, infer only the genre and functional loop. Create original expression: do not copy its name, characters, art, audio, text, story, level layouts, UI composition, or distinctive presentation.
 - Run the deterministic `project check` flow from `../playtest-game/SKILL.md` before upload, including the zero-input, start-only, and full-tape comparison on every enabled surface plus the counterfactual, replay, challenge, and applicable 3D-readability checks. Do not upload until the full tape meaningfully beats both controls and every causal check passes.
 - Follow `../make-listing/SKILL.md` before upload, including its capture rules for your task type.
-- Local Agent and other direct-creator tasks use `project check` screenshots and omit `listing.captureReport`; the native listing recorder is only for the FIRST_PARTY PlayDrop Cloud path.
+- macOS PlayDrop Cloud and Local Agent worker tasks use the native listing recorder and include `listing.captureReport`. Windows Local Agent and other direct-creator tasks use `project check` screenshots and omit `listing.captureReport` until a native recorder is available for them.
 
 ## Required References
 
