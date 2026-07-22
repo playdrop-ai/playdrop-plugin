@@ -11,6 +11,7 @@ These files are encouraged working memory, never CLI, API, upload, or phase gate
 ## Allowed Values
 
 - Template keys: `playdrop/template/html_single_file_template`, `playdrop/template/phaser_2d_template`, `playdrop/template/three_js_template`.
+- `authMode`: use `NONE` when the game has no account features, `OPTIONAL` when sign-in is offered from an explicit user action, and `REQUIRED` only when the game cannot function without an account, such as a multiplayer-only game.
 - Surface targets in `catalogue.json`: `desktop`, `mobileLandscape`, `mobilePortrait`.
 - `primarySurface`: `DESKTOP`, `MOBILE_LANDSCAPE`, or `MOBILE_PORTRAIT`. It must also be enabled in `surfaceTargets`.
 - `playtestTapes`: one version-1 tape keyed by uppercase surface for every enabled surface. Each tape declares `primaryVerb` as `tap`, `swipe`, `drag`, or `key`. Mobile tapes use pointer or tap events. Desktop tapes may also use key events.
@@ -38,7 +39,7 @@ Replace names, refs, paths, and notes. Keep the shape.
       "displayName": "Sky Orchard Glider",
       "description": "A one-thumb glider game about threading orchard wind rings and landing safely.",
       "type": "GAME",
-      "authMode": "REQUIRED",
+      "authMode": "OPTIONAL",
       "controllerMode": "UNSUPPORTED",
       "previewable": true,
       "file": "dist/index.html",

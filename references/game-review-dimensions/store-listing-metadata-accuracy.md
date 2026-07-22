@@ -18,6 +18,7 @@ Benchmark against:
 - title and short description
 - screenshot honesty and clarity
 - icon and cover fit
+- whether the icon is square, text-free, and a dedicated close-up composition rather than the full hero, a crop of it, or a resize of it
 - tags
 - supported surfaces
 - auth-required or previewable claims
