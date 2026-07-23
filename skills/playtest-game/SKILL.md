@@ -19,52 +19,39 @@ Run the real hosted shell with installed headed Chrome:
 playdrop project check . --screenshot evidence/01-check.png
 ```
 
-Every new game declares top-level `primarySurface` and one complete `playtestTapes` entry per enabled surface in `catalogue.json`. Run the command once for every enabled surface before upload:
+Every new game declares top-level `primarySurface` and one complete `playtestTapes` entry per enabled surface in `catalogue.json`.
+
+Create a short tape that demonstrates the game’s core interaction:
+
+- Target about 10 seconds.
+- Use 3 to 6 representative gameplay actions, plus a start action when the game needs one.
+- Focus the tape on the declared `primaryVerb` (`tap`, `swipe`, `drag`, or `key`).
+- Show one short core gameplay loop with a visible player-driven response or progress.
+- When the game has a title screen, put its start action first and set `startOnlyEventCount` to the number of startup events so later reviewers can distinguish startup from gameplay.
+
+These are strong defaults, not arbitrary validation limits. A game may use a somewhat different duration or action count when its core interaction genuinely requires it.
+
+Run the command as soon as the core loop works, then run it again after the final source-code change. Run it once for every enabled surface:
 
 ```sh
 playdrop project check . --tape <surface> --screenshot evidence/02-check.png
 ```
 
-Each tape declares `primaryVerb` (`tap`, `swipe`, `drag`, or `key`) and `startOnlyEventCount`. Show the same primary verb in the player-facing controls instruction. Post-start tape events must use only that verb family. Give every game an explicit startup action; its first event uses `atMs: 0`, relative to `sdk.host.ready()`. The check opens three equal-duration clean runs from that signal: zero input, only the startup prefix, then the complete timed tape. Inspect all three captures. Every tape passes only when start-only visibly leaves the title and the full run meaningfully beats both controls by surviving longer, scoring above zero and above both controls, making visible progress beyond both controls, or reaching a state neither control reaches. If it does not, fix the game or tape and rerun it.
+The smoke check opens two equal-duration clean runs from `sdk.host.ready()`: one without input and one with the complete tape. It passes only when every tape action can be delivered, the game completes the tape without a runtime failure, and the tape produces a visible result that differs from the no-input run.
 
-`project check` waits for `sdk.host.ready()`, focuses the game frame before dispatching tape input, validates the WebGL renderer, records console/page/request failures, and exits nonzero on delivery or runtime failure. On agent tasks, the upload path repeats the causal runs against the staged hosted artifact, adds the first-action trivial-completion probe, and records fresh machine evidence on the upload session. It refuses failure even when `playtest-evidence.json` claims success. Fix failures before upload. Do not use an agent browser, Playwright CLI, or any capture path other than `playdrop project check` for builder playtest evidence.
+If an action or the game runtime fails, the CLI identifies the action number and reports the underlying error. If the tape completes but does not demonstrate visible interactivity, the CLI reports that outcome and prints the idle and tape screenshot paths. Fix the game or tape and rerun the same command. Passing this check is required for the creation task to succeed and gives you a chance to iterate before upload.
+
+The agent-task upload repeats the same smoke check against the staged artifact. Do not use an agent browser, Playwright CLI, or another capture path as a substitute for `playdrop project check`.
 
 ## Evidence
 
-Write `playtest-evidence.json` after the final successful check. This is validation evidence, not a design document. Include per entry: `url`, `surface`, `captures`, `actions`, `statesObserved`, `consoleErrors`, `environment`, `checkedAt` (plus optional extras such as `webglRenderer`); and for a new game the top-level `proof` and `causalChecks` objects.
+Write `playtest-evidence.json` after the final successful check. This is validation evidence, not a design document. Include per entry: `url`, `surface`, `captures`, `actions`, `statesObserved`, `consoleErrors`, `environment`, `checkedAt` (plus optional extras such as `webglRenderer`); and for a new game the top-level `proof` object.
 
 - `proof.primaryInput`: the exact action, the visible response, and its capture path.
 - `proof.win`: the action or sequence, the visible success state, and its capture path. For endless or story games this is the designed success moment: a reached milestone, completed chapter, or new-best overlay.
 - `proof.loss`: the action or sequence, the visible failure or pressure state, and its capture path.
 
 Each proof moment needs its own capture taken while checking the FINAL source code; a stale capture from before the last code change is not proof. A staged capture mode, debug hook, source-code path, or prose claim is not playtest proof. The upload validates the proof object's exact shape and its error text prints the full expected schema: when it rejects, fix exactly what it names rather than guessing (listing-related preflight errors are expected until store-listing is done).
-
-Use this exact `causalChecks` shape as an honest creator report. It never authorizes or blocks upload: agent-task uploads always run the machine causal gate against the staged build. For non-3D games set `readability3D.applicable` to false and describe why the fields do not apply. When there is no visible replay control set `replay.applicable` to false and record the tested lifecycle path.
-
-```json
-{
-  "causalChecks": {
-    "matchedRuns": [{
-      "surface": "MOBILE_PORTRAIT",
-      "zeroInputOutcome": "Visible zero-input outcome.",
-      "startOnlyOutcome": "Visible startup-only outcome.",
-      "fullTapeOutcome": "Visible full-tape outcome.",
-      "criterion": "The measurable difference produced by gameplay input.",
-      "passed": true
-    }],
-    "counterfactual": {
-      "normalInput": "Ordinary primary input.",
-      "perturbedInput": "Opposite, perturbed, or invalid input.",
-      "normalOutcome": "Visible normal outcome.",
-      "perturbedOutcome": "Visible perturbed outcome.",
-      "passed": true
-    },
-    "replay": { "applicable": true, "action": "Tap replay at its center.", "outcome": "A second playable run began.", "passed": true },
-    "challenge": { "claim": "The promised loop.", "action": "Perform the first trivial valid action.", "outcome": "The sustained loop did not automatically complete.", "passed": true },
-    "readability3D": { "applicable": false, "controlledEntity": "Not 3D.", "objectiveOrHazard": "Not 3D.", "primaryActionEffect": "Not 3D.", "passed": true }
-  }
-}
-```
 
 The final self-playtest must happen after the last source-code change.
 
@@ -73,11 +60,7 @@ The final self-playtest must happen after the last source-code change.
 - First frame is a designed screen per the direction contract, never blank, loading leftovers, default chrome, or offscale; core gameplay is reachable within one input.
 - Input works through focused game-frame actions.
 - Primary input produces a concrete visible response captured after the input.
-- Every supported-surface full tape visibly beats both its matched zero-input and start-only controls; the primary-surface triplet is retained as acceptance proof.
-- The game-appropriate primary-verb counterfactual produces a measurable outcome difference.
-- A visible replay control begins a second playable run when one exists.
-- The first trivial action does not automatically complete a claimed sustained loop.
-- In 3D play, the controlled entity, objective or hazard, and primary-action effect remain readable on the primary surface.
+- Every supported-surface tape completes without a runtime failure and produces a visible result that differs from its equal-duration no-input run.
 - Core loop completes or progresses visibly.
 - A real player path reaches and captures the success state.
 - A real player path reaches and captures the failure or pressure state.

@@ -9,7 +9,7 @@ Requires the PlayDrop CLI. If the `playdrop` command is unavailable, follow the 
 
 Follow `../../references/phases/new-game.md`.
 
-Start with the smallest plain-shape playable loop and follow `../../references/greybox-report.md`. Prove ordinary start, causal player agency against a zero-input or opposite-input control, and restart before art or listing work. Retry a failed verb once, then simplify it. Repeat the checks against the final build before upload.
+Start with the smallest plain-shape playable loop and follow `../../references/greybox-report.md`. As soon as the core loop works, create a short playtest tape that demonstrates the primary gameplay verb and run the playtest smoke check before spending time on art or listing work. Repeat the same check against the final build before upload.
 
 ## Non-Negotiables
 
@@ -20,7 +20,7 @@ Start with the smallest plain-shape playable loop and follow `../../references/g
 - Before scaffolding, choose the template and any core pack refs, but do not write a nonempty root `catalogue.json`. After scaffolding, keep the scaffold structure, write the scaffolded app catalogue, and replace the sample loop with the game.
 - Keep scope small enough to be fun and shippable as a first draft. Scope cuts become next-step suggestions.
 - If the request names an existing game, infer only the genre and functional loop. Create original expression: do not copy its name, characters, art, audio, text, story, level layouts, UI composition, or distinctive presentation.
-- Run the deterministic `project check` flow from `../playtest-game/SKILL.md` before upload, including the zero-input, start-only, and full-tape comparison on every enabled surface plus the counterfactual, replay, challenge, and applicable 3D-readability checks. Do not upload until the full tape meaningfully beats both controls and every causal check passes.
+- Run the deterministic `project check` flow from `../playtest-game/SKILL.md` as soon as the core loop works and again before upload. The tape must complete without a crash and produce a visible response compared with an equal-duration no-input run.
 - Follow `../make-listing/SKILL.md` before upload, including its capture rules for your task type.
 - macOS PlayDrop Cloud and Local Agent worker tasks use the native listing recorder and include `listing.captureReport`. Windows Local Agent and other direct-creator tasks use `project check` screenshots and omit `listing.captureReport` until a native recorder is available for them.
 
