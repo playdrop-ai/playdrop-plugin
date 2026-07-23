@@ -14,7 +14,7 @@ These files are encouraged working memory, never CLI, API, upload, or phase gate
 - `authMode`: use `NONE` when the game has no account features, `OPTIONAL` when sign-in is offered from an explicit user action, and `REQUIRED` only when the game cannot function without an account, such as a multiplayer-only game.
 - Surface targets in `catalogue.json`: `desktop`, `mobileLandscape`, `mobilePortrait`.
 - `primarySurface`: `DESKTOP`, `MOBILE_LANDSCAPE`, or `MOBILE_PORTRAIT`. It must also be enabled in `surfaceTargets`.
-- `playtestTapes`: one version-1 tape keyed by uppercase surface for every enabled surface. Each tape declares `primaryVerb` as `tap`, `swipe`, `drag`, or `key`. Mobile tapes use pointer or tap events. Desktop tapes may also use key events.
+- `playtestTapes`: one version-1 tape keyed by uppercase surface for every enabled surface. Each tape declares `primaryVerb` as `tap`, `swipe`, `drag`, or `key`. Event `type` must be exactly `tap`, `pointerDown`, `pointerMove`, `pointerUp`, `keyDown`, or `keyUp`. Represent a swipe or drag with a complete `pointerDown` → `pointerMove` → `pointerUp` sequence. Keyboard events are desktop-only.
 - `design` is optional. When present, it accepts only the seven optional keys below, each containing one exact APP tag ref from its corresponding group:
   - `genre`: `game-genre`
   - `coreGameplay`: `core-gameplay`
@@ -147,8 +147,8 @@ Replace names, refs, paths, and notes. Keep the shape.
 
 Rules:
 
-- New games set top-level `primarySurface` to exactly one enabled surface: `DESKTOP`, `MOBILE_LANDSCAPE`, or `MOBILE_PORTRAIT`. Existing catalogue content may omit it until updated.
-- New games provide exactly one `playtestTapes` entry for every enabled surface. Each tape declares `primaryVerb` as `tap`, `swipe`, `drag`, or `key`. Use normalized `x` and `y` coordinates from `0` to `1`, ordered millisecond timestamps, at least one success signal, and a complete input sequence with no pointer or key left down. Keyboard events are valid only in `DESKTOP` tapes. When a game has a title screen, put its start action first and set `startOnlyEventCount` to the number of startup events so later reviewers can distinguish startup from gameplay; otherwise it may be `0`. Existing catalogue content may omit tapes until updated.
+- New games set `primarySurface` inside the app entry to exactly one enabled surface: `DESKTOP`, `MOBILE_LANDSCAPE`, or `MOBILE_PORTRAIT`. Existing catalogue content may omit it until updated.
+- New games provide exactly one `playtestTapes` entry for every enabled surface. Each tape declares `primaryVerb` as `tap`, `swipe`, `drag`, or `key`. Event `type` must be exactly `tap`, `pointerDown`, `pointerMove`, `pointerUp`, `keyDown`, or `keyUp`; a swipe or drag is a complete pointer-down, move, and up sequence. Use normalized `x` and `y` coordinates from `0` to `1`, ordered millisecond timestamps, at least one success signal, and no pointer or key left down. Keyboard events are valid only in `DESKTOP` tapes. When a game has a title screen, put its start action first and set `startOnlyEventCount` to the number of startup events so later reviewers can distinguish startup from gameplay; otherwise it may be `0`. Existing catalogue content may omit tapes until updated.
 - Aim for about 10 seconds and 3 to 6 representative gameplay actions, plus a start action when needed. Highlight the core gameplay and declared primary verb. These are recommendations, not validation limits.
 - Run `playdrop project check . --tape <surface>` for every enabled surface. The check runs the game for the same duration with no input and with the complete tape. It passes when the tape completes without a runtime or action-delivery failure and produces a visible result that differs from the no-input run. Inspect both captures before upload.
 - Every `design` field is optional. Omit `design`, use `{}`, or supply only the primary classifications that are useful and honest.

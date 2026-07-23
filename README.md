@@ -71,7 +71,7 @@ Use short representative checks instead of treating discovery alone as sufficien
 - Codex: verify `playdrop:task-routing`, `playdrop:create-game`, `playdrop:phaser-2d-game`, `playdrop:three-js-game`, `playdrop:update-game`, `playdrop:remix-game`, `playdrop:make-2d-asset-pack`, and `playdrop:make-listing`
 - Claude Code: verify `/playdrop`, `/playdrop:create-game`, `/playdrop:update-game`, and `/playdrop:make-listing`
 - Cursor: verify `playdrop:task-routing`, `playdrop:create-game`, `playdrop:update-game`, `playdrop:remix-game`, and `playdrop:make-listing`
-- Marketing: verify `playdrop:make-listing` and `playdrop:market-game`
+- Marketing: verify `playdrop:market-game`, `playdrop:make-marketing-screenshots`, and `playdrop:make-marketing-video`
 - Workflow smoke tests:
   - `create-game` -> exactly one of `phaser-2d-game` or `three-js-game` -> `discover-assets` -> `make-assets` -> `playtest-game` -> `make-listing`
   - `remix-game` -> `playtest-game` -> `make-listing`

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Marketing Video"
+  short_description: "Capture and finish truthful gameplay marketing video"
+  default_prompt: "Use $make-marketing-video to produce a compelling gameplay marketing video for this PlayDrop game."

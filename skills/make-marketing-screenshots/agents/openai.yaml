@@ -1,0 +1,4 @@
+interface:
+  display_name: "Marketing Screenshots"
+  short_description: "Create polished, truthful game marketing screenshots"
+  default_prompt: "Use $make-marketing-screenshots to create a polished screenshot set for this PlayDrop game."
