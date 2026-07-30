@@ -49,6 +49,8 @@ If there is no style reference image, the first family is a bootstrap style job 
 
 ## Canonical Loop
 
+For game-owned assets that remain embedded in one game, run the same generation, splitting, extraction, code validation, and Codex review steps below, then copy accepted transparent PNGs into the game and declare them in `ownedAssets`. The human approval and `finalize_pack.py` publication gates apply only when publishing a standalone reusable asset pack.
+
 ### 1. Claim And Generate
 
 Inspect the queue:

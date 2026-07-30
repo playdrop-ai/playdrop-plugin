@@ -18,3 +18,4 @@ description: "Route PlayDrop requests to the smallest relevant builder v2 skill.
 - Marketing positioning, research, and asset planning: `market-game`.
 - Promotional screenshots, store images, social carousels, and paid-acquisition stills: `make-marketing-screenshots`.
 - App previews, trailers, gameplay ads, and social video: `make-marketing-video`.
+- Complete YouTube, TikTok, Instagram, Pinterest, and X delivery package: `make-social-media-package`.

@@ -16,6 +16,7 @@ Use this reference only for Apple App Store screenshot work. Reopen the official
 - When the interface is consistent across sizes, Apple can scale the highest required resolution down to smaller displays.
 - If the app supports iPad, include an accepted iPad screenshot set.
 - App previews appear before screenshots regardless of media ordering.
+- Treat Apple device ratios as derivatives of the approved 9:16 portrait or 16:9 landscape campaign master. Recompose for the Apple slot when a direct crop would remove gameplay, copy, or interaction context.
 
 ## Campaign page ordering
 

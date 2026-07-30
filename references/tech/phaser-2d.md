@@ -12,6 +12,8 @@ Use the official Phaser 2D template when the game needs sprites, tweens, tile-li
 
 Pack asset pattern:
 
+`sdk.assets.listAppAssets()` returns the asset array directly. `await` is harmless, but never chain `.catch()` on it; use ordinary `try/catch` around the call when needed.
+
 ```js
 const assets = await sdk.assets.listAppAssets();
 const sprite = assets.find((asset) => asset.runtimeKey === "player-sprite")

@@ -18,10 +18,15 @@ Use this after the game is playable and the listing is accurate. This skill deci
 
 Keep every claim grounded in the shipped game. Do not market absent, broken, or merely planned features.
 
+For a paid-video test, define each creative as a distinct promise with its own action, payoff, and end card. Do not call three cosmetic edits of the same footage three materially different concepts. Include the intended channel, aspect ratio, duration range, sound-off message, and separate end-card requirement in the brief.
+
+For a social package, batch and reuse approved work. Default to one shared 9:16 short, one shared 16:9 trailer, true 2:3 Pinterest video and static Pins, and an explicit Instagram Reel, Story, cover, 3:4 feed video, and static carousel. Never plan bars, blurred side fill, duplicated-video gutters, or non-uniform scaling.
+
 ## Route production
 
 - Promotional screenshots, store images, paid-acquisition stills, or social carousels: `make-marketing-screenshots`.
 - App previews, gameplay ads, trailers, or social video: `make-marketing-video`.
+- Complete YouTube, TikTok, Instagram, Pinterest, and X package: `make-social-media-package`.
 - Raw PlayDrop listing captures, hero art, icon, or catalogue metadata: `make-listing`.
 - App Store Connect Custom Product Page operation: hand the approved package to the PlayDrop platform operator workflow. Store configuration is outside the public creator plugin.
 

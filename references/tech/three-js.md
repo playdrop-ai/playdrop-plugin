@@ -13,6 +13,8 @@ Use the official Three.js template for lightweight 3D games. Search PlayDrop for
 
 Pack asset pattern:
 
+`sdk.assets.listAppAssets()` returns the asset array directly. `await` is harmless, but never chain `.catch()` on it; use ordinary `try/catch` around the call when needed.
+
 ```js
 const assets = await sdk.assets.listAppAssets();
 const model = assets.find((asset) => asset.runtimeKey === "player-model")

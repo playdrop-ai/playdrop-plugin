@@ -1,6 +1,6 @@
-# Greybox Report Contract
+# Optional Greybox Evidence
 
-Create `greybox-report.json` in the game project before art, listing, or upload work. Use ordinary player input, not debug hooks. Test the smallest plain-shape loop first, then repeat the same checks against the final build.
+Use `greybox-report.json` when a new or risky mechanic benefits from an explicit before-and-after check. It is working evidence, not an upload requirement, and it does not control when art or listing work may begin. Use ordinary player input, not debug hooks.
 
 ```json
 {
@@ -18,4 +18,4 @@ Create `greybox-report.json` in the game project before art, listing, or upload 
 }
 ```
 
-Each observation must describe visible behavior. If a prototype check fails, fix the player verb and retry once. After two failed attempts, simplify the mechanic and rerun the checks. Do not start assets or listing work while the prototype section is missing or failing. Do not upload while either section is missing or failing.
+Each observation should describe visible behavior. Use whichever sections help the work; the final deterministic tape remains the upload-facing gameplay check.

@@ -7,7 +7,7 @@ description: "Create a new PlayDrop remix by scaffolding from the source app and
 
 Requires the PlayDrop CLI. If the `playdrop` command is unavailable, follow the PlayDrop `setup` skill first.
 
-Follow `../../references/phases/remix-game.md`.
+Use the agent-chosen reporting vocabulary in `../../references/phases/remix-game.md`.
 
 ## Rules
 
@@ -18,13 +18,8 @@ Follow `../../references/phases/remix-game.md`.
 - Keep source ancestry in `catalogue.json` and refresh any populated optional `design` tag refs that changed.
 - Run the deterministic `project check` playtest before upload.
 
-## Required References
+## Read when needed
 
-- `../../references/phases/remix-game.md`
-- `../../references/catalogue-json.md`
-- `../../references/asset-pack-index.md`
-- `../../references/dimensions.md`
-- `../../references/quality-bars.md`
-- `../../references/art-direction-board.md`
-- `../../references/asset-sheet.md`
-- `../../references/tech/playdrop-sdk.md`
+- Before scaffolding and catalogue edits: `../../references/catalogue-json.md` and `../../references/tech/playdrop-sdk.md`.
+- For visual changes: the relevant asset skill and art-direction reference.
+- Before gameplay validation or store media: the playtest and listing skills.

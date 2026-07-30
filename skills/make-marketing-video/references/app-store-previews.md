@@ -20,6 +20,7 @@ Use this reference only for Apple App Preview work. Verify the official specific
 - Up to three previews may be delivered per supported device size and localization.
 - A currently accepted iPhone portrait preview size is 886 x 1920.
 - A currently accepted iPad landscape preview size is 1600 x 1200.
+- A 16:9 canonical capture may be center- or anchor-cropped to the iPad 4:3 slot only when the complete gameplay action remains visible for the entire preview. Otherwise recapture the real 4:3 surface.
 
 Apple can change accepted devices and dimensions. Validate the target slot against the current official table rather than treating these two common sizes as permanent.
 

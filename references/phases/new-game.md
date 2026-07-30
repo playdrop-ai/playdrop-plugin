@@ -1,26 +1,29 @@
 # New Game Phases
 
-Use phases flexibly: skip what is genuinely irrelevant to the request, but never skip design, scaffold, core loop, playtest, or listing. Each phase says what must exist when it ends; how you get there is yours.
+Choose phases that truthfully describe the work. Skip, reorder, and re-enter them as needed. A common new-game flow is Researching, Designing, Drawing or Prototyping, Crafting and Coding, Playtesting, Recording, then Finalizing, but it is an example rather than a required journey.
 
-1. `initializing`: choose the primary surface from the creator surface unless it is a terrible fit, identify every honestly supported surface, and inspect the allowed templates and catalogue example.
-2. `research`: search PlayDrop first (`playdrop search`, `playdrop detail`). Exit with your notes naming the packs, assets, and similar games you considered and what you borrowed or rejected. Research outside references only when the request has a clear real-world reference.
-3. `game-design`: exit with, in your working notes: the smallest fun core loop, the intended feel, the chosen template, and a concise art concept covering fantasy, identity, setting, palette, and UI material. Engine choice is a recorded decision: continuous motion, physics, camera, or spatial 2D gameplay means `phaser-2d`; 3D means `three-js`; `plain-html` only for turn-based or static-screen UI games (word, quiz, card, board). After choosing `phaser-2d` or `three-js`, immediately read exactly one matching engine skill at `skills/phaser-2d-game/SKILL.md` or `skills/three-js-game/SKILL.md`; never read both for one game. When in doubt choose the engine template. Do not write a nonempty root `catalogue.json` before scaffolding; files come at scaffold exit.
-4. `scaffold`: create the project with `playdrop project create app <slug> --template <allowed-template-key>`; never hand-create it. Exit with the app entry written in the scaffolded `catalogue.json`, including `primarySurface`, one complete `playtestTapes` entry per enabled `surfaceTargets` surface, declared `primaryVerb`, and an explicit startup prefix whose first event is `atMs: 0` after ready (see `references/catalogue-json.md`). Keep each tape small and make its full run prove the real core interaction beyond its startup-only prefix. When useful, retain the richer plan in concise `GAME.md`, `ART_DIRECTION.md`, and `AGENTS.md` files after scaffolding; preserve files that already exist and never make their presence a gate.
-5. `greybox-core-loop`: build and repeatedly play the smallest loop until the primary interaction, challenge, controls, feedback, restart, and intended feel work. Temporary primitives and plain shapes are allowed only as planned greybox visuals for this phase; they are not shippable assets or a fallback, and must be replaced before upload.
-6. `art-direction`: with the working loop as ground truth, exit with the hero art pair and mockup board per `references/art-direction-board.md`. Mandatory for every game, including simple UI games; on media failure, Cloud tasks fail here and direct creators may defer per the media failure policy in `skills/make-assets`.
-7. `art-production`: replace the greybox and integrate every gameplay asset coherently: reuse first, generate what is uncovered (`skills/make-assets`), background per `references/art-direction-board.md` step 5. Exit with the complete loop still feeling good and the shipped screens recognizable as the direction contract's (`references/art-direction-board.md` step 3). Primary identity and interactive objects are never primitives, emoji, or plain CSS shapes in the shipped game (exceptions per `skills/make-assets`).
-8. `playtest`: add any preview hooks needed by `skills/make-listing`, run `playdrop project check .`, then run `playdrop project check . --tape <surface>` for every enabled surface and fix what any run finds. Aim for about 10 seconds and 3 to 6 actions that demonstrate the core gameplay verb, plus a start action when needed. Inspect the equal-duration idle and full-tape captures. Exit only when every tape completes without a crash and produces a visible player-driven response; retain primary input, success, failure, and gameplay captures from the final source.
-9. `store-listing`: exit per `skills/make-listing/SKILL.md`: accurate listing assets and metadata, capture per your task type.
-10. `wrap-up`: validate, upload/publish as instructed, write next-step suggestions when in a task.
+Supported phase identifiers:
 
-macOS PlayDrop Cloud and Local Agent worker tasks run `project capture` and include `listing.captureReport`. Windows Local Agent and other direct-creator tasks omit `listing.captureReport` and use the `project check` screenshot flow instead.
+- `setup` or `initializing`: reviewing the brief, surface, or task context.
+- `research`: searching PlayDrop or outside references.
+- `planning`: scoping or sequencing the work.
+- `designing`: deciding identity, mechanics, interaction, or art direction.
+- `drawing`: exploring or creating visual direction.
+- `prototyping`: proving a rough playable interaction.
+- `crafting`: producing or repairing game assets.
+- `coding`: implementing or integrating the game.
+- `debugging`: reproducing or fixing a defect.
+- `tweaking`: focused balance, layout, animation, copy, or polish.
+- `playtesting`: running and inspecting gameplay validation.
+- `recording`: producing truthful listing media.
+- `finalizing`: completing preflight, upload, and creator handoff.
 
-## Route by game type
+Report the chosen phase before its first related action. For example, coding that turns into sprite repair may be reported as Crafting, then Coding again when integration resumes.
 
-- `phaser-2d` games: load `skills/phaser-2d-game/SKILL.md`; real background art per `references/art-direction-board.md` step 5.
-- `three-js` games: load `skills/three-js-game/SKILL.md`; the rendered environment is the backdrop.
-- `plain-html` games (word, quiz, card, board): the playfield still sits on real background art per `references/art-direction-board.md` step 5, never default chrome.
-- Endless or story progressions: success and failure proof per `skills/playtest-game/SKILL.md`; pressure and restart are still required.
-- Large bespoke asset families: route per `skills/make-assets`, usually as its own job rather than a step inside a timed build.
+## PlayDrop integration
 
-Design comes before scaffold choice. Durable project files come from the CLI scaffold, never from hand-created scratch files.
+- Decide title, subtitle, slug, and primary surface together, claim them atomically, then scaffold through the CLI.
+- Report the catalogue as soon as its identity, version, emoji, color, surface, and playable plan are honest.
+- Share inspected media when useful. Art Exploration, Art Mockup, Prototype, isolated assets, App Icon, Real Game, Game Recording, and Hero Art are examples, not a required set.
+- An early playable is useful when it reduces implementation risk; skip performative prototype work when direct implementation is clearer.
+- Use the task-worker validation, capture, and upload contracts. Capture must remain bound to the uploaded runtime.
