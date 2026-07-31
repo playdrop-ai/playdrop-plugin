@@ -125,8 +125,10 @@ Replace names, refs, paths, and notes. Keep the shape.
         "heroPortrait": "assets/marketing/playdrop/hero/hero-portrait.png",
         "heroLandscape": "assets/marketing/playdrop/hero/hero-landscape.png",
         "screenshotsPortrait": [
-          "assets/marketing/playdrop/screenshots/portrait/01-core.png",
-          "assets/marketing/playdrop/screenshots/portrait/02-core.png"
+          "assets/marketing/playdrop/screenshots/portrait/01-core-action.png",
+          "assets/marketing/playdrop/screenshots/portrait/02-tension.png",
+          "assets/marketing/playdrop/screenshots/portrait/03-payoff.png",
+          "assets/marketing/playdrop/screenshots/portrait/04-goal.png"
         ],
         "screenshotsLandscape": []
       },
@@ -157,5 +159,6 @@ Rules:
 - Clearing a design field removes its derived tag. An explicitly listed copy remains an explicit tag.
 - Rich game design and art direction do not belong in extra `design` keys. Use concise project prose when that context is worth retaining.
 - Every declared runtime pack or asset must be loaded and rendered or played in the game.
-- Listing screenshots are required for new games and live under `assets/marketing/playdrop/screenshots/portrait/` or `assets/marketing/playdrop/screenshots/landscape/` (production validates these paths; on cloud tasks, copy recorder posters into them per `skills/make-listing`).
+- Listing screenshots are required for new games and live under `assets/marketing/playdrop/screenshots/portrait/` or `assets/marketing/playdrop/screenshots/landscape/`. Final screenshot arrays contain AI-generated marketing artwork, not recorder posters or raw gameplay captures. Default to four distinct selling points with one two-to-four-word headline each. Use `skills/make-marketing-screenshots` for production.
+- Listing video is literal gameplay footage. Keep recorder posters in the capture directory as source evidence and image-generation references. Reference the real capture video through `listing.videosPortrait` or `listing.videosLandscape` and include `listing.captureReport` when required by the worker task.
 - Audio SFX and listing art are non-blocking at runtime (warn, keep play unblocked). Gameplay-required images, sprites, and 3D models should fail loudly if missing.

@@ -62,7 +62,7 @@ Reuse the shared 9:16 short for YouTube Shorts, TikTok, Instagram Reels, and Ins
 - Never add letterboxing, pillarboxing, plain bars, blurred gutters, duplicated-video side fill, or decorative filler.
 - Adapt ratios with a uniform crop only when the crop removes genuine empty margin. Start centered, then move the crop anchor within empty margin to preserve headlines, touch cues, gameplay, and goals.
 - Do not assume the lower portion of a campaign still is decorative because the headline is near the top. Inspect the full image and preserve every gameplay object.
-- If a crop removes meaningful content, recompose the still or recapture gameplay at the destination ratio. Never stretch or pad it.
+- If a crop removes meaningful content, regenerate the AI still at the destination ratio or recapture the gameplay video at that ratio. Never stretch or pad either medium.
 - For width-filling board and puzzle games, prefer native 3:4 and 2:3 gameplay
   captures. Require a complete-clip comparison before approving a crop from
   9:16.
@@ -78,7 +78,7 @@ Reuse the shared 9:16 short for YouTube Shorts, TikTok, Instagram Reels, and Ins
 
 - Keep one mechanic-to-payoff short at roughly 10 to 15 seconds.
 - Keep one landscape trailer around 20 to 30 seconds.
-- Reuse the approved four-beat screenshot story: hero, core action, tension, payoff, and goal. Use fewer cards when the game has fewer truthful beats.
+- Reuse the approved four-image screenshot story: core action, tension, payoff, and goal. Use fewer images only when the game has fewer truthful selling points. Use the protected hero separately when the channel plan calls for an identity card.
 - Keep text, touch cues, and game identity clear without sound.
 
 ### 2. Adapt the videos

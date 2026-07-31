@@ -19,7 +19,7 @@ The key question is whether the current visual language helps the player play an
 - consistency between environments, characters, effects, and UI
 - tone and theme coherence
 - readability under motion and pressure
-- whether the listing visuals represent the runtime honestly
+- whether listing screenshot selling points are truthful and the gameplay video represents the runtime accurately
 - whether the runtime is production-grade or prototype-grade relative to the player promise
 - whether camera and perspective help the player read the core action
 
@@ -28,8 +28,8 @@ The key question is whether the current visual language helps the player play an
 - inspect the game in motion, not just in paused screenshots
 - look for moments where players may misread threat, affordance, or objective
 - note whether roughness is acceptable stage roughness or whether it signals missing direction
-- compare the runtime look with screenshots, cover art, and iconography
-- place captured gameplay screenshots beside the closest references when the visual promise is in dispute
+- compare the runtime look with the accurate gameplay video and captured review evidence
+- compare AI-generated listing screenshots separately for truthful selling points, not pixel-level fidelity
 
 ## Questions to answer
 
@@ -46,7 +46,8 @@ The key question is whether the current visual language helps the player play an
 - mismatched UI and world-art tone
 - placeholder assets mixed with final-looking assets in a way that destroys coherence
 - effects that feel exciting in isolation but reduce clarity in actual play
-- screenshots or icons promising a stronger visual product than the runtime delivers
+- screenshots advertising mechanics, characters, environments, or outcomes absent from the runtime
+- gameplay video that hides or materially misrepresents the runtime
 - sprite images with baked transparency checkerboards, flat matte-color backgrounds, or preview-grid artifacts that visibly weaken the runtime
 - production-grade references paired with prototype-grade runtime visuals
 - camera or perspective choices that make the core action visually misleading
@@ -60,4 +61,4 @@ Do not give production-grade visual scores to prototype-grade substitutes. If a 
 ## What strong feedback looks like
 
 - "The art is low-fidelity but coherent, which is acceptable for this stage. The larger issue is that enemy bullets and pickups share too much visual weight, so the game reads worse than its arcade references."
-- "The listing promises a polished neon action game, but the runtime currently looks much earlier-stage than that. The problem is trust, not just polish."
+- "The AI-generated listing art is more dramatic than runtime footage, which is acceptable, but it advertises an enemy type the game does not contain. Remove that unsupported promise."

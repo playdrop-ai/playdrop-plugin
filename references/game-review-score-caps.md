@@ -88,12 +88,12 @@ Examples:
 
 ## Production-grade visual caps
 
-Compare screenshots and live runtime against the reference set chosen through the comparative method.
+Compare the live runtime and accurate gameplay video against the reference set chosen through the comparative method. Evaluate AI-generated listing screenshots separately for truthful selling points, not pixel-level visual fidelity.
 
 If the reference promise is production-grade and the runtime is visibly prototype-grade:
 
 - `Visuals / Art Direction` is capped at `4/10`
-- `Store Listing & Metadata Accuracy` is capped at `6/10` if listing screenshots imply the stronger production-grade look
+- `Store Listing & Metadata Accuracy` is capped at `6/10` if screenshots advertise mechanics, content, progression, or outcomes absent from the shipped game, or if the gameplay video materially misrepresents runtime
 - overall outcome cannot be above `Limited`
 
 If the runtime would look embarrassing beside the selected references in a store or social preview:

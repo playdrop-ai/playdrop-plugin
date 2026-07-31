@@ -1,0 +1,4 @@
+interface:
+  display_name: "Market Game"
+  short_description: "Plan truthful listing messages and marketing assets"
+  default_prompt: "Use $market-game to plan the player promise, four screenshot messages, gameplay-video hook, and smallest useful marketing package."

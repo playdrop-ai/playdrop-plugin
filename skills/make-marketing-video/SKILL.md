@@ -7,6 +7,13 @@ description: "Capture and finish truthful gameplay marketing videos from a PlayD
 
 Produce marketing video from real gameplay. Capture the game from the outside; never add a game-specific recorder or change normal gameplay to manufacture footage.
 
+## Non-negotiable media model
+
+- **Video is the literal representation of gameplay.** Every gameplay frame must come from the shipped game.
+- **Listing screenshots are separate AI-generated marketing artwork.** Use `../make-marketing-screenshots/SKILL.md` for still images and never turn recorder posters into the final screenshot set.
+- Source stills and recorder posters are review evidence and image-generation references, not final marketing screenshots.
+- Editing may improve clarity and pacing, but it must not change the mechanic, entities, environment, controls, reward, difficulty, score behavior, or outcome shown.
+
 ## Preconditions
 
 - Read `../../references/marketing-creative-production.md`. It defines the

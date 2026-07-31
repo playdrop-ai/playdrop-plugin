@@ -1,142 +1,113 @@
 ---
 name: make-marketing-screenshots
-description: "Create polished, truthful game marketing screenshots from real gameplay and reference research. Use for App Store, Google Play, paid acquisition, social, or campaign stills that need strong concepts, professional composition and copy, multiple creative directions, or device-specific exports. Use make-listing instead for raw PlayDrop catalogue captures."
+description: "Create fully AI-generated promotional screenshots for PlayDrop listings, App Store, Google Play, paid acquisition, social, and campaigns. Use when final stills need short marketing messages, strong selling-point concepts, professional composition, and truthful game-inspired art rather than literal gameplay captures."
 ---
 
 # Make Marketing Screenshots
 
-Create conversion-focused campaign art without inventing gameplay. Treat the playable game and its accurate PlayDrop listing as the source of truth.
+Create conversion-focused marketing art without inventing what the game offers. Treat the playable game and accurate gameplay video as the truth source, not as pixels that must appear in the final still.
+
+## Non-negotiable media model
+
+- **Gameplay video is the literal representation of the shipped game.** Produce or verify it with `../make-marketing-video/SKILL.md` or the listing capture workflow.
+- **Marketing screenshots are fully AI-generated promotional images.** Generate the content, composition, effects, and rendered headline as one finished image.
+- **Raw gameplay screenshots and recorder posters are reference inputs only.** Never publish them as the final marketing screenshot set.
+- Default to four screenshots. Give each image one truthful selling point and one headline of two to four words.
+- Screenshot truth is semantic, not pixel-identical. The art may idealize presentation, but it must not imply unavailable mechanics, characters, environments, progression, rewards, or outcomes.
+
+When the intended result is unclear, find the approved Starfold PlayDrop listing package in the available workspace. Inspect its current screenshot exports, four-part selling-point story, marketing README, catalogue, source assets, and production handoff. Use it as the PlayDrop quality and structure reference without copying its branding or game art.
 
 ## Preconditions
 
-- Read `../../references/marketing-creative-production.md`. It defines the
-  mandatory protected-art, gameplay-truth, typography, geometry, and review
-  contract.
-- Inspect the playable game, current listing, hero art, icon, and real gameplay captures.
-- Inspect the approved positioning brief and any previous campaign the operator
-  names. Reuse its established art and production system when requested.
-- Inventory the icon, title, subtitle, hero, and end card as protected or
-  editable before opening an image tool.
-- If the listing or capture state is inaccurate or missing, use `../make-listing/SKILL.md` first.
-- Know the target channel, language, device class, and orientation before composing.
-- For Apple exports, read `references/app-store-screenshots.md` and verify the current official specifications before export.
+- Read `../../references/marketing-creative-production.md`.
+- Inspect the playable game, accurate listing, real gameplay video, source stills, hero art, and icon.
+- Inspect the approved positioning brief. If it is missing, use `../market-game/SKILL.md` first.
+- Inventory the icon, title, subtitle, hero, and end card as protected or reference-only inputs.
+- Know the target channel, language, supported orientation, and destination dimensions before generation.
+- For Apple exports, read `references/app-store-screenshots.md` and verify the current official specifications.
 
-Fail clearly with `marketing_screenshot_source_missing` rather than fabricating a board, feature, enemy, score system, or interface.
+Fail with `marketing_screenshot_source_missing` when the game, listing, or gameplay video is too incomplete to verify the proposed selling points.
 
 ## Workflow
 
 ### 1. Research the category
 
 - Study five successful, directly comparable games on the target storefront or ad channel.
-- Capture the real reference assets, their exact phrases, composition, information hierarchy, and the gameplay promise each frame makes.
-- Use references to understand proven structure. Never copy another game's characters, art, branding, or distinctive layout verbatim.
-- Present references next to proposed work when asking for a creative decision.
+- Record the exact phrases, composition, hierarchy, and player promise of the strongest references.
+- Use references to understand proven structure. Never copy another game's characters, branding, or distinctive layout.
+- Include Starfold whenever a PlayDrop listing precedent is useful or the operator asks for it.
 
-### 2. Define the screenshot story
+### 2. Define four selling points
 
-Write one truthful sentence for each of these beats the game actually supports:
+Choose four distinct truths the game can support. A strong default sequence is:
 
 1. Core action: what the player does.
-2. Tension: what pushes back.
-3. Payoff: what feels spectacular or satisfying.
-4. Goal: what the player pursues or improves.
+2. Twist or tension: what makes the action interesting.
+3. Payoff: what feels satisfying or surprising.
+4. Goal: what the player tries to achieve.
 
-Use three strong frames when only three beats are real. Use four when all four are compelling. Do not add a filler fifth frame.
+Use fewer than four only when the game genuinely has fewer distinct truthful promises. Never add a filler frame.
 
-Give every frame one job and a short headline, normally two to six words. Make the sequence understandable without reading body copy.
+Lock one headline of two to four words for every image before generation. Make it player-facing, specific, and understandable without body copy. Record the exact spelling, punctuation, capitalization, and line breaks.
 
-Lock the exact headline, spelling, punctuation, and line breaks before
-generating finished art. Make the visible state prove its headline at a glance.
-If the first frame must establish a familiar category such as Classic Klondike,
-say that before introducing the differentiator.
+### 3. Write the truth brief
 
-### 3. Lock real gameplay states
+For each screenshot, record:
 
-- Choose a distinct real capture or deterministic playable state for every
-  frame.
-- Preserve the exact gameplay region as a locked truth layer. Never ship an
-  image-generated board, card layout, HUD, score, control, or result.
-- Audit rules-dense states object by object. Confirm every highlighted move is
-  legal and obviously sensible; prefer the strongest available move when
-  viewers can judge the board immediately.
-- Capture the source state, legality evidence, and intended action in the
-  handoff before adding decorative treatment.
+- the selling point;
+- the game, video moment, or source still that proves it;
+- the entities, environment, action, and outcome that may appear;
+- the features, characters, rewards, controls, and claims that must not appear;
+- the final two-to-four-word headline.
 
-### 4. Develop complete concepts
+The final image does not need to preserve a real screenshot or exact gameplay geometry. It must remain recognizably about the actual game and communicate only supported promises.
 
-- Build around the locked real gameplay state.
-- Create two canonical masters for every approved campaign frame: a native 9:16 portrait composition and a native 16:9 landscape composition.
-- Compose both masters independently from the same approved gameplay truth. Do not obtain one master by cropping or stretching the other.
-- In a PlayDrop game package, use `playdrop/screenshots/portrait/` and `playdrop/screenshots/landscape/` as the canonical master locations. Do not duplicate them into another source folder.
-- For any uncertain frame, produce three materially different whole-image concepts. Change gameplay state, composition, camera emphasis, effects, and hierarchy, not just the headline.
-- Keep the board, controls, primary entities, and rules recognizable.
-- Decorative worlds, lighting, and effects may heighten the fantasy, but cannot imply unavailable mechanics or content.
-- Use different gameplay states and color balance across the set. Repeating the same board with new text is not a new concept.
-- Make the player's action visually obvious. Hands, arrows, or motion lines may clarify a real gesture, but cannot conceal or replace the game.
-- Do not modify a protected icon, title, subtitle, hero, or end card. If a
-  protected hero does not fit the destination ratio exactly, use a
-  ratio-native gameplay composition instead of cropping, padding, or extending
-  it.
+### 4. Generate complete marketing images
 
-### 5. Finish the art
+- Use built-in image generation for the complete image, including scene content, composition, lighting, effects, and headline typography.
+- Use the real game, gameplay video, source stills, hero, icon, and palette as visual references.
+- Generate native 9:16 portrait and 16:9 landscape compositions when both orientations are supported or requested. Compose each orientation independently.
+- In a PlayDrop game package, save approved masters under `assets/marketing/playdrop/screenshots/portrait/` and `assets/marketing/playdrop/screenshots/landscape/`.
+- Give every image a different focal state and color balance. Changing only the headline does not create a distinct concept.
+- Make the advertised action or benefit visually obvious at thumbnail size.
+- Do not add browser chrome, platform chrome, debug controls, or unrelated PlayDrop UI.
+- Do not add generic text with scripts, HTML, or temporary typography after generation. Regenerate until the AI-rendered headline is exact and visually finished.
+- For an uncertain frame, generate three materially different whole-image concepts before choosing one.
 
-- Use built-in image generation with the real capture and approved game art as
-  references when it materially improves the creative layer.
-- Image generation may create backgrounds, lighting, effects, interaction
-  guidance, and finished typography. Restore the exact locked gameplay layer
-  before export if a generation redraws any part of it.
-- Generate complete creative concepts when useful, but never accept an
-  AI-interpreted gameplay state as final.
-- Follow the caption-plate procedure in
-  `../../references/marketing-creative-production.md` for game-styled raster
-  headlines. Verify every requested word exactly.
-- If using conventional compositing, use deliberate final typography. Never ship temporary, script-drawn, or placeholder text.
-- Keep headlines inside safe areas and legible at App Store thumbnail size.
-- Do not add an outer decorative frame when the destination applies a rounded
-  mask. Avoid generic gold, metallic trim, or other stock "premium" effects
-  unless they belong to the approved game art direction.
-- Treat Apple iPhone, Apple iPad, Pinterest, Instagram, and other non-master ratios as channel derivatives of the nearest canonical master.
-- Create a destination-native derivative with image editing or recomposition when the ratio changes enough to remove meaningful content. Preserve the approved headline, gameplay state, mechanic, art direction, and object proportions.
-- Recompose for a different aspect ratio or orientation. Do not mechanically crop a portrait campaign image into a landscape layout.
-- For nearby portrait ratios, use a uniform crop only when it removes genuine empty margin. Move the crop anchor within that margin to preserve the entire headline, gameplay action, and goal.
-- Never use non-uniform scaling, plain bars, blurred side fill, letterboxing, pillarboxing, or duplicated imagery to fill a destination.
-- If a crop clips meaningful content, recompose for the destination instead of stretching or padding.
-- Keep platform chrome, browser chrome, debug controls, and unrelated PlayDrop UI out of the gameplay focal area.
+### 5. Review the set
 
-### 6. Review before export
+Create a contact sheet containing, for each image:
 
-Show a contact sheet containing, for each frame:
+- the closest reference;
+- the current candidate;
+- the locked selling point and headline;
+- the game or video evidence that supports the promise.
 
-- the closest reference,
-- the current candidate,
-- any proposed revision.
+Inspect every final at full size and listing-card size. Reject and regenerate it when:
 
-Inspect every final at full size and thumbnail size. Reject it if the copy is misspelled, gameplay is confusing, a feature is invented, important content is clipped, or two frames communicate the same idea.
+- any headline word is misspelled, malformed, missing, duplicated, or unreadable;
+- the image does not communicate its selling point immediately;
+- the image implies unsupported game content;
+- two frames communicate the same idea;
+- important content or text is clipped;
+- the image feels materially weaker than the Starfold listing precedent when that precedent is available.
 
-Compare every derivative beside its canonical master. Dimensions and aspect ratio alone do not prove that the composition is valid. Confirm that the complete semantic content, including the lowest gameplay row and every moving object, remains visible.
+Do not reject an image merely because it is more polished, dramatic, or idealized than runtime footage. The accurate video owns literal gameplay representation.
 
-For rules-dense games, include the gameplay-state audit in the review. Do not
-approve a plausible-looking board without verifying its actual rules.
+### 6. Package the approved set
 
-### 7. Package the approved set
-
-- Keep editable sources separate from final exports.
-- Name files by order and message, for example `01-core-action.png` and `02-enemy-pressure.png`.
-- Record the channel, locale, pixel dimensions, orientation, headline, source capture, and ordering in a small manifest or handoff note.
-- Record protected assets, gameplay-state evidence, highlighted move, and any
-  AI-generated creative layers separately from the locked real gameplay layer.
-- Record which 9:16 or 16:9 canonical master each derivative came from and whether it was recomposed or safely cropped.
-- Keep rejected generations, debug captures, contact sheets, and temporary exports outside the game repository unless the user explicitly asks to preserve them.
+- Name files by order and message, such as `01-core-action.png` and `02-beat-the-clock.png`.
+- Record the destination, locale, dimensions, orientation, headline, selling point, truth evidence, generation prompt, and ordering in a small manifest or handoff note.
+- Keep source stills, rejected generations, contact sheets, and temporary exports outside the final screenshot directories.
 - Do not upload or submit media as part of this skill.
 
 ## Completion bar
 
-- Every frame has a distinct marketing job.
-- The set is truthful to actual gameplay.
-- Copy and typography look finished.
-- Protected identity assets are unchanged.
-- Every visible gameplay state and highlighted move has been audited.
-- Gameplay remains legible behind the marketing treatment.
-- Every requested device layout is composed and inspected independently.
-- No stretching, bars, blurred side fill, or clipped headline remains.
+- The set normally contains four distinct selling points.
+- Every headline contains two to four correctly rendered words.
+- Every final screenshot is a complete AI-generated marketing composition.
+- Every promise is supported by the shipped game and accurate gameplay video.
+- No unavailable mechanic, character, environment, reward, or outcome is advertised.
+- Each requested orientation is composed natively and inspected independently.
+- The set is legible at listing-card size and meets the Starfold quality bar when that reference is available.
 - The user has reviewed the final contact sheet.

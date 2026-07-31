@@ -13,8 +13,9 @@ Use this after the game is playable and the listing is accurate. This skill deci
 2. Study five successful, directly comparable games on the intended channel.
 3. Identify the strongest truthful player promise.
 4. Describe the game's core action, tension, payoff, and goal.
-5. Choose the smallest useful asset set and target formats.
-6. Produce a concise brief with audience, hook, proof, visual direction, copy direction, deliverables, and claims to avoid.
+5. Lock approximately four distinct screenshot selling points with one two-to-four-word headline each.
+6. Choose the smallest useful asset set and target formats.
+7. Produce a concise brief with audience, hook, proof, visual direction, copy direction, deliverables, and claims to avoid.
 
 Keep every claim grounded in the shipped game. Do not market absent, broken, or merely planned features.
 
@@ -24,10 +25,14 @@ For a social package, batch and reuse approved work. Default to one shared 9:16 
 
 ## Route production
 
-- Promotional screenshots, store images, paid-acquisition stills, or social carousels: `make-marketing-screenshots`.
+- Final PlayDrop listing screenshots, promotional screenshots, store images, paid-acquisition stills, or social carousels: `make-marketing-screenshots`. These are fully AI-generated marketing compositions, including content and two-to-four-word headline text.
 - App previews, gameplay ads, trailers, or social video: `make-marketing-video`.
 - Complete YouTube, TikTok, Instagram, Pinterest, and X package: `make-social-media-package`.
-- Raw PlayDrop listing captures, hero art, icon, or catalogue metadata: `make-listing`.
+- Complete PlayDrop listing assembly, hero art, icon, catalogue metadata, real gameplay video, and source still capture: `make-listing`.
 - App Store Connect Custom Product Page operation: hand the approved package to the PlayDrop platform operator workflow. Store configuration is outside the public creator plugin.
+
+Listing video is literal gameplay evidence. Listing screenshots are AI-generated marketing artwork. Raw captures and recorder posters are reference inputs, never final listing screenshots.
+
+When the intended screenshot plan is unclear, find and inspect the approved Starfold PlayDrop listing package before finalizing the brief.
 
 If production is out of scope, leave the brief as the next-step handoff instead of creating weak placeholder media.

@@ -24,6 +24,6 @@ Report the chosen phase before its first related action. For example, coding tha
 
 - Decide title, subtitle, slug, and primary surface together, claim them atomically, then scaffold through the CLI.
 - Report the catalogue as soon as its identity, version, emoji, color, surface, and playable plan are honest.
-- Share inspected media when useful. Art Exploration, Art Mockup, Prototype, isolated assets, App Icon, Real Game, Game Recording, and Hero Art are examples, not a required set.
+- Progress media is optional, but strongly recommended because it helps the creator see the game taking shape while they wait. Best practice is to share useful incremental media as soon as it has been inspected and is available. Art Exploration, Art Mockup, Prototype, accepted isolated assets, Real Game, Game Recording, and Hero Art are useful when truthful. Do not fabricate or delay work to fill a checklist.
 - An early playable is useful when it reduces implementation risk; skip performative prototype work when direct implementation is clearer.
 - Use the task-worker validation, capture, and upload contracts. Capture must remain bound to the uploaded runtime.

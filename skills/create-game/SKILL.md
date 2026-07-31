@@ -25,7 +25,7 @@ Choose the workflow that best fits the game. When the core interaction is uncert
 - If the request names an existing game, infer only the genre and functional loop. Create original expression: do not copy its name, characters, art, audio, text, story, level layouts, UI composition, or distinctive presentation.
 - Run the deterministic final `project check` flow from `../playtest-game/SKILL.md` before upload. An earlier check is recommended when it will reduce risk or rework.
 - Follow `../make-listing/SKILL.md` before upload, including its capture rules for your task type.
-- macOS PlayDrop Cloud and Local Agent worker tasks use the native listing recorder and include `listing.captureReport`. Windows Local Agent and other direct-creator tasks use `project check` screenshots and omit `listing.captureReport` until a native recorder is available for them.
+- macOS PlayDrop Cloud and Local Agent worker tasks use the native listing recorder for real gameplay video and source stills, then include `listing.captureReport`. Windows Local Agent and other direct-creator tasks use `project check` for source still evidence and omit `listing.captureReport` until a supported recorder is available. In every case, final listing screenshots come from `make-marketing-screenshots` as fully AI-generated marketing artwork, never from recorder posters or `project check` captures.
 
 ## Read when needed
 

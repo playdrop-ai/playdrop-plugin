@@ -22,9 +22,15 @@ interaction assets and motion system when requested. Do not replace a cited
 process with a generic workflow from memory.
 
 Use category research and the game's differentiator to choose the message
-before making art. Keep one marketing job per frame or video beat. A short
-headline should normally use two to six words, and the visual must prove that
-headline without explanatory body copy.
+before making art. Keep one marketing job per frame or video beat. Marketing
+screenshot headlines use two to four words. Video caption plates normally use
+three to five words. The visual must prove the message without explanatory body
+copy.
+
+When no other PlayDrop precedent is named and the intended listing treatment is
+unclear, find the approved Starfold listing package in the available workspace.
+Inspect its current screenshot story, final exports, marketing README,
+catalogue, sources, and handoff before proceeding.
 
 ## 2. Protect identity assets
 
@@ -36,40 +42,58 @@ edit that specific asset.
 - Do not add marketing copy to a protected hero.
 - Use a protected hero only at an aspect ratio where the exact asset fits
   without cropping, stretching, padding, or generative extension.
-- When no protected hero exists for a destination ratio, open on real gameplay
-  or use a separately approved ratio-native identity asset.
+- When no protected hero exists for a destination ratio, open video on real
+  gameplay. For a still, generate a separate ratio-native marketing composition
+  instead of modifying the protected hero.
 - When the network uses a separate end card, supply the designated canonical
   hero or end-card file unchanged. Let the network render its own CTA and app
   metadata.
 
-## 3. Separate gameplay truth from the creative layer
+## 3. Apply the correct truth contract to each medium
 
-The final gameplay layer must come from a real capture or deterministic,
-playable preview state.
+Video and still images have different responsibilities.
 
-- Never ship an image-generated or manually invented board, card layout, score,
-  HUD state, control, reward, obstacle, or result.
-- Treat rules-dense gameplay such as cards, chess, sorting, word puzzles, and
-  physics contraptions as a locked truth layer. Image generation may create the
-  surrounding background, lighting, headline, effects, or decorative layer,
-  but the final gameplay region must remain the exact real state.
-- If image generation produces a whole composition, restore the exact real
-  gameplay layer before export.
-- Audit every visible state against the game's rules. For a highlighted move,
-  confirm that it is legal and clearly sensible. Prefer the strongest available
-  move when the audience can evaluate the board at a glance.
-- Keep the entire action envelope visible: source, destination, moving object,
-  important HUD, and resulting payoff.
+### Gameplay video
 
-Fail with `marketing_gameplay_truth_invalid` when the final state cannot be
-verified.
+- Use only real footage from the shipped game.
+- Keep the real board, world, HUD, controls, score, rewards, obstacles, and
+  results accurate.
+- Use editing, captions, touch guidance, pacing, and effects only when they do
+  not change what the player can actually encounter.
+- Keep the complete action envelope visible: source, destination, moving
+  object, important HUD, and resulting payoff.
+
+### Marketing screenshots
+
+- Generate the complete final image with AI image generation, including game
+  content, composition, effects, and the two-to-four-word headline.
+- Use the playable game, accurate gameplay video, source stills, hero, icon,
+  palette, and positioning brief as references and truth evidence.
+- Do not require captured gameplay pixels or exact runtime geometry in the
+  final still.
+- Allow idealized lighting, camera, scale, staging, and effects when they make
+  the selling point clearer.
+- Never advertise a mechanic, character, environment, control, progression
+  system, reward, score behavior, obstacle, or outcome that the shipped game
+  does not contain.
+- For rules-dense games, verify that the image communicates the real mechanic
+  even when the board is idealized. Do not show an action that contradicts the
+  actual rules.
+
+Fail with `marketing_gameplay_truth_invalid` when a video is not real gameplay
+or a still advertises unsupported game content.
 
 ## 4. Build finished marketing typography
 
 Use the game's approved visual language. Do not ship placeholder typography,
 plain debug text, or generic lettering that looks unrelated to the game.
 
-For premium raster caption plates:
+For marketing screenshots, generate the exact headline as part of the complete
+AI-generated image. Regenerate any candidate with missing, duplicated,
+misspelled, malformed, or unreadable words. Do not repair it with generic
+script-drawn or HTML typography.
+
+For premium raster caption plates used in video:
 
 1. Inspect the approved screenshot typography and any cited campaign plates.
 2. Define exact copy, line breaks, game-specific materials, palette,
@@ -78,7 +102,7 @@ For premium raster caption plates:
    background.
 4. Remove the chroma background with the standard ImageGen helper.
 5. Verify spelling, punctuation, alpha channel, transparent corners, subject
-   coverage, and clean edges on the actual gameplay background.
+   coverage, and clean edges on the actual video frame.
 6. Save the chroma source, production alpha asset, and prompt notes with the
    editable project.
 
@@ -100,7 +124,7 @@ Place copy in the nearest genuinely quiet region:
 - Never cover the player action, hand cue, goal, moving object, platform
   controls, or important HUD.
 
-## 5. Capture real interaction
+## 5. Capture real interaction for video
 
 Record the game externally at the destination surface dimensions. Capture a
 complete clean take when the creative needs a late-game payoff or victory, then
@@ -173,7 +197,9 @@ For every still, produce:
 - a full-size check,
 - a thumbnail-size check,
 - a comparison with its closest approved reference,
-- a comparison with its canonical master when it is a derivative.
+- a comparison with its canonical master when it is a derivative,
+- the two-to-four-word headline and truthful selling point,
+- the game or video evidence supporting the promise.
 
 For a multi-format package, create one composite showing every final in
 delivery order. Record sources, dimensions, crop policy, copy, cue timestamps,
