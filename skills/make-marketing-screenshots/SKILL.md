@@ -15,8 +15,6 @@ Create conversion-focused marketing art without inventing what the game offers. 
 - Default to four screenshots. Give each image one truthful selling point and one headline of two to four words.
 - Screenshot truth is semantic, not pixel-identical. The art may idealize presentation, but it must not imply unavailable mechanics, characters, environments, progression, rewards, or outcomes.
 
-When the intended result is unclear, find the approved Starfold PlayDrop listing package in the available workspace. Inspect its current screenshot exports, four-part selling-point story, marketing README, catalogue, source assets, and production handoff. Use it as the PlayDrop quality and structure reference without copying its branding or game art.
-
 ## Preconditions
 
 - Read `../../references/marketing-creative-production.md`.
@@ -34,8 +32,7 @@ Fail with `marketing_screenshot_source_missing` when the game, listing, or gamep
 
 - Study five successful, directly comparable games on the target storefront or ad channel.
 - Record the exact phrases, composition, hierarchy, and player promise of the strongest references.
-- Use references to understand proven structure. Never copy another game's characters, branding, or distinctive layout.
-- Include Starfold whenever a PlayDrop listing precedent is useful or the operator asks for it.
+- Use references to understand proven structure. Never copy another game's characters, branding, or distinctive layout. Use the approved PlayDrop precedent per `../../references/marketing-creative-production.md` when one is useful.
 
 ### 2. Define four selling points
 
@@ -64,7 +61,7 @@ The final image does not need to preserve a real screenshot or exact gameplay ge
 
 ### 4. Generate complete marketing images
 
-- Use built-in image generation for the complete image, including scene content, composition, lighting, effects, and headline typography.
+- Follow the Plan A Codex CLI with Terra high, Plan B agent-native, then Plan C PlayDrop CLI order in `../make-assets/SKILL.md` to generate the complete image, including scene content, composition, lighting, effects, and headline typography.
 - Use the real game, gameplay video, source stills, hero, icon, and palette as visual references.
 - Generate native 9:16 portrait and 16:9 landscape compositions when both orientations are supported or requested. Compose each orientation independently.
 - In a PlayDrop game package, save approved masters under `assets/marketing/playdrop/screenshots/portrait/` and `assets/marketing/playdrop/screenshots/landscape/`.
@@ -90,7 +87,7 @@ Inspect every final at full size and listing-card size. Reject and regenerate it
 - the image implies unsupported game content;
 - two frames communicate the same idea;
 - important content or text is clipped;
-- the image feels materially weaker than the Starfold listing precedent when that precedent is available.
+- the image feels materially weaker than the approved PlayDrop listing precedent when one is available.
 
 Do not reject an image merely because it is more polished, dramatic, or idealized than runtime footage. The accurate video owns literal gameplay representation.
 
@@ -109,5 +106,5 @@ Do not reject an image merely because it is more polished, dramatic, or idealize
 - Every promise is supported by the shipped game and accurate gameplay video.
 - No unavailable mechanic, character, environment, reward, or outcome is advertised.
 - Each requested orientation is composed natively and inspected independently.
-- The set is legible at listing-card size and meets the Starfold quality bar when that reference is available.
+- The set is legible at listing-card size.
 - The user has reviewed the final contact sheet.

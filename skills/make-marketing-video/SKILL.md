@@ -10,7 +10,7 @@ Produce marketing video from real gameplay. Capture the game from the outside; n
 ## Non-negotiable media model
 
 - **Video is the literal representation of gameplay.** Every gameplay frame must come from the shipped game.
-- **Listing screenshots are separate AI-generated marketing artwork.** Use `../make-marketing-screenshots/SKILL.md` for still images and never turn recorder posters into the final screenshot set.
+- **Optional listing screenshots are separate AI-generated marketing artwork.** Only when screenshots are explicitly requested, use `../make-marketing-screenshots/SKILL.md` for still images and never turn recorder posters into the final screenshot set.
 - Source stills and recorder posters are review evidence and image-generation references, not final marketing screenshots.
 - Editing may improve clarity and pacing, but it must not change the mechanic, entities, environment, controls, reward, difficulty, score behavior, or outcome shown.
 
@@ -62,62 +62,21 @@ Fail with `marketing_video_source_missing` when real, clean footage is unavailab
 
 - Prefer the existing PlayDrop native capture output when it contains the required surface and moment.
 - Otherwise record the game preview from outside the iframe or app at the exact target dimensions.
-- Keep two reusable canonical gameplay captures when the game supports both orientations: a real 9:16 portrait capture and a real 16:9 landscape capture.
-- Build channel exports from the nearest canonical capture only when a uniform crop removes unused scenery and preserves the complete action envelope. Recapture the destination surface when it does not.
-- For board and puzzle games that fill the width, treat 3:4 Instagram and 2:3
-  Pinterest as native capture surfaces by default. Use a 9:16 crop only after a
-  complete-clip comparison proves that it removes empty margin and nothing
-  else.
+- Keep two reusable canonical gameplay captures when the game supports both orientations: a real 9:16 portrait capture and a real 16:9 landscape capture. Build channel exports from the nearest canonical capture only when its crop passes the geometry contract; otherwise recapture the destination surface. Capture separate orientations when the game layout materially changes.
 - Hide browser and host chrome while keeping only the real game surface visible.
 - Record one clean take with enough lead-in and tail to select the strongest segment.
 - Record the real game surface dimensions. Do not trust an output file's nominal dimensions as proof that the embedded game was captured without distortion.
-- Preserve the source aspect ratio through every transform. Never scale width and height independently.
-- When source and destination ratios differ, use a uniform crop only when it removes genuine empty scenery. Start centered, then move the crop anchor within empty margin when needed to preserve headlines, gameplay, touch guidance, and goals.
-- Never use blurred gutters, duplicated-video backgrounds, plain side bars, pillarboxing, letterboxing, or decorative filler.
-- If a uniform crop removes gameplay, touch guidance, important HUD, or the intended payoff, recapture or recompose at the destination ratio. Never repair the mismatch by stretching or padding.
-- For Apple iPhone, Apple iPad, AppLovin, Pinterest, Instagram, and social exports, start from the nearest 9:16 or 16:9 canonical capture. Reuse it only when the destination crop preserves the complete board, touch cue, HUD that matters, and payoff for the entire clip.
-- Capture separate orientations when the game layout materially changes. Do not crop away interaction context.
+- Apply the geometry contract in `../../references/marketing-creative-production.md` to every crop and export: uniform scale only, empty-margin crops only, no bars, gutters, stretching, or fill, and native 3:4 and 2:3 capture for width-filling board and puzzle games.
 - Confirm audio is synchronized when the game uses sound.
 
 ### 4. Build the cut
 
-- Show the core mechanic or primary payoff in the first seconds.
-- When an exact protected hero exists at the output ratio and the campaign uses
-  a hero opening, use that file unchanged for a short identity beat. Do not
-  crop, extend, retype, decorate, or regenerate it. Open on real gameplay when
-  no ratio-native protected hero exists.
-- For paid app-video edits, prove the app experience in the first 2 to 3 seconds and use at least two meaningful visual changes in the first 5 seconds as a starting point. Do not force this cadence onto a store preview when it would make the real interaction harder to follow.
-- Remove loading, menus, dead time, failed gestures, debug UI, and unrelated host UI.
-- Prefer a continuous, understandable gameplay sequence for store previews.
-- Keep one short creative focused on one mechanic and its payoff. Remove secondary progression or feature beats that dilute that story; give them their own creative when they are worth testing.
-- For a mechanic-led puzzle ad, prefer a readable action-to-payoff arc: show one deliberate player action, show the release or commit, then let the resulting cascade accelerate. Do not speed up the gesture until its meaning becomes unclear.
-- Split the edit into semantic phases: identity or hook, readable player input,
-  repetitive or automatic payoff, and result or victory.
-- Keep player input readable. Speed only the repetitive automatic phase when it
-  improves momentum, then return to a readable result or victory speed. Do not
-  apply one global speed merely to hit the target duration.
-- Preserve synchronized audio per segment and record every phase speed in the
-  edit manifest.
-- Use cuts, captions, and effects only when they improve comprehension and remain honest about the game.
-- Keep text out of the interaction area and make it readable without sound.
-- Match caption treatment to the game's approved marketing art and cited
-  campaign precedent. Follow the complete raster-plate process in
-  `../../references/marketing-creative-production.md`. Do not ship generic
-  drawtext, plain HTML captions, or placeholder typography when the campaign
-  uses premium game-styled plates.
-- Keep caption plates compact. Do not add a large opaque text region that masks empty scenery and changes the apparent framing of the gameplay.
-- Time short three-to-five-word plates for roughly 2 to 2.6 seconds including transitions. Give opening hooks and final calls to action roughly 3 to 4 seconds when the edit permits.
-- Use fast, smooth transitions around the readable hold. A practical default is a 200-millisecond fade in and a 200-millisecond fade out.
-- Place each plate in the nearest genuinely quiet safe-area region. Prefer above
-  a centered board. Use empty lower scenery for a top-aligned board. Never cover
-  gameplay, touch guidance, moving objects, important HUD, or platform
-  controls.
-- Remove a plate when its message has landed. Do not leave copy covering a longer gameplay sequence merely because the underlying shot continues.
-- Use a hand cue for every action when the raw gameplay does not otherwise make input timing and location obvious. Repetition should be fixed through varied pacing and stronger action selection, not by hiding the player input. When the game response already makes later input unambiguous, showing each control once can be enough.
-- For a top-down hand cue, anchor the fingertip at the contact point. Show the press with a small scale compression into the screen plane and radial feedback from that exact point. Do not translate the whole hand vertically across the screen to represent a tap.
-- Use a real transparent hand asset or an image-generated asset that has been visually approved. Do not draw a substitute hand from code. A simple aligned tap ring may be generated programmatically.
-- For two-tap mechanics, show and validate both the source selection and destination placement. Derive cue timestamps from the exact raw take being edited; do not reuse timestamps from an older capture with a different preroll.
-- Fade the hand in and out instead of popping it on screen. A practical starting point is 120 to 200 milliseconds per edge, shortened only when two distinct taps are close together.
+- Show the core mechanic or primary payoff in the first seconds. For paid app videos, prove the app experience in the first 2 to 3 seconds and use at least two meaningful visual changes in the first 5 seconds; do not force this cadence onto a store preview.
+- Remove loading, menus, dead time, failed gestures, debug UI, and unrelated host UI. Prefer a continuous, understandable gameplay sequence for store previews.
+- Keep one short creative focused on one mechanic and its payoff. Give secondary beats their own creative when they are worth testing.
+- Edit by semantic phase per the reference: keep player input readable, accelerate only the repetitive automatic phase, return to readable speed for the result, keep audio synchronized per segment, and record every phase speed in the edit manifest.
+- Build captions and hand cues per the reference's typography and interaction sections: game-styled raster plates with verified copy, compact placement in quiet safe areas, and fingertip-anchored cues with timestamps derived from the exact raw take being edited. Never ship generic drawtext, code-drawn hands, or timestamps reused from an older capture.
+- Use a protected hero opening only per the reference's identity rules.
 - Do not advertise a feature, enemy, reward, score, or control that the player cannot encounter.
 
 ### 5. Adapt by channel
@@ -132,14 +91,7 @@ Fail with `marketing_video_source_missing` when real, clean footage is unavailab
 - Inspect the opening, middle, ending, and proposed poster frame visually.
 - Use `ffprobe` or the platform's authoritative media inspector to verify dimensions, duration, frame rate, codec, bitrate, audio channels, sample rate, and a `1:1` sample aspect ratio.
 - Compare representative source and final frames. Square tiles, circles, hands, logos, and other known shapes must retain their proportions.
-- Confirm across the complete clip that cropping removed only empty scenery and that no interaction, moving object, payoff, caption, or touch cue is clipped. A clean first frame is not sufficient evidence.
-- Generate a contact sheet at every input timestamp for touch-guided videos. Confirm the fingertip and feedback ring land on the control that the real game is using in that frame.
-- Generate frames immediately before and after every speed boundary. Confirm
-  that player input, automatic payoff, and victory were split at the intended
-  semantic moments.
-- For a multi-format campaign, create one review composite showing every final
-  output in delivery order. Inspect captions, framing, action, payoff, and
-  ending across ratios.
+- Produce the review evidence set in the reference: complete-clip crop confirmation, contact sheets at every input timestamp, frames around every speed boundary, and one delivery-order composite for multi-format campaigns.
 - Confirm the edit remains understandable with audio muted.
 - Compare the finished video with the real game and the brief.
 - Show the final video and poster frame to the user before delivery.
@@ -158,16 +110,8 @@ Fail with `marketing_video_source_missing` when real, clean footage is unavailab
 
 ## Completion bar
 
-- The first seconds prove the strongest mechanic or payoff.
-- All footage represents real gameplay.
-- No loading, browser chrome, debug UI, or misleading edit remains.
-- No nonuniform scaling, stretching, bars, blurred side fill, or padding remains.
-- Protected identity assets are unchanged.
-- Player interaction, automatic payoff, and victory use documented independent
-  phase speeds.
-- Caption plates match the approved game art and have verified copy and alpha
-  edges.
-- Every video uses square pixels with a `1:1` sample aspect ratio.
+- The first seconds prove the strongest mechanic or payoff, and all footage represents real gameplay with no loading, chrome, debug UI, or misleading edit.
+- The reference's geometry, typography, phase-edit, and protected-asset contracts all hold.
+- Every video uses square pixels with a `1:1` sample aspect ratio and passes technical validation for its destination.
 - Every requested orientation is framed intentionally.
-- Technical validation passes for the destination.
 - The user has reviewed the final video and poster frame.

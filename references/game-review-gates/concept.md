@@ -10,7 +10,7 @@ This gate is not an insult. It is a diagnosis. Many early projects are at concep
 - placeholder systems dominate the experience
 - there may be only fragments of the loop
 - menus or listing may exist before the runtime is meaningfully testable
-- art, audio, and structure may imply a future game more than they support a current one
+- art and structure may imply a future game more than they support a current one
 
 ## What is not yet true
 

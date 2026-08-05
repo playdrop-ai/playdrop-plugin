@@ -16,9 +16,11 @@ Pack asset pattern:
 
 ```js
 const assets = await sdk.assets.listAppAssets();
-const sprite = assets.find((asset) => asset.runtimeKey === "player-sprite")
-  ?? assets.find((asset) => asset.sourcePackRef === "pack:playdrop/platformer-art-deluxe-repack@1.0.0");
+const spriteAssetRef = "asset:playdrop/platformer-player-blue@r1"; // Copy from `playdrop detail`.
+const sprite = assets.find((asset) => asset.assetRef === spriteAssetRef);
 const spriteFile = sprite?.files?.find((file) => file.role === "primary" && file.contentType?.startsWith("image/"));
-if (!spriteFile?.url) throw new Error("[game] Missing player sprite asset");
+if (!spriteFile?.url) throw new Error(`[game] Missing player sprite ${spriteAssetRef}`);
 this.load.image("player-sprite", spriteFile.url);
 ```
+
+Pack members have no `runtimeKey`. Never select the first asset matching only `sourcePackRef`; select the intended member by its exact `assetRef`.

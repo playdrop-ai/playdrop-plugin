@@ -54,22 +54,12 @@ social-media/
 
 Reuse the shared 9:16 short for YouTube Shorts, TikTok, Instagram Reels, and Instagram Stories. Reuse the 16:9 trailer for YouTube and X. Do not duplicate identical files into platform folders.
 
-## Geometry contract
+## Geometry
 
-- Use the approved 9:16 and 16:9 campaign masters as canonical inputs, not as
-  permission to crop blindly.
-- Preserve source proportions through every transform. Scale width and height with one uniform factor only.
-- Never add letterboxing, pillarboxing, plain bars, blurred gutters, duplicated-video side fill, or decorative filler.
-- Adapt ratios with a uniform crop only when the crop removes genuine empty margin. Start centered, then move the crop anchor within empty margin to preserve headlines, touch cues, gameplay, and goals.
-- Do not assume the lower portion of a campaign still is decorative because the headline is near the top. Inspect the full image and preserve every gameplay object.
-- If a crop removes meaningful content, regenerate the AI still at the destination ratio or recapture the gameplay video at that ratio. Never stretch or pad either medium.
-- For width-filling board and puzzle games, prefer native 3:4 and 2:3 gameplay
-  captures. Require a complete-clip comparison before approving a crop from
-  9:16.
+Apply the geometry contract in `../../references/marketing-creative-production.md` to every derivative: uniform scale only, empty-margin crops only, no bars, gutters, stretching, or fill, and native 3:4 and 2:3 for width-filling games. If a crop removes meaningful content, regenerate the still or recapture the video at the destination ratio. Package-specific rules:
+
 - Replace a channel-inappropriate end card with a clean ratio-specific hero ending rather than cropping its CTA or logo.
-- Use protected hero and end-card files unchanged. When no exact ratio-native
-  asset exists, use real gameplay instead of cropping, padding, or extending a
-  protected asset.
+- Use protected hero and end-card files unchanged; when no ratio-native asset exists, use real gameplay.
 - Keep sample aspect ratio at `1:1`.
 
 ## Workflow
@@ -132,28 +122,13 @@ Run:
 node scripts/validate-social-package.mjs <game>/assets/marketing/social-media
 ```
 
-Then visually inspect:
-
-- every static image at full size and thumbnail size,
-- opening, middle, payoff, and ending frames for each video,
-- text and action against TikTok and Instagram UI safe zones,
-- crop boundaries for bars, clipped copy, distorted circles, squares, hands, or logos.
-- frames before and after every interaction cue and speed boundary,
-- protected hero and end-card pixels against their canonical source,
-- one combined review composite containing every final video and still in
-  delivery order.
-
-Metadata validation cannot prove a crop is visually honest. The visual review is mandatory.
+Then visually inspect per the reference's review-evidence section: every still at full and thumbnail size, every video's opening, payoff, and ending, frames around every cue and speed boundary, protected pixels against their canonical source, and one delivery-order composite. Also check text and action against TikTok and Instagram UI safe zones. Metadata validation cannot prove a crop is visually honest; the visual review is mandatory.
 
 ## Completion bar
 
 - YouTube, TikTok, Instagram, Pinterest, and X have an explicit asset mapping.
-- Pinterest includes a real 2:3 video and static image Pins.
-- Instagram includes the shared Reel and Story video, a Reel cover, a 3:4 feed video, and a static carousel.
-- No non-uniform scaling, bars, blurred side fill, or clipped interaction remains.
-- Protected identity assets and approved caption systems remain unchanged.
-- Native 3:4 and 2:3 capture or a verified empty-margin crop is documented for
-  every board-filling video.
+- Pinterest includes a real 2:3 video and static image Pins; Instagram includes the shared Reel and Story video, a Reel cover, a 3:4 feed video, and a static carousel.
+- The reference's geometry and protected-asset contracts hold, and approved caption systems remain unchanged.
 - Every file passes technical validation and visual review.
 - The package includes channel-ready copy and the canonical destination URL.
 - Nothing has been uploaded or published.

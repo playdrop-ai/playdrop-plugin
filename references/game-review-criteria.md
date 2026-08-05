@@ -7,6 +7,8 @@ Benchmarking method lives in [game-review-comparative-method.md](game-review-com
 Evidence capture and surface selection are covered by the worker review instructions.
 Hard maximums live in [game-review-score-caps.md](game-review-score-caps.md).
 
+This nine-dimension public review rubric is separate from the six builder and eval dimensions in `dimensions.md`; do not mix the two vocabularies.
+
 Dimension source files:
 
 1. [Gameplay / Core Loop](game-review-dimensions/gameplay-core-loop.md)
@@ -15,16 +17,16 @@ Dimension source files:
 4. [UX / Usability](game-review-dimensions/ux-usability.md)
 5. [First Time User Experience](game-review-dimensions/first-time-user-experience.md)
 6. [Visuals / Art Direction](game-review-dimensions/visuals-art-direction.md)
-7. [Audio / Feedback](game-review-dimensions/audio-feedback.md)
-8. [Store Listing & Metadata Accuracy](game-review-dimensions/store-listing-metadata-accuracy.md)
-9. [Safety / Age Rating / Compliance](game-review-dimensions/safety-age-rating-compliance.md)
-10. [Performance / Stability](game-review-dimensions/performance-stability.md)
+7. [Store Listing & Metadata Accuracy](game-review-dimensions/store-listing-metadata-accuracy.md)
+8. [Safety / Age Rating / Compliance](game-review-dimensions/safety-age-rating-compliance.md)
+9. [Performance / Stability](game-review-dimensions/performance-stability.md)
 
 Usage rules:
 
 - The numbered order above is canonical for every review output.
 - Each dimension file is reusable across public PlayDrop review and improvement skills.
 - Do not paraphrase away the evidence expectations. Gather evidence before scoring.
+- Audio is outside the current review scope because the browser evidence surface cannot provide listening evidence. Never score audio or infer it from code, icons, network activity, or console messages.
 - Score exactly one primary surface. Do not rescue a weak primary-surface review with a stronger secondary surface.
 - Treat the dimension files as long-form operator instructions, not as optional prompts.
 - Compare the game to relevant successful peers before deciding whether it is below, at, or above bar on each dimension.

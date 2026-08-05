@@ -16,6 +16,8 @@ Stored enum mapping:
 - `Good` persists as `GOOD`
 - `Excellent` persists as `EXCELLENT`
 
+Use the creator-facing label in CLI review validation and submission commands. The CLI also accepts the stored enum for compatibility and always sends the canonical stored value to the platform.
+
 Operational-only state:
 
 - `ERROR` is reserved for tooling, access, or infrastructure failure

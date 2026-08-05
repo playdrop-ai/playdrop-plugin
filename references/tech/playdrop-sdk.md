@@ -11,3 +11,6 @@
 - Use `sdk.assets.listAppAssets()` and file roles/content types for declared runtime assets.
 - Runtime declarations are promises. If `catalogue.json` declares packs or assets, the game must load and render or play them through the SDK asset manifest.
 - Throw clear errors when required assets fail. Do not render hidden fallbacks.
+- Read declared tweak values with `await sdk.tweaks.get()`. When `sdk.creator` is non-null, game-owned creator UI may replace the complete value document with `sdk.creator.replaceTweaks(values)`.
+- When `sdk.creator` is non-null, game-owned playtest UI may use `sdk.creator.notes.list()`, `add(note)`, `replace(id, note)`, and `remove(id)` for text, Markdown, JSON, image, log, or exact asset-reference notes.
+- Playtest note kinds are uppercase and have exact payload shapes. For example: `await sdk.creator.notes.add({ kind: 'TEXT', text: 'Jump feels weak' })` and `await sdk.creator.notes.add({ kind: 'JSON', value: { gravity: 900 } })`. There is no `title` field. Keep the typed SDK value instead of casting `sdk` or `sdk.creator` to `any`, so invalid note payloads fail validation.

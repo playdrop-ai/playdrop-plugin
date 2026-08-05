@@ -132,7 +132,8 @@ select the strongest truthful sections in the edit.
 
 - Hide browser, host, debug, and recording chrome.
 - Keep the full board or playfield visible edge to edge.
-- Preserve source proportions with one uniform scale.
+- Preserve source proportions with one uniform scale and keep sample aspect
+  ratio at `1:1`.
 - Never use side bars, blurred gutters, duplicated footage, decorative fill,
   nonuniform scaling, or stretching.
 - Crop only when a complete-clip review proves that the removed region is
@@ -144,8 +145,9 @@ select the strongest truthful sections in the edit.
 Use an approved transparent hand asset when input is not otherwise obvious.
 Anchor the fingertip to the real contact point, compress the hand slightly into
 the screen plane for a tap, and place radial feedback at the same point. Show
-the complete gesture for long presses and drags. Derive every cue timestamp
-from the exact raw take used in the edit.
+the complete gesture for long presses and drags, and fade cues in and out
+instead of popping them. Derive every cue timestamp from the exact raw take
+used in the edit.
 
 ## 6. Edit by semantic phase
 

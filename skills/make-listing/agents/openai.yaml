@@ -1,4 +1,4 @@
 interface:
   display_name: "Game Listing"
-  short_description: "Assemble AI screenshots and real gameplay video"
-  default_prompt: "Use $make-listing to assemble a PlayDrop listing with AI-generated selling-point images and literal gameplay video."
+  short_description: "Assemble identity art and real gameplay video"
+  default_prompt: "Use $make-listing to assemble a PlayDrop listing with preview mode, dedicated icon and hero art, and literal gameplay video. Treat promotional screenshots as an optional step only when explicitly requested."

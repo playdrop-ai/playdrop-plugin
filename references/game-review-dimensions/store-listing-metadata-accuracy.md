@@ -8,7 +8,7 @@ Compare the listing to successful store pages for games in the same category. St
 
 Benchmark against:
 
-- whether AI-generated marketing screenshots communicate truthful selling points supported by the playable build
+- when optional AI-generated marketing screenshots are present, whether they communicate truthful selling points supported by the playable build
 - whether the listing video accurately represents literal gameplay
 - whether the title and description communicate the real experience
 - whether tags are useful and specific
@@ -17,7 +17,7 @@ Benchmark against:
 ## What to inspect
 
 - title and short description
-- marketing screenshot promise and headline clarity
+- optional marketing screenshot promise and headline clarity when screenshots are present
 - gameplay video accuracy
 - icon and cover fit
 - whether the icon is square, text-free, and a dedicated close-up composition rather than the full hero, a crop of it, or a resize of it
@@ -29,7 +29,7 @@ Benchmark against:
 ## Evidence to gather
 
 - compare listing claims directly against the runtime and accurate gameplay video
-- verify whether screenshots advertise unavailable mechanics, characters, environments, progression, rewards, or outcomes
+- when screenshots are present, verify whether they advertise unavailable mechanics, characters, environments, progression, rewards, or outcomes
 - note stale metadata that likely reflects an older build
 - capture missing or misleading tags that would affect discovery or player trust
 
@@ -54,7 +54,7 @@ Benchmark against:
 
 ## Stage-aware interpretation
 
-Early-stage games can still have honest listings. Marketing screenshots may be more polished and dramatic than runtime footage, but every selling point must remain true. The gameplay video provides the literal representation. A `First Release` is expected to have materially accurate metadata. A mature public game with sloppy metadata is leaving quality on the table.
+Early-stage games can still have honest listings. Promotional screenshots are optional and their absence is not a weakness. When present, they may be more polished and dramatic than runtime footage, but every selling point must remain true. The gameplay video provides the literal representation. A `First Release` is expected to have materially accurate metadata. A mature public game with sloppy metadata is leaving quality on the table.
 
 ## What strong feedback looks like
 

@@ -14,7 +14,7 @@ These files are encouraged working memory, never CLI, API, upload, or phase gate
 - `authMode`: use `NONE` when the game has no account features, `OPTIONAL` when sign-in is offered from an explicit user action, and `REQUIRED` only when the game cannot function without an account, such as a multiplayer-only game.
 - Surface targets in `catalogue.json`: `desktop`, `mobileLandscape`, `mobilePortrait`.
 - `primarySurface`: `DESKTOP`, `MOBILE_LANDSCAPE`, or `MOBILE_PORTRAIT`. It must also be enabled in `surfaceTargets`.
-- `playtestTapes`: one version-1 tape keyed by uppercase surface for every enabled surface. Each tape declares `primaryVerb` as `tap`, `swipe`, `drag`, or `key`. Event `type` must be exactly `tap`, `pointerDown`, `pointerMove`, `pointerUp`, `keyDown`, or `keyUp`. Represent a swipe or drag with a complete `pointerDown` → `pointerMove` → `pointerUp` sequence. Keyboard events are desktop-only.
+- `playtestTapes`: the only scripted-input contract, with one version-1 tape keyed by uppercase surface for every enabled surface. Each tape declares `primaryVerb` as `tap`, `swipe`, `drag`, or `key`. Event `type` must be exactly `tap`, `pointerDown`, `pointerMove`, `pointerUp`, `keyDown`, or `keyUp`. Represent a swipe or drag with a complete `pointerDown` → `pointerMove` → `pointerUp` sequence. Keyboard events are desktop-only.
 - `design` is optional. When present, it accepts only the seven optional keys below, each containing one exact APP tag ref from its corresponding group:
   - `genre`: `game-genre`
   - `coreGameplay`: `core-gameplay`
@@ -25,6 +25,7 @@ These files are encouraged working memory, never CLI, API, upload, or phase gate
   - `feel`: `game-feel`
 - Use only current platform tag refs. The CLI and API reject unknown keys, nonexistent tags, and tags from the wrong group with a clear error.
 - Browse current values without copying the taxonomy into the plugin: `playdrop tags browse --group <group> --kind APP --json`.
+- `tweaks` is optional and declares one flat creator-tunable document. It requires `basedOn`, `schema`, and complete `defaults`. Supported field types are `number`, `string`, `boolean`, and string `enum`. Use `basedOn: null` only when the previous version has no tweak state. To intentionally remove an existing tweak declaration, use `{ "basedOn": "twk_...", "removed": true }` without `schema` or `defaults`.
 
 ## Copy-Paste Shape
 
@@ -37,7 +38,7 @@ Replace names, refs, paths, and notes. Keep the shape.
       "name": "sky-orchard-glider",
       "version": "1.0.0",
       "displayName": "Sky Orchard Glider",
-      "description": "A one-thumb glider game about threading orchard wind rings and landing safely.",
+      "description": "Thread a nimble glider through shifting orchard wind rings, collect orchard stars, and master precise one-thumb landings before the storm closes in.",
       "type": "GAME",
       "authMode": "OPTIONAL",
       "controllerMode": "UNSUPPORTED",
@@ -124,13 +125,16 @@ Replace names, refs, paths, and notes. Keep the shape.
         "icon": "assets/marketing/playdrop/icon.png",
         "heroPortrait": "assets/marketing/playdrop/hero/hero-portrait.png",
         "heroLandscape": "assets/marketing/playdrop/hero/hero-landscape.png",
-        "screenshotsPortrait": [
-          "assets/marketing/playdrop/screenshots/portrait/01-core-action.png",
-          "assets/marketing/playdrop/screenshots/portrait/02-tension.png",
-          "assets/marketing/playdrop/screenshots/portrait/03-payoff.png",
-          "assets/marketing/playdrop/screenshots/portrait/04-goal.png"
+        "videosPortrait": [
+          {
+            "path": "assets/marketing/playdrop/capture/mobile-portrait-listing.mp4",
+            "slug": "orchard-wind-ring-gameplay",
+            "title": "Sky Orchard Glider Gameplay",
+            "caption": "Thread wind rings and land before the storm arrives.",
+            "description": "Real mobile gameplay showing one-thumb steering, ring collection, scoring, and the final orchard landing."
+          }
         ],
-        "screenshotsLandscape": []
+        "captureReport": "assets/marketing/playdrop/capture/capture-report.json"
       },
       "design": {
         "genre": "game-genre/arcade",
@@ -141,7 +145,7 @@ Replace names, refs, paths, and notes. Keep the shape.
         "progression": "game-progression/levels",
         "feel": "game-feel/playful"
       },
-      "releaseNotes": "First playable with ring steering, scoring, restart, screenshots, and truthful asset declarations."
+      "releaseNotes": "First playable with ring steering, scoring, restart, preview mode, and listing media."
     }
   ]
 }
@@ -149,16 +153,20 @@ Replace names, refs, paths, and notes. Keep the shape.
 
 Rules:
 
+- Game descriptions should be at least 20 words and about 120 characters, covering the player's action, objective, and distinctive hook. Short descriptions produce a CLI warning only and never block checks or upload.
+- Each screenshot and video entry may remain a path string or use a structured object. Structured objects require `path` and may add `slug`, `title`, `alt`, `caption`, and `description`. Use lowercase hyphenated slugs. `alt` is primarily for screenshots; `description` is primarily for videos.
+- A structured media `slug` becomes the filename in the published listing URL. Keep it stable after publication and unique within its orientation array.
 - New games set `primarySurface` inside the app entry to exactly one enabled surface: `DESKTOP`, `MOBILE_LANDSCAPE`, or `MOBILE_PORTRAIT`. Existing catalogue content may omit it until updated.
-- New games provide exactly one `playtestTapes` entry for every enabled surface. Each tape declares `primaryVerb` as `tap`, `swipe`, `drag`, or `key`. Event `type` must be exactly `tap`, `pointerDown`, `pointerMove`, `pointerUp`, `keyDown`, or `keyUp`; a swipe or drag is a complete pointer-down, move, and up sequence. Use normalized `x` and `y` coordinates from `0` to `1`, ordered millisecond timestamps, at least one success signal, and no pointer or key left down. Keyboard events are valid only in `DESKTOP` tapes. When a game has a title screen, put its start action first and set `startOnlyEventCount` to the number of startup events so later reviewers can distinguish startup from gameplay; otherwise it may be `0`. Existing catalogue content may omit tapes until updated.
+- New games provide exactly one `playtestTapes` entry for every enabled surface. Each tape declares `primaryVerb` as `tap`, `swipe`, `drag`, or `key`, and must demonstrate that verb at least once after startup; secondary controls are allowed. Event `type` must be exactly `tap`, `pointerDown`, `pointerMove`, `pointerUp`, `keyDown`, or `keyUp`; a swipe or drag is a complete pointer-down, move, and up sequence. Use normalized `x` and `y` coordinates from `0` to `1`, ordered millisecond timestamps, at least one success signal, and no pointer or key left down. Keyboard events are valid only in `DESKTOP` tapes. When a game has a title screen, put its complete start action first and set `startOnlyEventCount` to the number of startup events so later reviewers can distinguish startup from gameplay; otherwise it may be `0`. The startup prefix must not leave a pointer or key held. Existing catalogue content may omit tapes until updated.
 - Aim for about 10 seconds and 3 to 6 representative gameplay actions, plus a start action when needed. Highlight the core gameplay and declared primary verb. These are recommendations, not validation limits.
-- Run `playdrop project check . --tape <surface>` for every enabled surface. The check runs the game for the same duration with no input and with the complete tape. It passes when the tape completes without a runtime or action-delivery failure and produces a visible result that differs from the no-input run. Inspect both captures before upload.
+- Run the deterministic check in `skills/playtest-game` for every enabled surface before upload.
 - Every `design` field is optional. Omit `design`, use `{}`, or supply only the primary classifications that are useful and honest.
 - Each populated field is one string tag ref, never a `{ "value": ... }`, `{ "values": [...] }`, free-form label, or list. Secondary values may be expressed as normal explicit `tags` until the contract grows secondary fields.
 - The platform automatically adds populated design refs to the game's effective tags. You do not need to repeat them in `tags`, but doing so is accepted and deduplicated.
 - Clearing a design field removes its derived tag. An explicitly listed copy remains an explicit tag.
 - Rich game design and art direction do not belong in extra `design` keys. Use concise project prose when that context is worth retaining.
 - Every declared runtime pack or asset must be loaded and rendered or played in the game.
-- Listing screenshots are required for new games and live under `assets/marketing/playdrop/screenshots/portrait/` or `assets/marketing/playdrop/screenshots/landscape/`. Final screenshot arrays contain AI-generated marketing artwork, not recorder posters or raw gameplay captures. Default to four distinct selling points with one two-to-four-word headline each. Use `skills/make-marketing-screenshots` for production.
+- Listing screenshots are optional and must not be recommended or produced by default. Create them only when the creator explicitly requests promotional screenshots or a broader marketing package. When present, final screenshot arrays contain AI-generated marketing artwork from `skills/make-marketing-screenshots`, never recorder posters or raw gameplay captures.
+- New games require `previewable: true`, a dedicated square app icon, portrait and landscape hero art, and at least one real gameplay video.
 - Listing video is literal gameplay footage. Keep recorder posters in the capture directory as source evidence and image-generation references. Reference the real capture video through `listing.videosPortrait` or `listing.videosLandscape` and include `listing.captureReport` when required by the worker task.
 - Audio SFX and listing art are non-blocking at runtime (warn, keep play unblocked). Gameplay-required images, sprites, and 3D models should fail loudly if missing.

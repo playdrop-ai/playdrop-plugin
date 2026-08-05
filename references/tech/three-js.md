@@ -1,6 +1,6 @@
 # Three.js
 
-Use the official Three.js template for lightweight 3D games. Search PlayDrop for a relevant existing game first, use a relevant local GameBlock second, and scaffold from the template when neither provides a stronger start.
+Use the official Three.js template for lightweight 3D games. Prefer a relevant local GameBlock over bespoke systems when one fits; remixing a strong existing PlayDrop game is a separate decision made in `create-game`.
 
 ## Runtime and assets
 
@@ -17,12 +17,14 @@ Pack asset pattern:
 
 ```js
 const assets = await sdk.assets.listAppAssets();
-const model = assets.find((asset) => asset.runtimeKey === "player-model")
-  ?? assets.find((asset) => asset.sourcePackRef === "pack:playdrop/racing-kit-repack@1.0.1");
+const modelAssetRef = "asset:playdrop/racing-car-red@r2"; // Copy from `playdrop detail`.
+const model = assets.find((asset) => asset.assetRef === modelAssetRef);
 const modelFile = model?.files?.find((file) => file.role === "primary" && /^model\/gltf/.test(file.contentType ?? ""));
-if (!modelFile?.url) throw new Error("[game] Missing player model asset");
+if (!modelFile?.url) throw new Error(`[game] Missing player model ${modelAssetRef}`);
 await new GLTFLoader().loadAsync(modelFile.url);
 ```
+
+Pack members have no `runtimeKey`. Never select the first asset matching only `sourcePackRef`; select the intended member by its exact `assetRef`.
 
 ## Coordinate and camera contract
 

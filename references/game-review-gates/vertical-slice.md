@@ -8,7 +8,7 @@ This is a very important gate because it changes the review conversation. At thi
 
 - the core loop, presentation, and flow are coherent together
 - the player can imagine the full game without needing to invent the quality bar
-- art, audio, UX, and gameplay are aligned enough to read as one product
+- art, UX, and gameplay are aligned enough to read as one product
 - the slice is persuasive even if total content is still limited
 
 ## What is not yet true
@@ -34,7 +34,7 @@ At this gate, more dimensions should already be solid:
 - the loop should be clearly working
 - controls should feel intentionally tuned
 - UX should stop getting in the way
-- visuals and audio should support a distinct identity
+- visuals should support a distinct identity
 - listing honesty should be strong because the product is close enough to judge seriously
 
 ## Common misclassification risk

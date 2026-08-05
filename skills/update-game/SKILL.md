@@ -13,10 +13,11 @@ Use the agent-chosen reporting vocabulary in `../../references/phases/update-gam
 
 - Update the staged project in place. Do not change the app slug unless the task explicitly says so.
 - Preserve working gameplay before adding polish.
+- If the staged legacy catalogue has no `primarySurface`, choose one supported surface and declare it before validation. Every updated version must leave an explicit supported primary surface.
 - Refresh any populated `catalogue.json.design` tag refs that no longer describe the version; all seven fields remain optional.
-- Before the first validation, require `package-lock.json` and run `npm ci` from the directory containing `package.json`. Stop with a clear error if the lockfile is missing or `npm ci` fails. Do not substitute `npm install`.
-- If `package.json` or `package-lock.json` changes during the update, run `npm ci` again before the final type-check, validation, build, playtest, and upload.
-- Validate and run the deterministic `project check` playtest before upload or publish.
+- Before the first validation, require `package-lock.json` and run `npm ci` from the directory containing `package.json`; run it again if either file changes during the update. Stop with a clear error if the lockfile is missing or `npm ci` fails. Never substitute `npm install`.
+- Validate per `../playtest-game/SKILL.md` before upload or publish.
+- When task context contains `metadata.playdrop.tweaks` or dev/validation reports stale tweaks: read `../tweaks/SKILL.md` and carry the creator's values forward.
 
 ## Read when needed
 

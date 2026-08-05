@@ -33,7 +33,7 @@ At this gate, the core question is not content quantity. It is whether the mecha
 
 - gameplay and controls matter heavily
 - FTUE still matters because the reviewer needs to reach the loop cleanly
-- art and audio may still be early, but cannot sabotage evaluation
+- art may still be early, but cannot sabotage evaluation
 - store listing should not oversell the state of the build
 
 ## Common misclassification risk

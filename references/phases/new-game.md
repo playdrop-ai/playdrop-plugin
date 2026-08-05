@@ -20,10 +20,6 @@ Supported phase identifiers:
 
 Report the chosen phase before its first related action. For example, coding that turns into sprite repair may be reported as Crafting, then Coding again when integration resumes.
 
-## PlayDrop integration
+## Progress media
 
-- Decide title, subtitle, slug, and primary surface together, claim them atomically, then scaffold through the CLI.
-- Report the catalogue as soon as its identity, version, emoji, color, surface, and playable plan are honest.
-- Progress media is optional, but strongly recommended because it helps the creator see the game taking shape while they wait. Best practice is to share useful incremental media as soon as it has been inspected and is available. Art Exploration, Art Mockup, Prototype, accepted isolated assets, Real Game, Game Recording, and Hero Art are useful when truthful. Do not fabricate or delay work to fill a checklist.
-- An early playable is useful when it reduces implementation risk; skip performative prototype work when direct implementation is clearer.
-- Use the task-worker validation, capture, and upload contracts. Capture must remain bound to the uploaded runtime.
+Progress media is optional, but strongly recommended: it lets the creator see the game taking shape while they wait. Share useful media as soon as it is inspected and available. Art Exploration, Art Mockup, Prototype, accepted isolated assets, Real Game, Game Recording, and Hero Art are useful titles when truthful. Do not fabricate or delay work to fill a checklist.

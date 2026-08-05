@@ -81,7 +81,7 @@ Examples:
 - the controls work but lack precision, discoverability, or comfort
 - the FTUE gets players in, but leaves the goal or primary action unclear
 - the store listing is mostly honest, but metadata or media quality is sloppy
-- the audio is serviceable but weak in communicating state or reward
+- the visual feedback is serviceable but weak in communicating state or reward
 
 ### `6/10` to `7/10`
 

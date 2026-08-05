@@ -1,4 +1,4 @@
-# Builder V2 Quality Bars
+# PlayDrop Quality Bars
 
 Outcome bars: each says what must be true on screen, never how to build it. Engine mechanics live in `references/tech/`; art mechanics in `references/art-direction-board.md`.
 

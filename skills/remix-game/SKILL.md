@@ -16,7 +16,8 @@ Use the agent-chosen reporting vocabulary in `../../references/phases/remix-game
 - Study the source mechanics, assets, and listing before changing them.
 - Make a meaningful transformation: new loop, constraint, level structure, fantasy, or input feel.
 - Keep source ancestry in `catalogue.json` and refresh any populated optional `design` tag refs that changed.
-- Run the deterministic `project check` playtest before upload.
+- Choose and declare one supported `primarySurface`; never carry an ambiguous legacy surface contract into the remix.
+- Validate per `../playtest-game/SKILL.md` before upload.
 
 ## Read when needed
 

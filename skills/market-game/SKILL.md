@@ -21,7 +21,7 @@ Keep every claim grounded in the shipped game. Do not market absent, broken, or 
 
 For a paid-video test, define each creative as a distinct promise with its own action, payoff, and end card. Do not call three cosmetic edits of the same footage three materially different concepts. Include the intended channel, aspect ratio, duration range, sound-off message, and separate end-card requirement in the brief.
 
-For a social package, batch and reuse approved work. Default to one shared 9:16 short, one shared 16:9 trailer, true 2:3 Pinterest video and static Pins, and an explicit Instagram Reel, Story, cover, 3:4 feed video, and static carousel. Never plan bars, blurred side fill, duplicated-video gutters, or non-uniform scaling.
+For a social package, plan around the standard package in `make-social-media-package` and reuse approved work across channels.
 
 ## Route production
 
@@ -32,7 +32,5 @@ For a social package, batch and reuse approved work. Default to one shared 9:16 
 - App Store Connect Custom Product Page operation: hand the approved package to the PlayDrop platform operator workflow. Store configuration is outside the public creator plugin.
 
 Listing video is literal gameplay evidence. Listing screenshots are AI-generated marketing artwork. Raw captures and recorder posters are reference inputs, never final listing screenshots.
-
-When the intended screenshot plan is unclear, find and inspect the approved Starfold PlayDrop listing package before finalizing the brief.
 
 If production is out of scope, leave the brief as the next-step handoff instead of creating weak placeholder media.

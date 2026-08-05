@@ -1,13 +1,13 @@
 ---
 name: make-2d-asset-pack
-description: "Create, extract, validate, repair, and package consistent transparent 2D game assets from AI-generated multi-item sheets. Use when asked to make one asset sheet or a multi-family asset pack from item lists, an art-style description or reference image, and optional source references; supports paired large/small variants, parallel family jobs, PlayDrop metadata, and code/Codex/human approval."
+description: "Create, extract, validate, repair, and optionally package one or more transparent 2D game assets from AI-generated matte-backed images. Use for every generated sprite that requires real transparency, from one game-owned asset to multi-family reusable packs."
 ---
 
 # Make 2D Asset Pack
 
 Requires the PlayDrop CLI. If the `playdrop` command is unavailable, follow the PlayDrop `setup` skill first.
 
-Turn a natural-language sheet or pack request into retained AI source sheets, validated transparent PNGs, and a PlayDrop `catalogue.json`. Production must use this workflow; do not replace it with family-specific scripts.
+Turn a natural-language request for one sprite, a small game-owned set, a sheet, or a pack into retained AI source images and validated transparent PNGs. Create a PlayDrop `catalogue.json` only for a reusable pack. Production must use this workflow whenever generated gameplay art requires transparency; do not replace it with ad hoc background-removal scripts.
 
 Read `references/production-contract.md` before processing art. Read `references/prompt-contract.md` before changing prompt behavior.
 
@@ -23,6 +23,7 @@ Use the printed `runtime_python:` path as `ASSET_PACK_PY` in the commands below.
 
 Translate the user's request into one small JSON file:
 
+- **Single asset or small game-owned set:** one family with one slot per asset. The same matte extraction and validation gates apply even when there is only one slot.
 - **Sheet:** one family, up to 16 slots. Start from `references/sheet-request.template.json`.
 - **Pack:** several families. Start from `references/pack-request.template.json`.
 - Paired large/small uses two slots per item, so one paired sheet supports at most eight items.
@@ -69,7 +70,7 @@ $ASSET_PACK_PY scripts/claim_job.py \
   --worker codex-1
 ```
 
-The command prints the exact prompt, style references, identity template, and output path. Invoke Codex built-in image generation with style references first and the identity template last. Never use a script to synthesize the art or swap its background.
+The command prints the exact prompt, style references, identity template, and output path. Follow the image-generation order in `../make-assets/SKILL.md`, with style references first and the identity template last. Never use a script to synthesize the art or swap its background.
 
 For packs, run up to three independent generation jobs concurrently. Subagents may claim jobs when available, but the file queue is authoritative and the workflow must also work from one parent agent.
 
@@ -218,13 +219,7 @@ This creates a PlayDrop asset-pack `catalogue.json` from approved transparent PN
 
 ## Performance Contract
 
-- Target median: at most 300 active seconds per family from first claim to code and Codex approval.
-- Slow-family threshold: 600 seconds. Crossing it requires a recorded reason.
-- Clean five-family wave target: 900 seconds wall time with generation concurrency 3 and extraction concurrency 2.
-- Repair wave target: 1,500 seconds wall time.
-- Human response time is reported separately and excluded from automation throughput.
-
-Use `status.py --families animals,drinks,chess --json` after each wave. It reports idle queue latency and active production separately; report both, and use active time for the five-minute production target. Keep generation, extraction, review, and total wall timings in job/status files. Do not hide retries or count only retained successes.
+Targets tracked by `status.py --json`: at most 300 active seconds per family to code and Codex approval (600 needs a recorded reason), 900 seconds wall time for a clean five-family wave, 1,500 for a repair wave. Human response time is excluded. Report idle latency and active time separately, keep timings in job/status files, and do not hide retries.
 
 ## State And Safety
 

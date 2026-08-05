@@ -1,37 +1,47 @@
 ---
 name: create-game
-description: "Create a new PlayDrop game from a worker task or direct creator request using PlayDrop templates and runtime contracts."
+description: "Use for any PlayDrop game-building request, including creating, remixing, or updating a game. Introduces PlayDrop capabilities and routes setup, SDK, engines, assets, local testing, playtesting, validation, and listing work to the right specialized guidance."
 ---
 
-# Create Game
+# Create Games with PlayDrop
 
 Requires the PlayDrop CLI. If the `playdrop` command is unavailable, follow the PlayDrop `setup` skill first.
 
-Use the agent-chosen reporting vocabulary in `../../references/phases/new-game.md`.
+Use this as the main entry point for PlayDrop game development:
 
-Choose the workflow that best fits the game. When the core interaction is uncertain or nonstandard, prove a small playable version before production polish. A visually led or familiar game may start with art or move art and implementation forward together. `../../references/greybox-report.md` is optional working evidence, not an upload gate.
+- **New game:** follow the new-game rules below.
+- **Remix:** read `../remix-game/SKILL.md`, then use the relevant capabilities and specialist skills below.
+- **Update:** read `../update-game/SKILL.md`, then preserve working behavior while making the requested change.
 
-## Non-Negotiables
+## Capabilities
 
-- Do not create a project by hand. Claim the slug if the task requires it, then scaffold with `playdrop project create app <slug> --template <allowed-template-key>`.
-- Record the engine decision before scaffolding, then load exactly one engine skill: `phaser-2d-game` or `three-js-game`. Continuous motion, physics, a moving camera, or spatial 2D gameplay requires `phaser-2d`; 3D requires `three-js`; the single-file HTML template is only for turn-based or static-screen UI games such as word, quiz, card, and board games. Never choose the HTML template merely because it is faster. Never read both engine skills for one game.
-- Choose `primarySurface` for the requested game's interaction and composition. Task `surfaceContext` describes the device that submitted the prompt, not a game-design requirement, and must not determine `primarySurface` unless the prompt itself explicitly requests that surface. One-thumb continuous arcade games normally use `MOBILE_PORTRAIT`; wide platformers and racers normally use `MOBILE_LANDSCAPE`; pointer-heavy, keyboard-heavy, or information-dense games normally use `DESKTOP`. Inside the app entry in `catalogue.json`, enable only honestly supported `surfaceTargets`, set `primarySurface`, and add one complete `playtestTapes` entry per enabled surface. These fields are required for every newly created game even though old catalogue content remains compatible without them.
-- Use `catalogue.json` for the upload contract and its optional seven-field design classification. Keep richer decisions in working notes or concise `GAME.md`, `ART_DIRECTION.md`, and `AGENTS.md` files when that context will help continued work. These prose files are encouraged, never upload gates; preserve and update existing files instead of overwriting them.
-- Before scaffolding, choose the template and any core pack refs, but do not write a nonempty root `catalogue.json`. After scaffolding, keep the scaffold structure, write the scaffolded app catalogue, and replace the sample loop with the game.
-- Before committing to a starting point, search PlayDrop for strong existing games, packs, assets, and proven systems. Reuse what materially improves the result and declare reuse honestly.
-- Keep scope small enough to be fun and shippable as a first draft. Scope cuts become next-step suggestions.
-- A merely functional prototype is not shippable. The final loop needs player agency, feedback, pressure or challenge, visible progress or payoff, and reliable restart behavior appropriate to the game.
-- Do not ship basic SVG shapes, emoji, plain CSS shapes, or default engine primitives as the game's visual identity. Deliberately simple art is valid when it is coherent and uses finished assets.
-- If the request names an existing game, infer only the genre and functional loop. Create original expression: do not copy its name, characters, art, audio, text, story, level layouts, UI composition, or distinctive presentation.
-- Run the deterministic final `project check` flow from `../playtest-game/SKILL.md` before upload. An earlier check is recommended when it will reduce risk or rework.
-- Follow `../make-listing/SKILL.md` before upload, including its capture rules for your task type.
-- macOS PlayDrop Cloud and Local Agent worker tasks use the native listing recorder for real gameplay video and source stills, then include `listing.captureReport`. Windows Local Agent and other direct-creator tasks use `project check` for source still evidence and omit `listing.captureReport` until a supported recorder is available. In every case, final listing screenshots come from `make-marketing-screenshots` as fully AI-generated marketing artwork, never from recorder posters or `project check` captures.
+- **Templates:** Hosted HTML, Phaser 2D, and Three.js scaffolds. Learn more: `playdrop project create app --help`.
+- **Platform SDK:** Host lifecycle, identity, saves, achievements, leaderboards, multiplayer, pause, audio, and preview. Learn more: `../../references/tech/playdrop-sdk.md`.
+- **Phaser 2D:** Sprites, tweens, collisions, and continuous 2D gameplay. Learn more: `phaser-2d-game`.
+- **Three.js:** Spatial 3D rendering, cameras, assets, and physics. Learn more: `three-js-game`.
+- **Asset discovery:** Reusable games, packs, and individual assets. Learn more: `discover-assets`.
+- **Asset creation:** Original gameplay art, audio, backgrounds, and listing art. Learn more: `make-assets`.
+- **Custom content:** Creator or user-generated typed assets such as levels and tracks. Learn more: `sdk.assets.custom`.
+- **Tweaks:** Creator-tunable runtime values for balance, colors, labels, booleans, and enums. Learn more: `tweaks`.
+- **Playtest Notes:** Text, image, JSON, Markdown, log, or asset feedback captured inside the game. Learn more: `playtest-notes`.
+- **Local development:** Run and inspect the hosted game locally. Learn more: `playdrop project dev --help`.
+- **Playtesting:** Deterministic gameplay checks and self-review. Learn more: `playtest-game`.
+- **Catalogue:** Surfaces, assets, metadata, Tweaks, listing, and upload declarations. Learn more: `../../references/catalogue-json.md`.
+- **Listing:** Identity art, preview mode, metadata, and real gameplay video. Learn more: `make-listing`.
 
-## Read when needed
+Open only the capabilities that improve the game. Never load both engine skills for one game. Read `make-assets` before any image-generation command; it routes transparent 2D art to `make-2d-asset-pack` when needed.
 
-- Before choosing scope and judging the result: `../../references/dimensions.md` and `../../references/quality-bars.md`. They are outcome targets, not an ordered build checklist.
-- Before scaffolding and catalogue edits: `../../references/catalogue-json.md` and `../../references/tech/playdrop-sdk.md`.
-- When selecting the implementation: exactly one matching engine skill.
-- When sourcing or creating art: the relevant asset skill and art-direction reference.
-- Before the first gameplay check: `../playtest-game/SKILL.md`.
-- Before producing store media: `../make-listing/SKILL.md`.
+## New-game rules
+
+1. Read `../../references/dimensions.md` and `../../references/quality-bars.md`. Keep the first version focused, fun, and shippable. When the core interaction is uncertain, prove a small playable version before polish; art-first or parallel art and code suit familiar or visually led games.
+2. Search PlayDrop early for games, systems, packs, and assets worth reusing.
+3. Choose the primary surface and engine before scaffolding. The single-file HTML template is only for turn-based or static-screen UI games. Continuous motion, physics, a moving camera, or spatial 2D gameplay requires `phaser-2d`; use Three.js for 3D. Never pick HTML because it is faster. One-thumb continuous arcade games normally use `MOBILE_PORTRAIT`, wide platformers and racers `MOBILE_LANDSCAPE`, and pointer- or keyboard-heavy games `DESKTOP`. Task `surfaceContext` describes the device that submitted the prompt, not a game-design requirement.
+4. Claim the slug when required, then scaffold with `playdrop project create app <slug> --template <allowed-template-key>`. Do not create projects by hand or prefill a root catalogue before scaffolding.
+5. Replace the sample loop. The finished game needs agency, feedback, challenge, visible progress or payoff, and a reliable restart. Use coherent finished assets, not emoji, basic shapes, or default engine primitives as its identity.
+6. In `catalogue.json`, declare one honest `primarySurface`, only supported `surfaceTargets`, and one complete playtest tape per surface. Treat task `surfaceContext` as the submitting device, not a design requirement.
+7. Create original expression. A referenced game may inform genre and function, never its name, characters, art, audio, text, level design, or presentation.
+8. After the last runtime change, run the deterministic final check from `playtest-game`, complete the listing, validate, then deliver through the workflow that invoked this skill.
+
+For macOS PlayDrop Cloud and Local Agent worker tasks, follow the native recorder contract in `make-listing` after the final runtime change. Windows Local Agent tasks use the supported external capture workflow described there.
+
+Use `../../references/phases/new-game.md` for creator-facing progress vocabulary. Working notes such as `GAME.md`, `ART_DIRECTION.md`, and `AGENTS.md` are optional memory, never delivery gates.

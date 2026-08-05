@@ -8,6 +8,6 @@ Use the same supported vocabulary as new games. `study-source` maps to Researchi
 - Decide and claim the remix title, subtitle, slug, and primary surface together.
 - Preserve source ancestry while making a meaningful mechanical, structural, fantasy, or input transformation.
 - Share only media newly created or materially changed for the remix, immediately after inspection.
-- Use the task-worker validation, capture, and upload contracts. Preflight is optional.
+- Use the task-worker validation, capture, and upload contracts.
 
 A remix is not a reskin. It should be recognizably derived but worth playing separately.

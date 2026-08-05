@@ -4,7 +4,7 @@ This contract is based on a discovery run and a human-approved 44-PNG pilot span
 
 ## Generation
 
-- Use Codex built-in image generation.
+- Follow the Plan A Codex CLI with Terra high, Plan B agent-native, then Plan C PlayDrop CLI image-generation order in `../../make-assets/SKILL.md`.
 - Attach one creator-owned canonical style anchor to every call.
 - Attach one identity template when exact items, order, or view semantics matter.
 - Use multi-item sheets as the primary efficiency path.

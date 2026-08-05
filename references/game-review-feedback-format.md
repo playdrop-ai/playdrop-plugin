@@ -22,7 +22,6 @@ Criteria ratings:
 - UX / Usability: <rating>/10 | <comment>
 - First Time User Experience: <rating>/10 | <comment>
 - Visuals / Art Direction: <rating>/10 | <comment>
-- Audio / Feedback: <rating>/10 | <comment>
 - Store Listing & Metadata Accuracy: <rating>/10 | <comment>
 - Safety / Age Rating / Compliance: <rating>/10 | <comment>
 - Performance / Stability: <rating>/10 | <comment>

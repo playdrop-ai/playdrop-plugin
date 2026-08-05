@@ -42,7 +42,7 @@ Ask whether the performance is merely unoptimized, or whether it materially harm
 - severe frame drops when the core loop becomes interesting
 - state corruption after restart or relaunch
 - crashes or softlocks during common flows
-- browser or runtime errors that visibly break UI, audio, saving, or progression
+- browser or runtime errors that visibly break UI, saving, or progression
 
 ## Stage-aware interpretation
 

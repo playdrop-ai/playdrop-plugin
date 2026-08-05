@@ -29,7 +29,7 @@ Ask:
 
 - FTUE and listing honesty matter strongly because the player is judging the game's promise quickly
 - gameplay must already feel coherent, even if not deep
-- visuals and audio should support a convincing identity, even if not final
+- visuals should support a convincing identity, even if not final
 - performance and stability should be good enough that the slice can be trusted
 
 ## What a good demo proves
