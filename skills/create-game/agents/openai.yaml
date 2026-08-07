@@ -1,0 +1,5 @@
+interface:
+  display_name: "Create PlayDrop Game"
+  short_description: "Create, test, upload, and publish web games"
+  brand_color: "#9D55F8"
+  default_prompt: "Use $create-game to create, test, validate, and upload this web game to PlayDrop."

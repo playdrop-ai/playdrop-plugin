@@ -1,10 +1,8 @@
 {
-  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "playdrop",
-  "displayName": "PlayDrop",
   "version": "0.15.6",
   "description": "Create, upload, publish and manage web games on PlayDrop.",
-  "skills": "./skills/",
   "author": {
     "name": "PlayDrop",
     "email": "support@playdrop.ai",

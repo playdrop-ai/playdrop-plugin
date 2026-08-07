@@ -7,6 +7,8 @@ description: "Add creator-only in-game controls for PlayDrop Tweaks and preserve
 
 Requires the PlayDrop CLI. If the `playdrop` command is unavailable, follow the PlayDrop `setup` skill first.
 
+Public creator and agent reference: https://www.playdrop.ai/docs/creator-tools/tweaks
+
 Use Tweaks for flat runtime settings such as balance numbers, colors, labels, booleans, and enums. Use custom assets for durable content such as levels and race tracks.
 
 - Declare one `tweaks` object in the app's `catalogue.json` with `basedOn`, a flat schema, and complete defaults.

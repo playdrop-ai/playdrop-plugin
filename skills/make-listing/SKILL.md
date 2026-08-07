@@ -55,7 +55,7 @@ Before recording, make the app preview-ready:
 - Call `sdk.host.ready()` after the preview scene and capture hooks are installed.
 - Do not branch on validation, local routes, launch-check flags, or capture markers to change gameplay.
 
-For macOS PlayDrop Cloud and Local Agent worker tasks, finish every runtime change, then run the native recorder once for all supported surfaces:
+When the native recorder is available, finish every runtime change, then run the native recorder once for all supported surfaces:
 
 ```sh
 playdrop project capture . --output-dir assets/marketing/playdrop/capture
@@ -68,7 +68,7 @@ playdrop project capture . --output-dir assets/marketing/playdrop/capture
 - Inspect the poster and the beginning, middle, and end of every video. A report does not replace pixel review.
 - The capture report is bound to the runtime bundle. A runtime or capture-hook change invalidates the recording, so finish the runtime change, validate it, and capture again.
 
-For Windows Local Agent worker tasks, external games, and direct-creator tasks, use the supported external capture workflow. Omit `listing.captureReport` when no supported native recorder produced one. Keep source stills as evidence and publish only real gameplay video as footage. If promotional screenshots were explicitly requested, use AI-generated artwork for those arrays.
+When the native recorder is unavailable, use the supported external capture workflow. Omit `listing.captureReport` when no supported native recorder produced one. Keep source stills as evidence and publish only real gameplay video as footage. If promotional screenshots were explicitly requested, use AI-generated artwork for those arrays.
 
 ## Completion bar
 

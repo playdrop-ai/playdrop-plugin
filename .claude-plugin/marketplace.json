@@ -2,17 +2,31 @@
   "name": "playdrop",
   "owner": {
     "name": "PlayDrop",
-    "url": "https://www.playdrop.ai/"
+    "url": "https://www.playdrop.ai"
   },
   "metadata": {
-    "description": "PlayDrop creator plugins"
+    "description": "Create, upload, publish and manage web games on PlayDrop."
   },
   "plugins": [
     {
       "name": "playdrop",
-      "description": "Creator workflows for planning, building, improving, publishing, and maintaining PlayDrop games.",
-      "version": "0.14.9",
-      "source": "./"
+      "displayName": "PlayDrop",
+      "description": "Create, upload, publish and manage web games on PlayDrop.",
+      "version": "0.15.6",
+      "source": "./",
+      "category": "development",
+      "tags": [
+        "deployment",
+        "hosting",
+        "preview",
+        "web-games",
+        "mobile-games",
+        "3d-games",
+        "2d-games",
+        "mini-games",
+        "casual-games",
+        "multiplayer-games"
+      ]
     }
   ]
 }

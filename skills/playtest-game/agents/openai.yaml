@@ -1,0 +1,5 @@
+interface:
+  display_name: "Playtest Game"
+  short_description: "Find and fix player-facing game problems"
+  brand_color: "#9D55F8"
+  default_prompt: "Use $playtest-game to playtest this PlayDrop game, prioritize player-facing problems, fix what is authorized, and report the final validation status."

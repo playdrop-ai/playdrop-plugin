@@ -1,0 +1,5 @@
+interface:
+  display_name: "Update PlayDrop Game"
+  short_description: "Improve an existing game without regressions"
+  brand_color: "#9D55F8"
+  default_prompt: "Use $update-game to inspect this PlayDrop game, make the requested improvement, and validate that existing behavior still works."

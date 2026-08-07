@@ -1,0 +1,120 @@
+{
+  "shared": {
+    "displayName": "PlayDrop",
+    "developerName": "PlayDrop",
+    "websiteURL": "https://www.playdrop.ai",
+    "documentationURL": "https://www.playdrop.ai/docs/plugin",
+    "supportURL": "https://github.com/playdrop-ai/playdrop-plugin/issues",
+    "privacyPolicyURL": "https://www.playdrop.ai/legal/privacy",
+    "termsOfServiceURL": "https://www.playdrop.ai/legal/terms",
+    "repositoryURL": "https://github.com/playdrop-ai/playdrop-plugin",
+    "logo": "assets/playdrop-icon-large.png"
+  },
+  "openai": {
+    "submissionType": "skills-only",
+    "shortDescription": "Create and publish web games",
+    "longDescription": "Use PlayDrop to create, upload, publish and manage web games with an optional SDK for advanced features and online services.",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Create web games",
+      "Upload and publish games",
+      "Manage published games",
+      "Add advanced features with the PlayDrop SDK",
+      "Use PlayDrop online services"
+    ],
+    "brandColor": "#9D55F8",
+    "brandColorDark": "#B555F8",
+    "composerIcon": "assets/playdrop-icon-large.png",
+    "starterPrompts": [
+      "Upload and publish this game to PlayDrop and return the URL to play it or any required fixes."
+    ],
+    "positiveTests": [
+      {
+        "prompt": "Plan a small 2D endless runner for PlayDrop with one-button controls.",
+        "expectedBehavior": "Activate create-game, define a focused playable scope, choose Phaser, and prepare implementation.",
+        "expectedResultShape": "A concise game plan followed by a runnable project containing the core loop, one-button input, and validation results.",
+        "fixture": "An empty writable directory. No PlayDrop account is required until upload or publication."
+      },
+      {
+        "prompt": "Update my existing PlayDrop puzzle game so touch controls are easier to use.",
+        "expectedBehavior": "Activate update-game, inspect the project, preserve unrelated behavior, implement the control change, and validate it.",
+        "expectedResultShape": "A summary of the diagnosed touch issue, targeted source changes, and passing relevant validation or test results.",
+        "fixture": "A writable copy of a small PlayDrop puzzle project with working desktop controls and deliberately undersized touch targets."
+      },
+      {
+        "prompt": "Create a consistent transparent 2D pack with a hero, three enemies, and pickups.",
+        "expectedBehavior": "Activate make-2d-asset-pack, preserve source inputs, produce transparent PNGs, and run the publication-rights and image checks.",
+        "expectedResultShape": "A validated asset-pack directory with named PNG assets, preview or contact-sheet evidence, and a short rights and validation report.",
+        "fixture": "An empty writable directory and either user-owned reference art or an explicit request to generate original art."
+      },
+      {
+        "prompt": "Playtest this PlayDrop game before I publish it.",
+        "expectedBehavior": "Activate playtest-game, run supported smoke and visual checks, inspect active gameplay evidence, and fix or report concrete player-facing issues.",
+        "expectedResultShape": "A prioritized playtest report with reproduction evidence, changes made when authorized, and final validation status.",
+        "fixture": "A runnable local PlayDrop game fixture with at least one known input or first-run usability issue."
+      },
+      {
+        "prompt": "Prepare the listing for my finished PlayDrop game.",
+        "expectedBehavior": "Activate make-listing, inspect the finished game, create accurate metadata and truthful media, and validate the catalogue.",
+        "expectedResultShape": "A complete listing manifest plus the required media files and a passing catalogue validation result.",
+        "fixture": "A runnable finished PlayDrop game with permission to capture its gameplay and a writable project directory. Authentication is required only if the reviewer asks the agent to upload it."
+      }
+    ],
+    "negativeTests": [
+      {
+        "prompt": "Review my employee performance notes and recommend promotions.",
+        "expectedBehavior": "Do not activate a PlayDrop skill; handle the request using another appropriate capability or explain that the plugin is unrelated.",
+        "rationale": "Employment review is outside browser-game creation and PlayDrop creator workflows."
+      },
+      {
+        "prompt": "Configure Terraform for my AWS production network.",
+        "expectedBehavior": "Do not activate a PlayDrop skill; use infrastructure-specific guidance if available.",
+        "rationale": "General cloud infrastructure work is outside the plugin's purpose."
+      },
+      {
+        "prompt": "Write a native iOS budgeting app in SwiftUI.",
+        "expectedBehavior": "Do not activate a PlayDrop skill; use native iOS development guidance if available.",
+        "rationale": "The requested product is not a PlayDrop browser game."
+      }
+    ],
+    "releaseNotes": "Ships the portable Agent Plugins 1.0 package with first-class Tweaks for in-game tuning, Playtest Notes for precise agent feedback, and public creator and agent documentation for both workflows."
+  },
+  "cursor": {
+    "organizationName": "PlayDrop",
+    "organizationHandle": "playdrop",
+    "contactEmail": "support@playdrop.ai",
+    "displayName": "PlayDrop",
+    "description": "Create, upload, publish and manage web games on PlayDrop.",
+    "publisher": "PlayDrop",
+    "logoURL": "https://raw.githubusercontent.com/playdrop-ai/playdrop-plugin/main/assets/playdrop-icon-large.png",
+    "category": "Developer Tools",
+    "tags": [
+      "deployment",
+      "hosting",
+      "preview",
+      "web-games",
+      "mobile-games",
+      "3d-games",
+      "2d-games",
+      "mini-games",
+      "casual-games",
+      "multiplayer-games"
+    ]
+  },
+  "claude": {
+    "displayName": "PlayDrop",
+    "category": "development",
+    "tags": [
+      "deployment",
+      "hosting",
+      "preview",
+      "web-games",
+      "mobile-games",
+      "3d-games",
+      "2d-games",
+      "mini-games",
+      "casual-games",
+      "multiplayer-games"
+    ]
+  }
+}

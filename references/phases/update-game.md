@@ -11,7 +11,7 @@ An update is not a miniature new-game build. Choose only phases that describe ac
 - `tweaking`: use for focused tuning, balance, copy, layout, animation, or polish changes.
 - `coding`: use for implementation work that is broader than a focused tweak.
 - `playtesting`: validate the requested behavior and the existing core loop on the primary surface with evidence per `skills/playtest-game/SKILL.md`.
-- `recording`: use only when the request changes listing media or needs a refreshed recording. Share only media created or materially changed by the request; capture and material rules live in `skills/make-listing` and the task-worker protocol.
+- `recording`: use only when the request changes listing media or needs a refreshed recording. Share only media created or materially changed by the request; capture and material rules live in `skills/make-listing`.
 - `finalizing`: complete preflight, upload, and creator handoff.
 
 Typical examples are Reviewing, Debugging, Coding or Tweaking, Playtesting, Finalizing for a bug; or Reviewing, Designing, Drawing or Crafting, Coding, Playtesting, Recording, Finalizing for a visual feature. They are suggestions, not scripts.

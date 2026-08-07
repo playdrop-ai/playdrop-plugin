@@ -29,7 +29,7 @@ For a social package, plan around the standard package in `make-social-media-pac
 - App previews, gameplay ads, trailers, or social video: `make-marketing-video`.
 - Complete YouTube, TikTok, Instagram, Pinterest, and X package: `make-social-media-package`.
 - Complete PlayDrop listing assembly, hero art, icon, catalogue metadata, real gameplay video, and source still capture: `make-listing`.
-- App Store Connect Custom Product Page operation: hand the approved package to the PlayDrop platform operator workflow. Store configuration is outside the public creator plugin.
+- App Store Connect Custom Product Page operation: hand the approved package to the person or workflow that manages the store listing. Store configuration is outside this plugin.
 
 Listing video is literal gameplay evidence. Listing screenshots are AI-generated marketing artwork. Raw captures and recorder posters are reference inputs, never final listing screenshots.
 

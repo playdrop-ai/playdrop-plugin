@@ -110,7 +110,7 @@ Record:
 Keep titles concrete and searchable. Keep claims grounded in the shipped game.
 
 `manifest.json` is the publishing handoff. It owns approved assets, copy, and
-destination mappings. The private publisher reads it and creates the sibling
+destination mappings. The publishing integration reads it and creates the sibling
 `publication.json` only when publishing starts. Do not put provider results,
 timestamps, metrics, or mutable publication state in `manifest.json`.
 

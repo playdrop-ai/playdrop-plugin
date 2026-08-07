@@ -1,4 +1,5 @@
 interface:
   display_name: "AI Marketing Screenshots"
   short_description: "Generate AI selling-point images with short headlines"
+  brand_color: "#9D55F8"
   default_prompt: "Use $make-marketing-screenshots to generate four truthful AI selling-point images with two-to-four-word headlines."
