@@ -17,6 +17,8 @@ Playtest Notes are not a second Update prompt. Use the normal Update flow when a
 
 Build purpose-made controls such as **Save level for agent**, **Submit asset votes**, or **Send corrected spritesheet**. Do not add a generic Notes button whose main purpose is writing a message.
 
+These controls may live in Playtest or in the optional owner-only Editor phase. Prefer Editor when the workflow needs persistent creator UI that would distract players. The same typed `sdk.creator.notes` contract applies in both phases.
+
 ## Required Runtime Design
 
 1. Show the creator workflow only when `sdk.creator` exists.

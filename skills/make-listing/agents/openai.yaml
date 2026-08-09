@@ -1,5 +1,5 @@
 interface:
   display_name: "Game Listing"
-  short_description: "Assemble identity art and real gameplay video"
+  short_description: "Write accurate metadata and optional listing media"
   brand_color: "#9D55F8"
-  default_prompt: "Use $make-listing to assemble a PlayDrop listing with preview mode, dedicated icon and hero art, and literal gameplay video. Treat promotional screenshots as an optional step only when explicitly requested."
+  default_prompt: "Use $make-listing to verify accurate PlayDrop listing metadata. Create or change listing media only when I explicitly request it."

@@ -1,6 +1,6 @@
 # New Game Phases
 
-Choose phases that truthfully describe the work. Skip, reorder, and re-enter them as needed. A common new-game flow is Researching, Designing, Drawing or Prototyping, Crafting and Coding, Playtesting, Recording, then Finalizing, but it is an example rather than a required journey.
+Choose phases that truthfully describe the work. Skip, reorder, and re-enter them as needed. A common new-game flow is Researching, Designing, Drawing or Prototyping, Crafting and Coding, Playtesting, then Finalizing, but it is an example rather than a required journey. Add Recording only when the creator requested listing media.
 
 Supported phase identifiers:
 
@@ -15,7 +15,7 @@ Supported phase identifiers:
 - `debugging`: reproducing or fixing a defect.
 - `tweaking`: focused balance, layout, animation, copy, or polish.
 - `playtesting`: running and inspecting gameplay validation.
-- `recording`: producing truthful listing media.
+- `recording`: producing truthful listing media when the creator requested it.
 - `finalizing`: completing preflight, upload, and creator handoff.
 
 Report the chosen phase before its first related action. For example, coding that turns into sprite repair may be reported as Crafting, then Coding again when integration resumes.

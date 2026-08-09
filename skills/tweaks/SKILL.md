@@ -14,6 +14,7 @@ Use Tweaks for flat runtime settings such as balance numbers, colors, labels, bo
 - Declare one `tweaks` object in the app's `catalogue.json` with `basedOn`, a flat schema, and complete defaults.
 - Read values in game code with `await sdk.tweaks.get()`. The game owns all creator controls.
 - Only show save controls when `sdk.creator` is non-null, then replace the complete document with `sdk.creator.replaceTweaks(values)`.
+- Creator controls may live in normal Playtest or in an optional Editor phase. When `sdk.host.phase === 'editor'`, present focused creator tools and keep the public play experience unchanged.
 - For an update task, read the latest tweak ID and values from `metadata.playdrop.tweaks` in the provided task context. Outside a task, use `playdrop tweaks get app:creator/name@x.y.z --json`.
 - Preserve or deliberately transform the latest values into the next defaults, then set `basedOn` to the latest ID.
 - To intentionally remove tweaks, declare `{ "basedOn": "twk_...", "removed": true }`; do not include `schema` or `defaults`.

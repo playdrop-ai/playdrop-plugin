@@ -23,7 +23,7 @@ When generating any image, first check whether the `codex` CLI is available, inc
 
 Use this generation order for hero art, optional direction artifacts, gameplay assets, backgrounds, listing art, and promotional images. Audio generation keeps the same source preference but uses the available audio-specific tools. When an approved identity reference exists, pass it to related generations when that improves consistency. Built-in tools and Codex CLI may save generated files outside the workspace (Codex saves under `$CODEX_HOME/generated_images`, default `~/.codex/generated_images`); copy the accepted file into the exact workspace target, verify it with `file`, and inspect it before use.
 
-Media failure policy: after all three plans fail, do not invent another generation route. For direct creator game work, record the reason, deliberately reduce the asset scope or use honestly designed owned vector/canvas assets, and surface "add credits to regenerate art" as a creator next step. In a PlayDrop Cloud game task, required listing media must fail clearly after the documented attempts instead of continuing toward an upload that will reject it. Optional art-direction media may be skipped, and gameplay-required media must follow the clear-failure rule below.
+Media failure policy: after all three plans fail, do not invent another generation route. For direct creator game work, record the reason, deliberately reduce the asset scope or use honestly designed owned vector/canvas assets, and surface "add credits to regenerate art" as a creator next step. Optional listing and art-direction media may be skipped. Gameplay-required media must follow the clear-failure rule below.
 
 ## Rules
 

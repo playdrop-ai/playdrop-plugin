@@ -29,7 +29,7 @@ If an action or the game runtime fails, the CLI identifies the action number and
 
 The agent-task upload repeats the same smoke check against the staged artifact. Do not use an agent browser, Playwright CLI, or another capture path as a substitute for `playdrop project check`.
 
-Run the final self-playtest after the last runtime change and before final capture and upload.
+Run the final self-playtest after the last runtime change and before upload. If the creator requested listing media, capture it only after this check passes.
 
 ## Checklist
 
@@ -39,7 +39,7 @@ Run the final self-playtest after the last runtime change and before final captu
 - When the game defines success or failure states, confirm both during normal self-play.
 - No loss occurs before meaningful input is possible, and no overlay blocks the first interaction.
 - Restart or replay works.
-- Preview state renders a meaningful live scene.
+- When `previewable` is true, preview state renders a meaningful live scene.
 - Pause/resume does not advance play-critical state.
 - Console logs contain no uncaught errors.
 - HUD is small, safe-area aware, and does not steal game space.

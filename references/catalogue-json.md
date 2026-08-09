@@ -43,6 +43,7 @@ Replace names, refs, paths, and notes. Keep the shape.
       "authMode": "OPTIONAL",
       "controllerMode": "UNSUPPORTED",
       "previewable": true,
+      "editorSupported": false,
       "file": "dist/index.html",
       "surfaceTargets": {
         "desktop": false,
@@ -124,17 +125,7 @@ Replace names, refs, paths, and notes. Keep the shape.
       "listing": {
         "icon": "assets/marketing/playdrop/icon.png",
         "heroPortrait": "assets/marketing/playdrop/hero/hero-portrait.png",
-        "heroLandscape": "assets/marketing/playdrop/hero/hero-landscape.png",
-        "videosPortrait": [
-          {
-            "path": "assets/marketing/playdrop/capture/mobile-portrait-listing.mp4",
-            "slug": "orchard-wind-ring-gameplay",
-            "title": "Sky Orchard Glider Gameplay",
-            "caption": "Thread wind rings and land before the storm arrives.",
-            "description": "Real mobile gameplay showing one-thumb steering, ring collection, scoring, and the final orchard landing."
-          }
-        ],
-        "captureReport": "assets/marketing/playdrop/capture/capture-report.json"
+        "heroLandscape": "assets/marketing/playdrop/hero/hero-landscape.png"
       },
       "design": {
         "genre": "game-genre/arcade",
@@ -145,7 +136,7 @@ Replace names, refs, paths, and notes. Keep the shape.
         "progression": "game-progression/levels",
         "feel": "game-feel/playful"
       },
-      "releaseNotes": "First playable with ring steering, scoring, restart, preview mode, and listing media."
+      "releaseNotes": "First playable with ring steering, scoring, restart, preview mode, and identity art."
     }
   ]
 }
@@ -153,6 +144,7 @@ Replace names, refs, paths, and notes. Keep the shape.
 
 Rules:
 
+- `releaseNotes` must contain one line with 1 to 240 characters.
 - Game descriptions should be at least 20 words and about 120 characters, covering the player's action, objective, and distinctive hook. Short descriptions produce a CLI warning only and never block checks or upload.
 - Each screenshot and video entry may remain a path string or use a structured object. Structured objects require `path` and may add `slug`, `title`, `alt`, `caption`, and `description`. Use lowercase hyphenated slugs. `alt` is primarily for screenshots; `description` is primarily for videos.
 - A structured media `slug` becomes the filename in the published listing URL. Keep it stable after publication and unique within its orientation array.
@@ -166,7 +158,10 @@ Rules:
 - Clearing a design field removes its derived tag. An explicitly listed copy remains an explicit tag.
 - Rich game design and art direction do not belong in extra `design` keys. Use concise project prose when that context is worth retaining.
 - Every declared runtime pack or asset must be loaded and rendered or played in the game.
-- Listing screenshots are optional and must not be recommended or produced by default. Create them only when the creator explicitly requests promotional screenshots or a broader marketing package. When present, final screenshot arrays contain AI-generated marketing artwork from `skills/make-marketing-screenshots`, never recorder posters or raw gameplay captures.
-- New games require `previewable: true`, a dedicated square app icon, portrait and landscape hero art, and at least one real gameplay video.
-- Listing video is literal gameplay footage. Keep recorder posters in the capture directory as source evidence and image-generation references. Reference the real capture video through `listing.videosPortrait` or `listing.videosLandscape` and include `listing.captureReport` when required by the worker task.
+- A Cloud `NEW_GAME` requires `listing.icon`, `listing.heroPortrait`, and `listing.heroLandscape`. Keep the database fields optional for legacy and direct-publish compatibility.
+- Screenshots, videos, social packages, and capture reports are optional. Do not create them unless the creator requests them or the task specifically changes existing media.
+- `editorSupported` is optional and defaults to `false`. Set it to `true` only when a hosted game boots a focused owner-only Editor and calls `sdk.host.editorReady()` after that UI mounts. External apps cannot enable it.
+- For updates that do not request listing changes, keep the existing listing fields and files unchanged.
+- When present, final screenshot arrays contain AI-generated marketing artwork from `skills/make-marketing-screenshots`, never recorder posters or raw gameplay captures.
+- Listing video is literal gameplay footage. Keep recorder posters in the capture directory as source evidence and image-generation references. Reference requested video through `listing.videosPortrait` or `listing.videosLandscape`. A native `listing.captureReport` is optional and is not a completion requirement.
 - Audio SFX and listing art are non-blocking at runtime (warn, keep play unblocked). Gameplay-required images, sprites, and 3D models should fail loudly if missing.

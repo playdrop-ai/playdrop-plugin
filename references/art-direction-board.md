@@ -30,4 +30,4 @@ For 2D games, use a background image when it improves the result. Fixed, tiled, 
 
 ## Generation
 
-Follow `skills/make-assets` for sourcing and generation. Prefer reference conditioning for related images and inspect every accepted result. If an optional art-direction artifact fails, continue with the strongest available reference. If required listing media fails, follow the listing media failure policy.
+Follow `skills/make-assets` for sourcing and generation. Prefer reference conditioning for related images and inspect every accepted result. If an optional art-direction or listing artifact fails, continue without it. Gameplay-required media follows the clear-failure policy.
