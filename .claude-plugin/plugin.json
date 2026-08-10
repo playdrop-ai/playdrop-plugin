@@ -2,7 +2,7 @@
   "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
   "name": "playdrop",
   "displayName": "PlayDrop",
-  "version": "0.15.9",
+  "version": "0.15.12",
   "description": "Create, upload, publish and manage web games on PlayDrop.",
   "skills": "./skills/",
   "author": {
