@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
-import { existsSync, readFileSync, readdirSync } from 'node:fs';
-import { resolve } from 'node:path';
+import { existsSync, readFileSync } from 'node:fs';
+import { dirname, resolve } from 'node:path';
 import { spawnSync } from 'node:child_process';
 
 const root = resolve(process.argv[2] || '');
@@ -10,15 +10,19 @@ if (!process.argv[2]) {
   process.exit(2);
 }
 
-const expected = [
-  ['video', 'short/portrait-9x16.mp4', 1080, 1920],
-  ['video', 'short/pinterest-2x3.mp4', 1000, 1500],
-  ['video', 'trailer/landscape-16x9.mp4', 1920, 1080],
-  ['video', 'instagram/feed/video-3x4.mp4', 1080, 1440],
-  ['image', 'instagram/reels-cover-420x654.png', 420, 654],
-  ['image', 'youtube/trailer-thumbnail-1280x720.png', 1280, 720],
-];
+const manifestPath = resolve(root, 'manifest.json');
+if (!existsSync(manifestPath)) {
+  console.error('FAIL missing manifest.json');
+  process.exit(1);
+}
 
+let manifest;
+try {
+  manifest = JSON.parse(readFileSync(manifestPath, 'utf8'));
+} catch (error) {
+  console.error(`FAIL invalid manifest.json: ${error.message}`);
+  process.exit(1);
+}
 let failed = false;
 
 function fail(message) {
@@ -26,114 +30,96 @@ function fail(message) {
   console.error(`FAIL ${message}`);
 }
 
-function pass(message) {
-  console.log(`PASS ${message}`);
+function mediaPath(value, field) {
+  if (typeof value !== 'string' || value.length === 0) {
+    fail(`manifest missing ${field}`);
+    return null;
+  }
+  const path = resolve(dirname(manifestPath), value);
+  if (!existsSync(path)) {
+    fail(`${field} does not resolve: ${value}`);
+    return null;
+  }
+  return path;
 }
 
-function probe(relativePath) {
-  const file = resolve(root, relativePath);
-  const result = spawnSync(
-    'ffprobe',
-    [
-      '-v',
-      'error',
-      '-show_entries',
-      'format=duration',
-      '-show_entries',
-      'stream=codec_type,codec_name,width,height,sample_aspect_ratio,r_frame_rate,channels,sample_rate',
-      '-of',
-      'json',
-      file,
-    ],
-    { encoding: 'utf8' },
-  );
+function probe(path, field) {
+  const result = spawnSync('ffprobe', [
+    '-v', 'error',
+    '-show_entries', 'format=duration',
+    '-show_entries', 'stream=codec_type,codec_name,width,height,sample_aspect_ratio,channels',
+    '-of', 'json',
+    path,
+  ], { encoding: 'utf8' });
   if (result.status !== 0) {
-    throw new Error(result.stderr.trim() || `ffprobe failed for ${relativePath}`);
+    fail(`${field}: ${result.stderr.trim() || 'ffprobe failed'}`);
+    return null;
   }
   return JSON.parse(result.stdout);
 }
 
-for (const [kind, relativePath, width, height] of expected) {
-  const file = resolve(root, relativePath);
-  if (!existsSync(file)) {
-    fail(`missing ${relativePath}`);
-    continue;
+function validateVideo(value, field, width, height, minDuration, maxDuration) {
+  const path = mediaPath(value, field);
+  if (!path) return;
+  const data = probe(path, field);
+  if (!data) return;
+  const video = data.streams.find((stream) => stream.codec_type === 'video');
+  const audio = data.streams.find((stream) => stream.codec_type === 'audio');
+  const duration = Number(data.format.duration);
+  if (!video || video.width !== width || video.height !== height) {
+    fail(`${field} must be ${width}x${height}`);
+  } else if (video.codec_name !== 'h264' || video.sample_aspect_ratio !== '1:1') {
+    fail(`${field} must be H.264 with 1:1 sample aspect ratio`);
   }
-  try {
-    const data = probe(relativePath);
-    const video = data.streams.find((stream) => stream.codec_type === 'video');
-    const audio = data.streams.find((stream) => stream.codec_type === 'audio');
-    if (!video || video.width !== width || video.height !== height) {
-      fail(`${relativePath} expected ${width}x${height}, got ${video?.width ?? 0}x${video?.height ?? 0}`);
-      continue;
-    }
-    if (video.sample_aspect_ratio && video.sample_aspect_ratio !== '1:1') {
-      fail(`${relativePath} sample aspect ratio is ${video.sample_aspect_ratio}, expected 1:1`);
-      continue;
-    }
-    if (kind === 'video') {
-      if (video.codec_name !== 'h264') {
-        fail(`${relativePath} expected H.264, got ${video.codec_name}`);
-        continue;
-      }
-      if (!audio || audio.codec_name !== 'aac' || audio.channels !== 2) {
-        fail(`${relativePath} expected AAC stereo audio`);
-        continue;
-      }
-    }
-    pass(`${relativePath} ${width}x${height}`);
-  } catch (error) {
-    fail(`${relativePath}: ${error.message}`);
+  if (!audio || audio.codec_name !== 'aac' || audio.channels !== 2) {
+    fail(`${field} must have AAC stereo audio`);
+  }
+  if (!Number.isFinite(duration) || duration < minDuration || duration > maxDuration) {
+    fail(`${field} duration must be between ${minDuration} and ${maxDuration} seconds`);
   }
 }
 
-for (const [relativeDirectory, width, height] of [
-  ['pinterest/static', 1000, 1500],
-  ['instagram/feed/carousel', 1080, 1440],
-]) {
-  const directory = resolve(root, relativeDirectory);
-  if (!existsSync(directory)) {
-    fail(`missing ${relativeDirectory}`);
-    continue;
-  }
-  const files = readdirSync(directory).filter((file) => file.endsWith('.png')).sort();
-  if (files.length !== 5) {
-    fail(`${relativeDirectory} expected 5 PNG files, got ${files.length}`);
-  }
-  for (const file of files) {
-    const relativePath = `${relativeDirectory}/${file}`;
-    try {
-      const data = probe(relativePath);
-      const image = data.streams.find((stream) => stream.codec_type === 'video');
-      if (!image || image.width !== width || image.height !== height) {
-        fail(`${relativePath} expected ${width}x${height}, got ${image?.width ?? 0}x${image?.height ?? 0}`);
-      } else {
-        pass(`${relativePath} ${width}x${height}`);
-      }
-    } catch (error) {
-      fail(`${relativePath}: ${error.message}`);
-    }
-  }
-}
+const trailer = manifest.youtube?.trailerVideo;
+const short = manifest.youtube?.shortVideo;
+validateVideo(trailer, 'youtube.trailerVideo', 1920, 1080, 30, 60);
+validateVideo(short, 'youtube.shortVideo', 1080, 1920, 8, 15);
 
-const manifestPath = resolve(root, 'manifest.json');
-if (!existsSync(manifestPath)) {
-  fail('missing manifest.json');
+if (manifest.x?.video !== trailer) fail('x.video must reuse youtube.trailerVideo');
+if (manifest.tiktok?.video !== short) fail('tiktok.video must reuse youtube.shortVideo');
+if (manifest.instagram?.reelVideo !== short) fail('instagram.reelVideo must reuse youtube.shortVideo');
+if (manifest.instagram?.storyVideo !== short) fail('instagram.storyVideo must reuse youtube.shortVideo');
+
+const images = manifest.instagram?.images;
+if (!Array.isArray(images) || images.length !== 4) {
+  fail('instagram.images must contain exactly four files');
 } else {
-  try {
-    const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'));
-    for (const field of ['youtube', 'tiktok', 'instagram', 'pinterest', 'x']) {
-      if (!manifest[field]) fail(`manifest missing ${field}`);
+  images.forEach((value, index) => {
+    const field = `instagram.images[${index}]`;
+    const path = mediaPath(value, field);
+    if (!path) return;
+    const data = probe(path, field);
+    const image = data?.streams.find((stream) => stream.codec_type === 'video');
+    if (!image || Math.abs((image.width / image.height) - (9 / 16)) > 0.01) {
+      fail(`${field} must be a 9:16 portrait image`);
     }
-    if (!manifest.destinationUrl?.startsWith('https://www.playdrop.ai/')) {
-      fail('manifest destinationUrl must be a canonical PlayDrop URL');
-    } else {
-      pass('manifest channel mapping and destination URL');
-    }
-  } catch (error) {
-    fail(`manifest.json: ${error.message}`);
-  }
+  });
 }
 
-console.log('NOTE Technical validation cannot detect bars, filler, or clipped content. Complete the required visual review.');
+if (typeof manifest.destinationUrl !== 'string' || !manifest.destinationUrl.startsWith('https://www.playdrop.ai/')) {
+  fail('destinationUrl must be a canonical PlayDrop URL');
+}
+
+for (const field of [
+  ['youtube.trailerTitle', manifest.youtube?.trailerTitle],
+  ['youtube.shortTitle', manifest.youtube?.shortTitle],
+  ['youtube.description', manifest.youtube?.description],
+  ['tiktok.caption', manifest.tiktok?.caption],
+  ['instagram.caption', manifest.instagram?.caption],
+  ['x.copy', manifest.x?.copy],
+]) {
+  if (typeof field[1] !== 'string' || field[1].length === 0) fail(`manifest missing ${field[0]}`);
+}
+
+if (!failed) console.log('PASS social package structure and media');
+console.log('NOTE Complete visual review is still required.');
 process.exit(failed ? 1 : 0);

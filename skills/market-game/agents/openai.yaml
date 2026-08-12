@@ -1,5 +1,5 @@
 interface:
   display_name: "Market Game"
-  short_description: "Plan truthful listing messages and marketing assets"
+  short_description: "Create or update a game marketing package"
   brand_color: "#9D55F8"
-  default_prompt: "Use $market-game to plan the player promise, four screenshot messages, gameplay-video hook, and smallest useful marketing package."
+  default_prompt: "create the marketing package for the game"

@@ -2,4 +2,4 @@ interface:
   display_name: "Social Media Package"
   short_description: "Package game marketing assets for social channels"
   brand_color: "#9D55F8"
-  default_prompt: "Use $make-social-media-package to prepare a complete, validated social media package for this PlayDrop game."
+  default_prompt: "Use $make-social-media-package to map approved game marketing assets to YouTube, TikTok, Instagram, and X."

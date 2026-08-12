@@ -142,12 +142,13 @@ select the strongest truthful sections in the edit.
 - For board and puzzle games that fill the width, prefer a separate native
   capture for 3:4 and 2:3 instead of assuming a 9:16 crop is safe.
 
-Use an approved transparent hand asset when input is not otherwise obvious.
-Anchor the fingertip to the real contact point, compress the hand slightly into
-the screen plane for a tap, and place radial feedback at the same point. Show
-the complete gesture for long presses and drags, and fade cues in and out
-instead of popping them. Derive every cue timestamp from the exact raw take
-used in the edit.
+Use device-appropriate interaction guidance when input is not otherwise
+obvious: an approved hand for touch, an approved cursor or mouse cue for
+pointer input, or compact animated keycaps for keyboard input. Anchor it to the
+real action and trigger it through the same input helper that causes the action,
+or derive its timestamp from the exact raw take used in the edit. Show the
+complete gesture for presses and drags, and fade cues in and out instead of
+popping them.
 
 ## 6. Edit by semantic phase
 

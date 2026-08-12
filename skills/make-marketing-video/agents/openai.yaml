@@ -1,5 +1,5 @@
 interface:
   display_name: "Gameplay Marketing Video"
-  short_description: "Capture and edit literal gameplay footage"
+  short_description: "Create truthful gameplay trailers and shorts"
   brand_color: "#9D55F8"
-  default_prompt: "Use $make-marketing-video to capture and finish a truthful video made only from literal gameplay footage."
+  default_prompt: "Use $make-marketing-video to create truthful gameplay trailers and social shorts from a marketing-ready game preview."

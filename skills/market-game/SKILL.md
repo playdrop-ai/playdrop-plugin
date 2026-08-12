@@ -1,36 +1,61 @@
 ---
 name: market-game
-description: "Create a concise, reference-led marketing brief and asset plan for a playable PlayDrop game. Use when deciding how to position or promote a game, which player promise to lead with, what screenshot story or video hook to produce, or which marketing deliverables are worth making. Use the dedicated screenshot or video skill for production."
+description: "Create or update a PlayDrop game marketing package. Use when the user asks to create the marketing package, market a game, generate store and social assets, or refresh existing game marketing. Coordinates a short marketing brief, a marketing-ready preview, truthful videos, promotional images, listing metadata, social mappings, catalogue updates, and private draft delivery through the existing specialist skills."
 ---
 
 # Market Game
 
-Use this after the game is playable and the listing is accurate. This skill decides what to market; it does not produce or upload final media.
+Use this after the game is playable. This skill defines the marketing package and routes production to the existing specialist skills.
 
-## Workflow
+## Scope
 
-1. Inspect the playable game, listing, hero art, and real gameplay captures.
-2. Study five successful, directly comparable games on the intended channel.
-3. Identify the strongest truthful player promise.
-4. Describe the game's core action, tension, payoff, and goal.
-5. Lock approximately four distinct screenshot selling points with one two-to-four-word headline each.
-6. Choose the smallest useful asset set and target formats.
-7. Produce a concise brief with audience, hook, proof, visual direction, copy direction, deliverables, and claims to avoid.
+- If the package is empty, create the complete package below.
+- If a package already exists, inspect it first and preserve approved work. Create or change only what is missing, failing review, or requested by the user.
+- If the user requests one asset type or one correction, work only on that scope.
 
-Keep every claim grounded in the shipped game. Do not market absent, broken, or merely planned features.
+Never regenerate unrelated approved media merely to make an update look fresh.
 
-For a paid-video test, define each creative as a distinct promise with its own action, payoff, and end card. Do not call three cosmetic edits of the same footage three materially different concepts. Include the intended channel, aspect ratio, duration range, sound-off message, and separate end-card requirement in the brief.
+## Marketing package
 
-For a social package, plan around the standard package in `make-social-media-package` and reuse approved work across channels.
+1. Create a short brief at `assets/marketing/playdrop/marketing-brief.md` with:
+   - the strongest truthful player promise;
+   - the key gameplay moments to showcase;
+   - four distinct selling points with short headlines;
+   - the game evidence supporting each claim.
+2. Inspect the normal game preview. Improve it only when needed so it is a HUD-free, marketing-worthy demonstration of the real game that teaches the input, escalates, and reaches a real payoff. Use `make-listing` for the preview and capture contract.
+3. Use `make-marketing-video` to produce:
+   - one 16:9 PlayDrop store video;
+   - one 16:9 YouTube and X trailer;
+   - one 9:16 short for YouTube Shorts, TikTok, and Instagram;
+   - one 9:16 PlayDrop preview when the game supports portrait play.
+4. Use `make-marketing-screenshots` to produce:
+   - four 16:9 PlayDrop store images;
+   - four 9:16 Instagram images;
+   - the same four ordered selling points in both orientations, composed natively for each ratio.
+5. Update the description and tags when needed to match the approved promise and shipped game.
+6. Use `make-social-media-package` to map the approved videos and portrait images to YouTube, TikTok, Instagram, and X without duplicating identical files.
+7. Use `make-listing` to wire the approved media and metadata into `catalogue.json`.
 
-## Route production
+Reuse one approved canonical video for multiple destinations when its ratio, framing, pacing, safe areas, and truthfulness already fit them. Do not create duplicate physical files only to satisfy multiple mappings.
 
-- Final PlayDrop listing screenshots, promotional screenshots, store images, paid-acquisition stills, or social carousels: `make-marketing-screenshots`. These are fully AI-generated marketing compositions, including content and two-to-four-word headline text.
-- App previews, gameplay ads, trailers, or social video: `make-marketing-video`.
-- Complete YouTube, TikTok, Instagram, Pinterest, and X package: `make-social-media-package`.
-- Complete PlayDrop listing assembly, hero art, icon, catalogue metadata, real gameplay video, and source still capture: `make-listing`.
-- App Store Connect Custom Product Page operation: hand the approved package to the person or workflow that manages the store listing. Store configuration is outside this plugin.
+## Production rules
 
-Listing video is literal gameplay evidence. Listing screenshots are AI-generated marketing artwork. Raw captures and recorder posters are reference inputs, never final listing screenshots.
+- Gameplay video is real captured gameplay. Marketing images and video selling-point graphics may be AI generated, but must advertise only shipped content.
+- Treat `previewable: true` as a capability flag, not proof that the preview is good marketing footage.
+- Preserve the title, subtitle, icon, and hero images unless they are inaccurate or the user requested changes.
+- A raw recorder take is source footage, not a finished trailer.
+- A required missing or failed video is a hard failure. Do not replace it with `null`, `pending`, a note, or a partial package upload.
+- Validate the game after the last preview change, then complete each specialist skill's media review.
 
-If production is out of scope, leave the brief as the next-step handoff instead of creating weak placeholder media.
+## Studio delivery
+
+For a PlayDrop Studio agent task, upload one complete `PRIVATE` patch update after self-review. Do not publish it and do not pause for intermediate approval. The private draft is where the creator reviews the result.
+
+Outside Studio, follow the delivery scope of the invoking workflow.
+
+## Not building
+
+- No new gameplay features beyond truthful preview and capture support.
+- No unsupported claims or generated gameplay footage.
+- No automatic publication or social posting.
+- No unrelated asset regeneration during a narrow update.

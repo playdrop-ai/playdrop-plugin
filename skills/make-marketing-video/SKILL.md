@@ -1,11 +1,11 @@
 ---
 name: make-marketing-video
-description: "Capture and finish truthful gameplay marketing videos from a PlayDrop game. Use for App Store previews, Google Play videos, interstitial or rewarded ad creatives, trailers, and social clips that require external recording, a strong opening hook, platform-specific framing, editing, captions, or technical export validation."
+description: "Capture and finish truthful gameplay marketing videos from a PlayDrop game. Use for a game marketing package, PlayDrop or app-store previews, YouTube or X trailers, portrait social shorts, paid creatives, or any gameplay video that needs a marketing-ready preview, visible player input, authored editing, captions, channel framing, or technical validation."
 ---
 
 # Make Marketing Video
 
-Produce marketing video from real gameplay. Capture the game from the outside; never add a game-specific recorder or change normal gameplay to manufacture footage.
+Produce marketing video from real gameplay. Capture the reviewed normal preview from the outside; never add a game-specific recorder or change normal gameplay to manufacture footage.
 
 ## Non-negotiable media model
 
@@ -20,6 +20,9 @@ Produce marketing video from real gameplay. Capture the game from the outside; n
   mandatory protected-art, gameplay-truth, caption, interaction, phase-edit,
   geometry, and review contract.
 - Inspect the playable game, supported surfaces, listing, and existing capture report.
+- Inspect the normal preview in motion. If it is idle, cluttered, poorly framed,
+  or missing the selected moments, use `../make-listing/SKILL.md` to improve it
+  before recording.
 - Inspect the approved positioning brief and every previous campaign the
   operator names. Review its finals, handoff, source assets, and render scripts
   before choosing a production method.
@@ -45,11 +48,19 @@ Fail with `marketing_video_source_missing` when real, clean footage is unavailab
 - When the operator cites an approved PlayDrop campaign, reproduce its
   established caption and interaction system unless the new game's visual
   language requires a documented adaptation.
+- For a marketing package, use the Flighty Saucer production method as the
+  PlayDrop precedent: HUD-free preview capture, synchronized real input cues,
+  a reproducible semantic edit, real audio, visible progression, a real payoff,
+  and ratio-native review. Do not copy that game's art or mechanic.
 
 ### 2. Prepare a real gameplay state
 
 - Use the game's normal preview phase and `window.__listingCapture.prepare(sceneId)` when deterministic setup is needed.
-- Keep the preview state playable and representative of the shipped game.
+- Make that preview a HUD-free marketing demonstration before recording. It
+  must perform the real core action, show synchronized device-appropriate input
+  guidance, escalate through visually distinct moments, and reach a real
+  payoff. Keep it playable and representative of the shipped game.
+- Compose and inspect the preview separately for every requested orientation.
 - Use a fixed seed and a truthful scripted preview sequence when a specific real payoff must be reproducible. Prefer the strongest representative sequence first instead of recording weak footage and trying to manufacture excitement in the edit.
 - When the creative must finish on a win or large payoff, record the complete
   real run first. Select the opening, late-game action, automatic payoff, and
@@ -65,23 +76,41 @@ Fail with `marketing_video_source_missing` when real, clean footage is unavailab
 - Keep two reusable canonical gameplay captures when the game supports both orientations: a real 9:16 portrait capture and a real 16:9 landscape capture. Build channel exports from the nearest canonical capture only when its crop passes the geometry contract; otherwise recapture the destination surface. Capture separate orientations when the game layout materially changes.
 - Hide browser and host chrome while keeping only the real game surface visible.
 - Record one clean take with enough lead-in and tail to select the strongest segment.
+- Capture enough of one real run to select readable early play, a visibly more
+  intense or advanced moment, and the real result or signature payoff.
 - Record the real game surface dimensions. Do not trust an output file's nominal dimensions as proof that the embedded game was captured without distortion.
 - Apply the geometry contract in `../../references/marketing-creative-production.md` to every crop and export: uniform scale only, empty-margin crops only, no bars, gutters, stretching, or fill, and native 3:4 and 2:3 capture for width-filling board and puzzle games.
 - Confirm audio is synchronized when the game uses sound.
+- Reject a required final with no audio track when the game produces sound.
 
 ### 4. Build the cut
 
+- Create a reproducible edit project with the exact source ranges and a
+  deterministic render script. A raw capture is source footage, not a finished
+  marketing video.
 - Show the core mechanic or primary payoff in the first seconds. For paid app videos, prove the app experience in the first 2 to 3 seconds and use at least two meaningful visual changes in the first 5 seconds; do not force this cadence onto a store preview.
 - Remove loading, menus, dead time, failed gestures, debug UI, and unrelated host UI. Prefer a continuous, understandable gameplay sequence for store previews.
+- For a marketing package, structure each edit as: identity or action hook,
+  readable input, visibly advanced action, real payoff, and an optional
+  ratio-native identity close. Select these beats from truthful capture; do not
+  manufacture progression or a result in the edit.
 - Keep one short creative focused on one mechanic and its payoff. Give secondary beats their own creative when they are worth testing.
 - Edit by semantic phase per the reference: keep player input readable, accelerate only the repetitive automatic phase, return to readable speed for the result, keep audio synchronized per segment, and record every phase speed in the edit manifest.
-- Build captions and hand cues per the reference's typography and interaction sections: game-styled raster plates with verified copy, compact placement in quiet safe areas, and fingertip-anchored cues with timestamps derived from the exact raw take being edited. Never ship generic drawtext, code-drawn hands, or timestamps reused from an older capture.
+- Build captions and interaction cues per the reference's typography and interaction sections: game-styled raster plates with verified copy, compact placement in quiet safe areas, and device-appropriate cues synchronized with the real action. Never ship generic drawtext, code-drawn hands, or timestamps reused from an older capture.
+- For a marketing package, use AI image generation to make the approved
+  selling-point plates, then place each over the gameplay moment that proves
+  it. Use the four headlines in the landscape trailer and only the strongest
+  two or three in the portrait short. Never cover the player, input cue,
+  threat, goal, or payoff.
 - Use a protected hero opening only per the reference's identity rules.
 - Do not advertise a feature, enemy, reward, score, or control that the player cannot encounter.
 
 ### 5. Adapt by channel
 
 - Treat each orientation as its own edit when composition or UI changes.
+- For a marketing package, target 30 to 60 seconds for the 16:9 landscape
+  trailer and about 12 seconds for the 9:16 portrait short. Use less than the
+  maximum rather than adding filler.
 - For paid ads, make the hook and game identity clear immediately and provide a channel-compliant end card. Keep a separate matching end-card asset when the channel accepts one.
 - For store previews, prioritize an uninterrupted demonstration of the advertised experience.
 - For social clips, keep the same truthful footage while adapting pacing, captions, and safe areas to the platform. Use `../make-social-media-package/SKILL.md` when packaging the complete cross-platform set.
@@ -92,9 +121,12 @@ Fail with `marketing_video_source_missing` when real, clean footage is unavailab
 - Use `ffprobe` or the platform's authoritative media inspector to verify dimensions, duration, frame rate, codec, bitrate, audio channels, sample rate, and a `1:1` sample aspect ratio.
 - Compare representative source and final frames. Square tiles, circles, hands, logos, and other known shapes must retain their proportions.
 - Produce the review evidence set in the reference: complete-clip crop confirmation, contact sheets at every input timestamp, frames around every speed boundary, and one delivery-order composite for multi-format campaigns.
+- Review the complete timeline and every selected source range. Reject an edit
+  with an unintended menu, restart, or result before the deliberate ending, or
+  with no visible difference between its teaching and advanced beats.
 - Confirm the edit remains understandable with audio muted.
 - Compare the finished video with the real game and the brief.
-- Show the final video and poster frame to the user before delivery.
+- Outside a Studio agent task, show the final video and poster frame to the user before delivery. In Studio, self-review first and deliver the private draft for creator review.
 - Fail with `marketing_video_export_invalid` on any specification mismatch rather than uploading an uncertain file.
 
 ### 7. Package the approved video
@@ -114,4 +146,4 @@ Fail with `marketing_video_source_missing` when real, clean footage is unavailab
 - The reference's geometry, typography, phase-edit, and protected-asset contracts all hold.
 - Every video uses square pixels with a `1:1` sample aspect ratio and passes technical validation for its destination.
 - Every requested orientation is framed intentionally.
-- The user has reviewed the final video and poster frame.
+- The final video and poster frame have passed self-review. Outside Studio, the user has reviewed them before delivery.
