@@ -1,25 +1,22 @@
-import { Matrix4, Vector3 } from 'three';
-import { smoothingAlpha } from '../math/ScalarUtils.js';
-import { toUnitVec3, toVec3 } from '../math/Vector3Utils.js';
-import { DEFAULT_WORLD_BASIS } from '../math/WorldBasis.js';
+import { Matrix4, Vector3 } from "three";
+import { smoothingAlpha } from "../math/ScalarUtils.js";
+import { toUnitVec3, toVec3 } from "../math/Vector3Utils.js";
+import { DEFAULT_WORLD_BASIS } from "../math/WorldBasis.js";
 
 const EPS = 1e-12;
 
 export const CAMERA_ROTATION_MODES = Object.freeze({
-  lookAt: 'lookAt',
-  frame: 'frame',
+  lookAt: "lookAt",
+  frame: "frame",
 });
 
 export const CAMERA_HEIGHT_SOURCES = Object.freeze({
-  frameUp: 'frameUp',
-  basisUp: 'basisUp',
+  frameUp: "frameUp",
+  basisUp: "basisUp",
 });
 
 export class BaseCameraRig {
-  constructor({
-    rotationMode = CAMERA_ROTATION_MODES.lookAt,
-    basis = DEFAULT_WORLD_BASIS,
-  }) {
+  constructor({ rotationMode = CAMERA_ROTATION_MODES.lookAt, basis = DEFAULT_WORLD_BASIS }) {
     this.basis = basis;
     this.rotationMode = rotationMode;
     this.position = new Vector3();
@@ -65,11 +62,7 @@ export class BaseCameraRig {
     camera.up.copy(pose.up);
 
     if (this.rotationMode === CAMERA_ROTATION_MODES.frame) {
-      const matrix = new Matrix4().makeBasis(
-        pose.right,
-        pose.up,
-        pose.forward.clone().negate()
-      );
+      const matrix = new Matrix4().makeBasis(pose.right, pose.up, pose.forward.clone().negate());
       camera.quaternion.setFromRotationMatrix(matrix);
     } else {
       camera.lookAt(pose.lookAt);
@@ -111,18 +104,13 @@ export class BaseCameraRig {
     this.initialized = true;
   }
 
-  setFramePose({
-    position,
-    forward,
-    right = null,
-    up,
-  }) {
+  setFramePose({ position, forward, right = null, up }) {
     this.position.copy(position);
     this.forward.copy(toUnitVec3(forward, this.basis.forwardVector()));
     this.up.copy(toUnitVec3(up, this.basis.upVector()));
-    this.right.copy(right
-      ? toUnitVec3(right, this.basis.rightVector())
-      : new Vector3().crossVectors(this.forward, this.up));
+    this.right.copy(
+      right ? toUnitVec3(right, this.basis.rightVector()) : new Vector3().crossVectors(this.forward, this.up),
+    );
     if (this.right.lengthSq() <= EPS) this.right.copy(this.basis.rightVector());
     else this.right.normalize();
     this.up.crossVectors(this.right, this.forward).normalize();

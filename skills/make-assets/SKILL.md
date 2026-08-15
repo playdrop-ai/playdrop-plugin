@@ -11,19 +11,31 @@ Create assets when they best support the game. For risky mechanics, an optional 
 
 For every generated gameplay image that requires a transparent background, use the staged `make-2d-asset-pack` skill, even for one sprite. It owns controlled-matte generation, extraction, and alpha validation because image providers do not reliably return structural transparency. Also use it for coherent packs, multiple families or sheets, paired size variants, and approval rounds. Return here after extraction and review to declare the accepted files in the game.
 
-## Sourcing And Image Generation Order
+## Sourcing And Image Generation Ownership
 
 Before generating an image, prefer a PlayDrop pack or exact asset that already matches the style and runtime need, then a suitable CC0 web asset that can be converted and attributed correctly. Bespoke identity art usually needs generation instead.
 
-When generating any image, first check whether the `codex` CLI is available, including when the active agent is Claude. Then use these plans in order:
+Use exactly one production owner for each coherent image job:
 
-1. **Plan A: Codex CLI image generation.** When Codex CLI is available, ask it to generate the image with Terra at high reasoning. Run `codex exec --ephemeral --skip-git-repo-check --model gpt-5.6-terra --config 'model_reasoning_effort="high"' --sandbox workspace-write --cd <workspace> --image <path> -- "<image request>"` when attaching a visual reference, or omit `--image <path> --` when there is no reference. The `--` before the prompt is required because `--image` accepts multiple paths. Tell Codex to use its built-in image-generation tool, name the exact absolute output path, and forbid unrelated file changes. Repeat `--image <path>` before `--` for each useful visual reference. Make one corrected retry when appropriate.
-2. **Plan B: agent-native image generation.** When Codex CLI is unavailable or still fails, use the current agent's built-in image-generation tool when it supports the requested image type. Make one corrected retry when the first result or provider call fails.
-3. **Plan C: PlayDrop CLI AI generation.** When Plan B is unavailable or still fails, use `playdrop ai create ...` and follow the matching command help.
+- **Active Codex agent:** own the complete job directly. Use the built-in image-generation tool, then perform every required deterministic transform, code check, visual inspection, and corrected retry before returning accepted files.
+- **Active Claude agent:** delegate the complete job to one Codex CLI run with Terra at high reasoning. Do not ask Codex for one source image and resume processing in Claude. Codex owns generation, deterministic transforms, code validation, visual review, corrected retries, and the final accepted-file manifest. Claude only integrates the accepted outputs into the game.
 
-Use this generation order for hero art, optional direction artifacts, gameplay assets, backgrounds, listing art, and promotional images. Audio generation keeps the same source preference but uses the available audio-specific tools. When an approved identity reference exists, pass it to related generations when that improves consistency. Built-in tools and Codex CLI may save generated files outside the workspace (Codex saves under `$CODEX_HOME/generated_images`, default `~/.codex/generated_images`); copy the accepted file into the exact workspace target, verify it with `file`, and inspect it before use.
+For a Claude delegation, run this from the task workspace and put the full job contract in the prompt:
 
-Media failure policy: after all three plans fail, do not invent another generation route. For direct creator game work, record the reason, deliberately reduce the asset scope or use honestly designed owned vector/canvas assets, and surface "add credits to regenerate art" as a creator next step. Optional listing and art-direction media may be skipped. Gameplay-required media must follow the clear-failure rule below.
+```bash
+codex exec --ephemeral --skip-git-repo-check \
+  --model gpt-5.6-terra \
+  --config 'model_reasoning_effort="high"' \
+  --sandbox workspace-write \
+  --cd <workspace> \
+  -- "<read the named PlayDrop skills, complete the full image job, write only the requested outputs, and return the accepted-file manifest>"
+```
+
+When visual references are required, add one `--image <absolute-path>` per reference before `--`. The separator is required because `--image` accepts multiple paths. Give Codex the exact absolute output directory, the applicable PlayDrop skill paths, the visual references, and the complete asset or listing contract. For transparent assets, first prepare the managed runtime as directed by `make-2d-asset-pack`, then include its printed `runtime_python` path in the delegation prompt.
+
+Use this ownership rule for hero art, optional direction artifacts, gameplay assets, backgrounds, listing art, and promotional images. Audio generation uses the available audio-specific tools. When an approved identity reference exists, pass it to related generations when that improves consistency. Built-in image generation may initially save a result outside the workspace; the production owner must copy the accepted result into the exact workspace target, verify its type, and inspect it before use.
+
+Do not switch to PlayDrop AI, an ad hoc keyer, or a second production owner when Codex generation or validation fails. Make one corrected retry when the evidence identifies a correctable defect, then fail clearly with the retained reason. Optional media may be skipped only when the governing skill says it is optional. Gameplay-required media and the new-game identity trio must fail clearly when they cannot be completed.
 
 ## Rules
 

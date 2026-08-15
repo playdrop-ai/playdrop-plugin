@@ -59,7 +59,11 @@ def write_json(path: Path, value: Any) -> None:
 
 
 @contextmanager
-def exclusive_file_lock(path: Path, timeout_seconds: float = 10.0) -> Iterator[None]:
+def exclusive_file_lock(
+    path: Path,
+    timeout_seconds: float = 10.0,
+    stale_seconds: float = 60.0,
+) -> Iterator[None]:
     """Use a short-lived lock file for cross-process state and ledger writes."""
     path.parent.mkdir(parents=True, exist_ok=True)
     deadline = time.monotonic() + timeout_seconds
@@ -70,7 +74,7 @@ def exclusive_file_lock(path: Path, timeout_seconds: float = 10.0) -> Iterator[N
             os.write(descriptor, f"{os.getpid()}\n".encode("ascii"))
         except FileExistsError:
             try:
-                stale = time.time() - path.stat().st_mtime > 60.0
+                stale = time.time() - path.stat().st_mtime > stale_seconds
             except FileNotFoundError:
                 continue
             if stale:

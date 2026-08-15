@@ -93,10 +93,7 @@
         "mode": { "enum": ["paired", "large", "small"] },
         "columns": { "type": "integer", "minimum": 1, "maximum": 8 },
         "matte": {
-          "anyOf": [
-            { "const": "auto" },
-            { "type": "string", "pattern": "^#[0-9a-fA-F]{6}$" }
-          ]
+          "anyOf": [{ "const": "auto" }, { "type": "string", "pattern": "^#[0-9a-fA-F]{6}$" }]
         },
         "fallbackMattes": {
           "type": "array",
@@ -119,10 +116,7 @@
           "minItems": 1,
           "maxItems": 16,
           "items": {
-            "anyOf": [
-              { "type": "string", "minLength": 1 },
-              { "$ref": "#/$defs/item" }
-            ]
+            "anyOf": [{ "type": "string", "minLength": 1 }, { "$ref": "#/$defs/item" }]
           }
         }
       },

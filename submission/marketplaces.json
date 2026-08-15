@@ -25,9 +25,7 @@
     "brandColor": "#9D55F8",
     "brandColorDark": "#B555F8",
     "composerIcon": "assets/playdrop-icon-large.png",
-    "starterPrompts": [
-      "Upload and publish this game to PlayDrop and return the URL to play it or any required fixes."
-    ],
+    "starterPrompts": ["Upload and publish this game to PlayDrop and return the URL to play it or any required fixes."],
     "positiveTests": [
       {
         "prompt": "Plan a small 2D endless runner for PlayDrop with one-button controls.",

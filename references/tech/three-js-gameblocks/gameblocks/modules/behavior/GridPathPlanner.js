@@ -14,7 +14,7 @@ export function normalizeBlockedCells(blocked = []) {
   const keys = new Set();
   for (const cell of blocked ?? []) {
     if (!cell) continue;
-    if (typeof cell === 'string') {
+    if (typeof cell === "string") {
       keys.add(cell);
     } else {
       keys.add(gridCellKey(cell));
@@ -50,12 +50,7 @@ function stepCell(cell, direction, board, wrap, navigation) {
     return next;
   }
 
-  if (
-    next.right < 0 ||
-    next.right >= board.columns ||
-    next.forward < 0 ||
-    next.forward >= board.rows
-  ) {
+  if (next.right < 0 || next.right >= board.columns || next.forward < 0 || next.forward >= board.rows) {
     return null;
   }
 
@@ -63,13 +58,7 @@ function stepCell(cell, direction, board, wrap, navigation) {
 }
 
 export class GridPathPlanner {
-  constructor({
-    navigation,
-    columns = 20,
-    rows = 20,
-    wrap = true,
-    neighborOrder = null
-  }) {
+  constructor({ navigation, columns = 20, rows = 20, wrap = true, neighborOrder = null }) {
     this.navigation = navigation;
     this.columns = Math.floor(columns);
     this.rows = Math.floor(rows);
@@ -77,11 +66,7 @@ export class GridPathPlanner {
     this.neighborOrder = [...(neighborOrder ?? this.navigation.neighborOrder)];
   }
 
-  setBoard(
-    columns = this.columns,
-    rows = this.rows,
-    wrap = this.wrap
-  ) {
+  setBoard(columns = this.columns, rows = this.rows, wrap = this.wrap) {
     this.columns = Math.floor(columns);
     this.rows = Math.floor(rows);
     this.wrap = wrap !== false;
@@ -89,19 +74,12 @@ export class GridPathPlanner {
   }
 
   heuristic(a, b) {
-    const dRight = this.wrap
-      ? wrapDelta(a.right - b.right, this.columns)
-      : Math.abs(a.right - b.right);
-    const dForward = this.wrap
-      ? wrapDelta(a.forward - b.forward, this.rows)
-      : Math.abs(a.forward - b.forward);
+    const dRight = this.wrap ? wrapDelta(a.right - b.right, this.columns) : Math.abs(a.right - b.right);
+    const dForward = this.wrap ? wrapDelta(a.forward - b.forward, this.rows) : Math.abs(a.forward - b.forward);
     return dRight + dForward;
   }
 
-  getNeighbors(
-    cell,
-    wrap = this.wrap
-  ) {
+  getNeighbors(cell, wrap = this.wrap) {
     const neighbors = [];
     for (const direction of this.neighborOrder) {
       const next = stepCell(cell, direction, this, wrap, this.navigation);
@@ -114,14 +92,7 @@ export class GridPathPlanner {
     return neighbors;
   }
 
-  findPath(
-    start,
-    goal,
-    blocked = [],
-    allowStartOccupied = true,
-    allowGoalOccupied = true,
-    wrap = this.wrap
-  ) {
+  findPath(start, goal, blocked = [], allowStartOccupied = true, allowGoalOccupied = true, wrap = this.wrap) {
     if (!start || !goal) return null;
 
     const startCell = cloneCell(start);
@@ -187,13 +158,7 @@ export class GridPathPlanner {
     return null;
   }
 
-  floodFill(
-    start,
-    blocked = [],
-    allowStartOccupied = true,
-    wrap = this.wrap,
-    limit = Infinity
-  ) {
+  floodFill(start, blocked = [], allowStartOccupied = true, wrap = this.wrap, limit = Infinity) {
     if (!start) {
       return { count: 0, cells: [] };
     }

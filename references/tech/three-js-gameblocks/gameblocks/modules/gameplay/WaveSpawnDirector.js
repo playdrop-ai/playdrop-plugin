@@ -1,18 +1,13 @@
-import { clamp } from '../math/ScalarUtils.js';
-import { DEFAULT_PRNG } from '../math/RandomUtils.js';
+import { clamp } from "../math/ScalarUtils.js";
+import { DEFAULT_PRNG } from "../math/RandomUtils.js";
 
-const DEFAULT_UNLOCK_RULES = [
-  { waveNumber: 1, type: 'DEFAULT' },
-];
+const DEFAULT_UNLOCK_RULES = [{ waveNumber: 1, type: "DEFAULT" }];
 
 const DEFAULT_TYPE_WEIGHTS = {
   DEFAULT: 1,
 };
 
-const resolveWeight = (value, waveNumber) => (
-  typeof value === 'function' ? value(waveNumber) : value
-);
-
+const resolveWeight = (value, waveNumber) => (typeof value === "function" ? value(waveNumber) : value);
 
 export class WaveSpawnDirector {
   constructor({
@@ -24,7 +19,7 @@ export class WaveSpawnDirector {
     maxSpawnsPerStep = 100,
     startWaveNumber = 1,
     waveAutoStart = true,
-    prng = DEFAULT_PRNG
+    prng = DEFAULT_PRNG,
   }) {
     this.baseWaveSize = baseWaveSize;
     this.growthPerWave = growthPerWave;
@@ -85,9 +80,7 @@ export class WaveSpawnDirector {
   }
 
   getAvailableTypes(waveNumber = this.waveNumber) {
-    return this.unlockRules
-      .filter((rule) => waveNumber >= rule.waveNumber)
-      .map((rule) => rule.type);
+    return this.unlockRules.filter((rule) => waveNumber >= rule.waveNumber).map((rule) => rule.type);
   }
 
   selectType(waveNumber = this.waveNumber) {

@@ -1,16 +1,16 @@
 export const RACE_STATES = Object.freeze({
-  WAITING: 'WAITING',
-  STARTING: 'STARTING',
-  STARTED: 'STARTED',
-  FINISHED: 'FINISHED',
+  WAITING: "WAITING",
+  STARTING: "STARTING",
+  STARTED: "STARTED",
+  FINISHED: "FINISHED",
 });
 
 export const RACE_CHECKPOINT_LAP_EVENTS = Object.freeze({
-  RACE_STARTED: 'race.started',
-  CHECKPOINT_PASSED: 'checkpoint.passed',
-  LAP_COMPLETED: 'lap.completed',
-  PLAYER_FINISHED: 'player.finished',
-  RACE_FINISHED: 'race.finished',
+  RACE_STARTED: "race.started",
+  CHECKPOINT_PASSED: "checkpoint.passed",
+  LAP_COMPLETED: "lap.completed",
+  PLAYER_FINISHED: "player.finished",
+  RACE_FINISHED: "race.finished",
 });
 
 function clonePosition(position) {
@@ -57,11 +57,7 @@ function createPlayerState({ playerId, position }) {
  * - startingDelaySeconds: optional countdown duration used by startGame().
  */
 export class RaceCheckpointLapPlay {
-  constructor({
-    checkpoints,
-    lapCount = 3,
-    startingDelaySeconds = 0,
-  }) {
+  constructor({ checkpoints, lapCount = 3, startingDelaySeconds = 0 }) {
     this.checkpoints = checkpoints;
     this.lapCount = lapCount;
     this.checkpointPerLap = checkpoints.length;
@@ -78,7 +74,7 @@ export class RaceCheckpointLapPlay {
   addPlayer({ playerId, position }) {
     const player = createPlayerState({ playerId, position });
     if (this.raceState !== RACE_STATES.WAITING) {
-      throw new Error('players can only be added while the race is waiting');
+      throw new Error("players can only be added while the race is waiting");
     }
     if (this.players.has(playerId)) {
       throw new Error(`player already exists: ${playerId}`);
@@ -99,10 +95,10 @@ export class RaceCheckpointLapPlay {
 
   startGame() {
     if (this.raceState !== RACE_STATES.WAITING) {
-      throw new Error('race can only be started from WAITING');
+      throw new Error("race can only be started from WAITING");
     }
     if (this.players.size === 0) {
-      throw new Error('race requires at least one player');
+      throw new Error("race requires at least one player");
     }
 
     this._resetProgress();

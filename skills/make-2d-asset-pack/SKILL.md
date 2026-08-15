@@ -11,7 +11,7 @@ Turn a natural-language request for one sprite, a small game-owned set, a sheet,
 
 Read `references/production-contract.md` before processing art. Read `references/prompt-contract.md` before changing prompt behavior.
 
-Set up the shared pinned extraction runtime once, then use the printed Python path for all skill scripts:
+Use a supplied managed `runtime_python:` path when the execution environment provides one. Otherwise set up the shared pinned extraction runtime once:
 
 ```bash
 python3 scripts/setup_runtime.py
@@ -48,6 +48,13 @@ Review any `matte_review_required` warning before generation. It means even the 
 
 If there is no style reference image, the first family is a bootstrap style job and the rest wait. Once its source is accepted, it becomes the canonical style anchor and all other families become ready. With a reference image, families are ready immediately.
 
+## Production owner
+
+- **Active Codex agent:** perform this complete workflow directly with built-in image generation.
+- **Active Claude agent:** obtain the standard managed runtime path first, then delegate the complete transparent-asset job to one Codex CLI run as defined in `../make-assets/SKILL.md`. Provide the asset brief, exact output directory, this skill path, both reference contracts, and the runtime path. Codex must prepare the request, generate controlled-matte sources, ingest them, split and extract, run code validation, inspect every required board, make any allowed corrected retry, copy accepted game-owned PNGs into their final paths, and return a compact manifest containing path, dimensions, format, byte size, alpha result, and visual-review result. Claude only integrates files that the manifest marks accepted.
+
+Do not split generation and extraction between Claude and Codex. Do not ask Codex merely for a transparent PNG. Do not replace this workflow with an ad hoc keyer. If the single Codex job fails after one evidence-based correction, retain the exact failure and stop clearly.
+
 ## Canonical Loop
 
 For game-owned assets that remain embedded in one game, run the same generation, splitting, extraction, code validation, and Codex review steps below, then copy accepted transparent PNGs into the game and declare them in `ownedAssets`. The human approval and `finalize_pack.py` publication gates apply only when publishing a standalone reusable asset pack.
@@ -70,7 +77,7 @@ $ASSET_PACK_PY scripts/claim_job.py \
   --worker codex-1
 ```
 
-The command prints the exact prompt, style references, identity template, and output path. Follow the image-generation order in `../make-assets/SKILL.md`, with style references first and the identity template last. Never use a script to synthesize the art or swap its background.
+The command prints the exact prompt, style references, identity template, and output path. Follow the production ownership rule in `../make-assets/SKILL.md`, with style references first and the identity template last. Never use a script to synthesize the art or swap its background.
 
 For packs, run up to three independent generation jobs concurrently. Subagents may claim jobs when available, but the file queue is authoritative and the workflow must also work from one parent agent.
 

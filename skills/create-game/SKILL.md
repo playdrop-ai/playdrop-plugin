@@ -28,7 +28,7 @@ Use this as the main entry point for PlayDrop game development:
 - **Local development:** Run and inspect the hosted game locally. Learn more: `playdrop project dev --help`.
 - **Playtesting:** Deterministic gameplay checks and self-review. Learn more: `playtest-game`.
 - **Catalogue:** Surfaces, assets, metadata, Tweaks, listing, and upload declarations. Learn more: `../../references/catalogue-json.md`.
-- **Listing:** Accurate metadata and optional creator-requested media. Learn more: `make-listing`.
+- **Listing:** Accurate metadata, required new-game identity art, and optional creator-requested media. Learn more: `make-listing`.
 
 Open only the capabilities that improve the game. Never load both engine skills for one game. Read `make-assets` before any image-generation command; it routes transparent 2D art to `make-2d-asset-pack` when needed.
 
@@ -41,7 +41,7 @@ Open only the capabilities that improve the game. Never load both engine skills 
 5. Replace the sample loop. The finished game needs agency, feedback, challenge, visible progress or payoff, and a reliable restart. Use coherent finished assets, not emoji, basic shapes, or default engine primitives as its identity.
 6. In `catalogue.json`, declare one honest `primarySurface`, only supported `surfaceTargets`, and one complete playtest tape per surface. Treat task `surfaceContext` as the submitting device, not a design requirement.
 7. Create original expression. A referenced game may inform genre and function, never its name, characters, art, audio, text, level design, or presentation.
-8. Create the required new-game identity trio: a square app icon, portrait hero, and landscape hero. Keep screenshots, gameplay video, capture reports, and social packages absent unless the creator explicitly requests them.
+8. Read `../make-listing/SKILL.md` before creating the required new-game identity trio: a square app icon, portrait hero, and landscape hero. Its title, composition, file-size, production-owner, inspection, and manifest rules are mandatory. Keep screenshots, gameplay video, capture reports, and social packages absent unless the creator explicitly requests them.
 9. After the last runtime change, run the deterministic final check from `playtest-game`, verify the listing metadata, validate, then deliver through the workflow that invoked this skill.
 
 Use `../../references/phases/new-game.md` for creator-facing progress vocabulary. Working notes such as `GAME.md`, `ART_DIRECTION.md`, and `AGENTS.md` are optional memory, never delivery gates.

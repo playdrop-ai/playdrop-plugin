@@ -1,6 +1,6 @@
-import { BaseCameraRig, CAMERA_HEIGHT_SOURCES, CAMERA_ROTATION_MODES } from './BaseCameraRig.js';
-import { toVec3 } from '../math/Vector3Utils.js';
-import { DEFAULT_WORLD_BASIS } from '../math/WorldBasis.js';
+import { BaseCameraRig, CAMERA_HEIGHT_SOURCES, CAMERA_ROTATION_MODES } from "./BaseCameraRig.js";
+import { toVec3 } from "../math/Vector3Utils.js";
+import { DEFAULT_WORLD_BASIS } from "../math/WorldBasis.js";
 
 export class PoseFollowCameraRig extends BaseCameraRig {
   constructor({
@@ -30,14 +30,7 @@ export class PoseFollowCameraRig extends BaseCameraRig {
     });
   }
 
-  step({
-    targetPosition,
-    targetFrame,
-    targetSpeed = 0,
-    snapToTarget = false,
-    deltaSeconds = 1 / 60,
-    camera = null,
-  }) {
+  step({ targetPosition, targetFrame, targetSpeed = 0, snapToTarget = false, deltaSeconds = 1 / 60, camera = null }) {
     const frame = this.resolveTargetFrame(targetFrame);
     const focusPosition = toVec3(targetPosition);
     const speed = Math.max(0, targetSpeed ?? 0);
@@ -47,11 +40,13 @@ export class PoseFollowCameraRig extends BaseCameraRig {
     const cameraOffset = this.offsetForSpeed(this.cameraOffset, this.speedCameraOffset, speed);
     const lookAtOffset = this.offsetForSpeed(this.lookAtOffset, this.speedLookAtOffset, speed);
 
-    const desiredPosition = focusPosition.clone()
+    const desiredPosition = focusPosition
+      .clone()
       .addScaledVector(frame.forward, cameraOffset.forward)
       .addScaledVector(frame.right, cameraOffset.right)
       .addScaledVector(heightVector, cameraOffset.up);
-    const desiredLookAt = focusPosition.clone()
+    const desiredLookAt = focusPosition
+      .clone()
       .addScaledVector(frame.forward, lookAtOffset.forward)
       .addScaledVector(frame.right, lookAtOffset.right)
       .addScaledVector(lookHeightVector, lookAtOffset.up);
@@ -70,7 +65,7 @@ export class PoseFollowCameraRig extends BaseCameraRig {
         forward: this.forward,
         up: this.up,
       });
-    } else if(this.rotationMode == CAMERA_ROTATION_MODES.lookAt) {
+    } else if (this.rotationMode == CAMERA_ROTATION_MODES.lookAt) {
       this.setLookAtPose({
         position: this.position,
         lookAt: this.lookAt,

@@ -12,7 +12,7 @@ Requires the PlayDrop CLI. If the `playdrop` command is unavailable, follow the 
 - Accurate title, subtitle, description, tags, surfaces, `uses`, and any populated optional `design` refs are enough to complete the default listing workflow. See `../../references/catalogue-json.md`.
 - A Cloud `NEW_GAME` must include a square app icon, portrait hero, and landscape hero. Screenshots, videos, social packages, and capture reports remain optional and must not be created unless the creator requests them.
 - For an update that does not request listing changes, leave the existing listing fields and files unchanged.
-- When optional media is supplied, keep it within the CLI upload limits. The upload service validates the declared files.
+- Every identity file must be PNG. The app icon must be strictly under 512 KB (524,288 bytes). Each portrait or landscape hero must be strictly under 2 MB (2,097,152 bytes). The upload service validates the declared files again.
 - Listing video must be literal footage from the shipped game. Promotional screenshots must make only truthful claims about the shipped game.
 
 ## New-game identity art
@@ -20,13 +20,25 @@ Requires the PlayDrop CLI. If the `playdrop` command is unavailable, follow the 
 - Complete this section for a Cloud `NEW_GAME`. For updates, preserve the existing trio unless the creator requested changes.
 - When art-direction heroes exist, use them as references for final hero art and refine them against real source stills and runtime assets. Otherwise derive truthful heroes from the finished game.
 - Create or edit hero art with AI image generation. Never create hero art with code, SVG, canvas, CSS, or a raw gameplay composition. If AI generation cannot produce acceptable hero art, fail clearly instead of substituting code-drawn art.
-- Both portrait and landscape hero art must show the exact game name front and center as large, readable title or logo text. Inspect at full size and thumbnail size, and reject misspelled, malformed, clipped, obscured, or unreadable titles.
-- Save final identity PNGs under `assets/marketing/playdrop/` and reference them through `listing.heroPortrait` and `listing.heroLandscape`. Each hero and screenshot must remain within the CLI size limits.
+- Both portrait and landscape hero art must show the exact game name front and center as large, readable title or logo text. The title is part of the generated composition, not code-added typography. Reject extra wording and misspelled, malformed, clipped, obscured, or unreadable titles.
+- Compose portrait and landscape heroes separately for their orientations. Keep the title readable at full size and thumbnail size, preserve the actual game fantasy and key entities, and exclude unrelated UI, device frames, watermarks, and raw gameplay framing.
+- Save final identity PNGs under `assets/marketing/playdrop/` and reference them through `listing.icon`, `listing.heroPortrait`, and `listing.heroLandscape`.
 - Never use a mockup board, a raw gameplay capture, or a crop of either as hero art.
-- When creating an app icon, use a square 1:1 PNG, preferably 512x512. Create it as a separate composition with a bold small-size silhouette and no text. Never copy, crop, resize, or reuse the hero as the icon.
+- Create the app icon as a separate square 1:1 PNG composition, preferably 512x512, with one bold small-size silhouette and no text. Never copy, crop, resize, or reuse a hero as the icon.
 - Hero art may be more polished than gameplay, but it must express the actual game fantasy and key entities.
-- For icon and hero art, follow the Plan A Codex CLI with Terra high, Plan B agent-native, then Plan C PlayDrop CLI generation order and media failure policy in `../make-assets/SKILL.md`.
-- When a local image inspection or transform needs Python, use the standard PlayDrop creator image runtime. Never install Pillow or create another Python environment during a game task. Fail with `creator_image_runtime_missing` when the standard runtime is unavailable.
+
+Use the production ownership contract in `../make-assets/SKILL.md`:
+
+- **Active Codex agent:** create the complete identity trio directly with built-in image generation, then validate and review all three files.
+- **Active Claude agent:** delegate the complete identity trio to one Codex CLI run. Codex owns all three generations, deterministic transforms, code checks, full-size and thumbnail review, one evidence-based corrected retry, and the final manifest. Claude only updates `catalogue.json` with files that Codex marks accepted.
+
+The production owner must not trust a prompt to satisfy dimensions or byte limits. After generation, inspect all three images together, resize or optimize deterministically when needed, and recheck the final files. Return one compact manifest with path, dimensions, PNG format, byte size, and visual-review result for each file. Accept the trio only when:
+
+- the icon is square, text-free, visually distinct from both heroes, and under 524,288 bytes;
+- both heroes are under 2,097,152 bytes and show the exact game name front and center;
+- both heroes pass full-size and thumbnail inspection for title spelling, legibility, clipping, composition, truthfulness, and unwanted UI or watermarks.
+
+If any item fails, correct that item and rerun the complete three-file preflight. Do not substitute PlayDrop AI, code-drawn identity art, or an ad hoc processing route.
 
 ## Optional promotional screenshots
 

@@ -71,9 +71,7 @@ Replace names, refs, paths, and notes. Keep the shape.
         }
       },
       "uses": {
-        "packs": [
-          "pack:playdrop/platformer-art-deluxe-repack@1.0.0"
-        ],
+        "packs": ["pack:playdrop/platformer-art-deluxe-repack@1.0.0"],
         "assets": [
           {
             "ref": "asset:playdrop/wind-chime-sfx@r1",
@@ -159,6 +157,7 @@ Rules:
 - Rich game design and art direction do not belong in extra `design` keys. Use concise project prose when that context is worth retaining.
 - Every declared runtime pack or asset must be loaded and rendered or played in the game.
 - A Cloud `NEW_GAME` requires `listing.icon`, `listing.heroPortrait`, and `listing.heroLandscape`. Keep the database fields optional for legacy and direct-publish compatibility.
+- Identity art is PNG. `listing.icon` is a separate square text-free composition, preferably 512x512, and must be under 524,288 bytes. Each hero must be under 2,097,152 bytes, use a composition made for its orientation, and show the exact game name front and center as large readable title or logo text. Read `skills/make-listing/SKILL.md` before producing the trio.
 - Screenshots, videos, social packages, and capture reports are optional. Do not create them unless the creator requests them or the task specifically changes existing media.
 - `editorSupported` is optional and defaults to `false`. Set it to `true` only when a hosted game boots a focused owner-only Editor and calls `sdk.host.editorReady()` after that UI mounts. External apps cannot enable it.
 - For updates that do not request listing changes, keep the existing listing fields and files unchanged.

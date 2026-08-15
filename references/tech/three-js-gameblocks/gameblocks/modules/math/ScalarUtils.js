@@ -19,11 +19,11 @@ export function fract(value) {
 }
 
 export function toRad(degrees) {
-  return degrees * Math.PI / 180;
+  return (degrees * Math.PI) / 180;
 }
 
 export function toDeg(radians) {
-  return radians * 180 / Math.PI;
+  return (radians * 180) / Math.PI;
 }
 
 export function smoothingAlpha(lag, deltaSeconds) {

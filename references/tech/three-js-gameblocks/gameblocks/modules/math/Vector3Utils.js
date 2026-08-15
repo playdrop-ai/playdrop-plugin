@@ -1,14 +1,10 @@
-import { Vector3 } from 'three';
-import { DEFAULT_WORLD_BASIS } from './WorldBasis.js';
+import { Vector3 } from "three";
+import { DEFAULT_WORLD_BASIS } from "./WorldBasis.js";
 
 export const VECTOR_EPS = 1e-6;
 
 export function toVec3(value, fallback = { x: 0, y: 0, z: 0 }) {
-  return new Vector3(
-    value?.x ?? fallback.x ?? 0,
-    value?.y ?? fallback.y ?? 0,
-    value?.z ?? fallback.z ?? 0
-  );
+  return new Vector3(value?.x ?? fallback.x ?? 0, value?.y ?? fallback.y ?? 0, value?.z ?? fallback.z ?? 0);
 }
 
 export function toUnitVec3(value, fallback = { x: 0, y: 1, z: 0 }) {
@@ -23,11 +19,7 @@ export function toUnitVec3(value, fallback = { x: 0, y: 1, z: 0 }) {
   return vector.normalize();
 }
 
-export function toPlanarUnitVec3(
-  value,
-  fallback = { x: 0, y: 0, z: -1 },
-  basis = DEFAULT_WORLD_BASIS
-) {
+export function toPlanarUnitVec3(value, fallback = { x: 0, y: 0, z: -1 }, basis = DEFAULT_WORLD_BASIS) {
   const worldBasis = basis;
   const vector = toVec3(value, fallback);
   worldBasis.flatten(vector);

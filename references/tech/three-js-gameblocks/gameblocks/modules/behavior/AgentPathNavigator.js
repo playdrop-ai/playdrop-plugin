@@ -1,7 +1,7 @@
-import { Vector3 } from 'three';
-import { clamp } from '../math/ScalarUtils.js';
-import { DEFAULT_WORLD_BASIS } from '../math/WorldBasis.js';
-import { toVec3 } from '../math/Vector3Utils.js';
+import { Vector3 } from "three";
+import { clamp } from "../math/ScalarUtils.js";
+import { DEFAULT_WORLD_BASIS } from "../math/WorldBasis.js";
+import { toVec3 } from "../math/Vector3Utils.js";
 
 const EPS = 1e-6;
 
@@ -16,12 +16,7 @@ function neutralIntent({ waypoint = null }) {
 }
 
 export class AgentPathNavigator {
-  constructor({
-    maxSpeed = 3.5,
-    minSpeed = 0,
-    arriveRadius = 1.25,
-    basis = DEFAULT_WORLD_BASIS
-  }) {
+  constructor({ maxSpeed = 3.5, minSpeed = 0, arriveRadius = 1.25, basis = DEFAULT_WORLD_BASIS }) {
     this.maxSpeed = maxSpeed;
     this.minSpeed = minSpeed;
     this.arriveRadius = arriveRadius;
@@ -33,13 +28,7 @@ export class AgentPathNavigator {
     this.last = null;
   }
 
-  step({
-    position = null,
-    waypoint = null,
-    movementEnabled = true,
-    maxSpeed = this.maxSpeed,
-  }) {
-
+  step({ position = null, waypoint = null, movementEnabled = true, maxSpeed = this.maxSpeed }) {
     if (movementEnabled === false || !position || !waypoint) {
       this.last = neutralIntent({ waypoint });
       return this.last;
@@ -56,14 +45,8 @@ export class AgentPathNavigator {
     }
 
     const speedLimit = Math.max(0, maxSpeed);
-    const arrivalScale = this.arriveRadius > EPS
-      ? clamp(distance / this.arriveRadius, 0, 1)
-      : 1;
-    const desiredSpeed = clamp(
-      speedLimit * arrivalScale,
-      Math.max(0, Math.min(this.minSpeed, speedLimit)),
-      speedLimit
-    );
+    const arrivalScale = this.arriveRadius > EPS ? clamp(distance / this.arriveRadius, 0, 1) : 1;
+    const desiredSpeed = clamp(speedLimit * arrivalScale, Math.max(0, Math.min(this.minSpeed, speedLimit)), speedLimit);
 
     this.last = {
       waypoint: target.clone(),

@@ -1,6 +1,6 @@
-import { BaseCameraRig, CAMERA_ROTATION_MODES } from './BaseCameraRig.js';
-import { toVec3 } from '../math/Vector3Utils.js';
-import { DEFAULT_WORLD_BASIS } from '../math/WorldBasis.js';
+import { BaseCameraRig, CAMERA_ROTATION_MODES } from "./BaseCameraRig.js";
+import { toVec3 } from "../math/Vector3Utils.js";
+import { DEFAULT_WORLD_BASIS } from "../math/WorldBasis.js";
 
 export class PositionFollowCameraRig extends BaseCameraRig {
   constructor({
@@ -8,8 +8,8 @@ export class PositionFollowCameraRig extends BaseCameraRig {
     distance = 18,
     height = 16,
     lookHeight = 0,
-    positionLag = 0.00,
-    lookLag = 0.00,
+    positionLag = 0.0,
+    lookLag = 0.0,
     basis = DEFAULT_WORLD_BASIS,
   }) {
     super({ basis, rotationMode: CAMERA_ROTATION_MODES.lookAt });
@@ -23,21 +23,11 @@ export class PositionFollowCameraRig extends BaseCameraRig {
     });
   }
 
-  step({
-    targetPosition,
-    snapToTarget = false,
-    deltaSeconds = 1 / 60,
-    camera = null,
-  }) {
+  step({ targetPosition, snapToTarget = false, deltaSeconds = 1 / 60, camera = null }) {
     const focus = toVec3(targetPosition);
 
-    const viewDirection = this.basis.fromBasisComponents(
-      Math.sin(this.azimuth),
-      0,
-      Math.cos(this.azimuth)
-    ).normalize();
-    const cameraPosition = focus.clone()
-      .addScaledVector(viewDirection, -this.distance);
+    const viewDirection = this.basis.fromBasisComponents(Math.sin(this.azimuth), 0, Math.cos(this.azimuth)).normalize();
+    const cameraPosition = focus.clone().addScaledVector(viewDirection, -this.distance);
     const cameraLookAt = focus.clone();
     const baseHeight = this.basis.upComponent(focus);
 
