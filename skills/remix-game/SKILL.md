@@ -7,6 +7,8 @@ description: "Create a new PlayDrop remix by scaffolding from the source app and
 
 Requires the PlayDrop CLI. If the `playdrop` command is unavailable, follow the PlayDrop `setup` skill first.
 
+Read `../../references/game-quality.md` before editing. The remix must meet the same quality target as an original game.
+
 Use the agent-chosen reporting vocabulary in `../../references/phases/remix-game.md`.
 
 ## Rules

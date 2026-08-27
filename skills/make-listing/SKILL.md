@@ -24,12 +24,13 @@ Requires the PlayDrop CLI. If the `playdrop` command is unavailable, follow the 
 - Compose portrait and landscape heroes separately for their orientations. Keep the title readable at full size and thumbnail size, preserve the actual game fantasy and key entities, and exclude unrelated UI, device frames, watermarks, and raw gameplay framing.
 - Save final identity PNGs under `assets/marketing/playdrop/` and reference them through `listing.icon`, `listing.heroPortrait`, and `listing.heroLandscape`.
 - Never use a mockup board, a raw gameplay capture, or a crop of either as hero art.
-- Create the app icon as a separate square 1:1 PNG composition, preferably 512x512, with one bold small-size silhouette and no text. Never copy, crop, resize, or reuse a hero as the icon.
+- Create the app icon as a separate square 1:1 PNG composition, preferably 512x512, with one bold thumbnail-readable silhouette and no text. Never copy, crop, resize, or reuse a hero as the icon.
 - Hero art may be more polished than gameplay, but it must express the actual game fantasy and key entities.
 
 Use the production ownership contract in `../make-assets/SKILL.md`:
 
 - **Active Codex agent:** create the complete identity trio directly with built-in image generation, then validate and review all three files.
+- **Active Grok agent:** create the complete identity trio with Grok's own image generation, then validate and review all three files. Never delegate image generation to Codex.
 - **Active Claude agent:** delegate the complete identity trio to one Codex CLI run. Codex owns all three generations, deterministic transforms, code checks, full-size and thumbnail review, one evidence-based corrected retry, and the final manifest. Claude only updates `catalogue.json` with files that Codex marks accepted.
 
 The production owner must not trust a prompt to satisfy dimensions or byte limits. After generation, inspect all three images together, resize or optimize deterministically when needed, and recheck the final files. Return one compact manifest with path, dimensions, PNG format, byte size, and visual-review result for each file. Accept the trio only when:

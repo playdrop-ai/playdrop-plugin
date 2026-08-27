@@ -28,7 +28,7 @@ HTML = r"""<!doctype html>
 </style>
 </head>
 <body>
-<header class="topbar"><div class="title"><h1>Asset Pack Review</h1><span class="pack-name">Collect Solitaire</span></div><div id="summary" class="progress">Loading</div></header>
+<header class="topbar"><div class="title"><h1>Asset Pack Review</h1><span id="pack-name" class="pack-name"></span></div><div id="summary" class="progress">Loading</div></header>
 <div class="shell">
   <aside id="queue" aria-label="Review queue"></aside>
   <main class="workspace"><div id="workspace" class="workspace-inner"><div class="blank">Loading review queue</div></div></main>
@@ -47,12 +47,12 @@ function readDraft(id){try{return JSON.parse(localStorage.getItem(draftKey(id))|
 function clearDraft(id){localStorage.removeItem(draftKey(id));}
 function renderQueue(){const queue=document.getElementById('queue');const section=(label,items)=>`<div class="queue-section"><div class="queue-label">${esc(label)} · ${items.length}</div>${items.map(f=>`<button class="queue-item ${f.familyId===state.currentId?'active':''}" type="button" data-family="${esc(f.familyId)}"><span class="dot ${esc(f.reviewState)}"></span><strong>${esc(f.family)}</strong><small>${f.assetCount}</small></button>`).join('')||`<div class="empty">None</div>`}</div>`;queue.innerHTML=section('To review',pending())+section('Completed',completed());queue.querySelectorAll('[data-family]').forEach(button=>button.addEventListener('click',()=>selectFamily(button.dataset.family)));}
 function selectFamily(id){state.currentId=id;state.boardIndex=0;renderQueue();renderFamily();}
-function renderFamily(){const f=current(),root=document.getElementById('workspace');if(!f){root.innerHTML='<div class="blank">No families are ready for review.</div>';return}const board=f.boards[state.boardIndex]||f.boards[0];if(!board)state.boardIndex=0;const selected=f.boards[state.boardIndex]||null;const draft=readDraft(f.familyId);root.innerHTML=`<header class="family-head"><div class="family-title"><h2>${esc(f.family)}</h2><div class="meta">${f.assetCount} assets · round ${esc(f.selectedRound||'unknown')} · code approved · Codex approved</div></div><span class="state ${esc(f.reviewState)}">${f.reviewState==='pending'?'Needs review':f.reviewState==='approved'?'Approved':'Needs changes'}</span></header><nav class="tabs" aria-label="Validation backgrounds">${f.boards.map((b,i)=>`<button class="tab ${i===state.boardIndex?'active':''}" type="button" data-board="${i}">${esc(b.label)}</button>`).join('')}</nav><section class="viewer">${selected?`<button id="open-image" type="button" title="Open full size"><img src="${esc(selected.url)}" alt="${esc(f.family)} ${esc(selected.label)}"></button>`:'<div class="blank">No validation board found.</div>'}</section><footer class="decision">${f.canReview?`<form id="review-form"><div class="choices"><label class="choice approve"><input type="radio" name="decision" value="approve" ${draft.decision==='approve'?'checked':''}><span>Approve</span></label><label class="choice reject"><input type="radio" name="decision" value="reject" ${draft.decision==='reject'?'checked':''}><span>Needs changes</span></label></div><textarea name="comment" placeholder="Optional comment">${esc(draft.comment||'')}</textarea><button class="submit" type="submit" disabled>Submit and next</button></form><div id="message" class="message">Draft feedback stays in this browser until submitted.</div>`:renderCompleted(f)}</footer>`;root.querySelectorAll('[data-board]').forEach(button=>button.addEventListener('click',()=>{state.boardIndex=Number(button.dataset.board);renderFamily()}));const open=document.getElementById('open-image');if(open)open.addEventListener('click',()=>openImage(f,selected));const form=document.getElementById('review-form');if(form){form.addEventListener('input',saveDraft);form.addEventListener('submit',submitReview);updateSubmit();}renderQueue();}
+function renderFamily(){const f=current(),root=document.getElementById('workspace');if(!f){root.innerHTML='<div class="blank">No families are ready for review.</div>';return}const board=f.boards[state.boardIndex]||f.boards[0];if(!board)state.boardIndex=0;const selected=f.boards[state.boardIndex]||null;const draft=readDraft(f.familyId);root.innerHTML=`<header class="family-head"><div class="family-title"><h2>${esc(f.family)}</h2><div class="meta">${f.assetCount} assets · round ${esc(f.selectedRound||'unknown')} · code approved · agent approved</div></div><span class="state ${esc(f.reviewState)}">${f.reviewState==='pending'?'Needs review':f.reviewState==='approved'?'Approved':'Needs changes'}</span></header><nav class="tabs" aria-label="Validation backgrounds">${f.boards.map((b,i)=>`<button class="tab ${i===state.boardIndex?'active':''}" type="button" data-board="${i}">${esc(b.label)}</button>`).join('')}</nav><section class="viewer">${selected?`<button id="open-image" type="button" title="Open full size"><img src="${esc(selected.url)}" alt="${esc(f.family)} ${esc(selected.label)}"></button>`:'<div class="blank">No validation board found.</div>'}</section><footer class="decision">${f.canReview?`<form id="review-form"><div class="choices"><label class="choice approve"><input type="radio" name="decision" value="approve" ${draft.decision==='approve'?'checked':''}><span>Approve</span></label><label class="choice reject"><input type="radio" name="decision" value="reject" ${draft.decision==='reject'?'checked':''}><span>Needs changes</span></label></div><textarea name="comment" placeholder="Optional comment">${esc(draft.comment||'')}</textarea><button class="submit" type="submit" disabled>Submit and next</button></form><div id="message" class="message">Draft feedback stays in this browser until submitted.</div>`:renderCompleted(f)}</footer>`;root.querySelectorAll('[data-board]').forEach(button=>button.addEventListener('click',()=>{state.boardIndex=Number(button.dataset.board);renderFamily()}));const open=document.getElementById('open-image');if(open)open.addEventListener('click',()=>openImage(f,selected));const form=document.getElementById('review-form');if(form){form.addEventListener('input',saveDraft);form.addEventListener('submit',submitReview);updateSubmit();}renderQueue();}
 function renderCompleted(f){const r=f.latestHumanReview||{};const title=f.reviewState==='approved'?'Approved':'Changes requested';const comment=r.comment?`<p>${esc(r.comment)}</p>`:'';return `<div class="reviewed"><div class="reviewed-copy"><strong>${title}</strong>${comment}</div>${pending().length?'<button id="next-pending" class="next" type="button">Next pending</button>':''}</div>`}
 function updateSubmit(){const form=document.getElementById('review-form');if(!form)return;form.querySelector('.submit').disabled=!form.querySelector('input[name="decision"]:checked');}
 function openImage(f,b){const dialog=document.getElementById('image-dialog');document.getElementById('dialog-title').textContent=`${f.family} · ${b.label}`;const img=document.getElementById('dialog-image');img.src=b.url;img.alt=`${f.family} ${b.label}`;dialog.showModal();}
 async function submitReview(event){event.preventDefault();const f=current(),form=event.currentTarget,button=form.querySelector('.submit'),message=document.getElementById('message'),data=new FormData(form);button.disabled=true;button.textContent='Saving';message.className='message';const body={familyId:f.familyId,decision:data.get('decision'),comment:data.get('comment')||'',source:'browser'};try{const response=await fetch('/api/review',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(body)});const result=await response.json();if(!response.ok)throw new Error(result.error||'review_not_saved');clearDraft(f.familyId);const nextId=pending().find(item=>item.familyId!==f.familyId)?.familyId;await load(nextId||f.familyId);}catch(error){message.textContent=`Could not save: ${error.message}`;message.className='message error';button.textContent='Submit and next';updateSubmit();}}
-async function load(preferredId){const response=await fetch('/api/families',{cache:'no-store'});const data=await response.json();state.families=data.families;const visible=reviewable();state.currentId=preferredId&&visible.some(f=>f.familyId===preferredId)?preferredId:(state.currentId&&visible.some(f=>f.familyId===state.currentId)?state.currentId:(pending()[0]||visible[0])?.familyId||null);const remaining=pending().length,done=completed().length;document.getElementById('summary').textContent=`${remaining} remaining · ${done} completed`;renderQueue();renderFamily();}
+async function load(preferredId){const response=await fetch('/api/families',{cache:'no-store'});const data=await response.json();state.families=data.families;document.getElementById('pack-name').textContent=data.packName||'';const visible=reviewable();state.currentId=preferredId&&visible.some(f=>f.familyId===preferredId)?preferredId:(state.currentId&&visible.some(f=>f.familyId===state.currentId)?state.currentId:(pending()[0]||visible[0])?.familyId||null);const remaining=pending().length,done=completed().length;document.getElementById('summary').textContent=`${remaining} remaining · ${done} completed`;renderQueue();renderFamily();}
 document.getElementById('dialog-close').addEventListener('click',()=>document.getElementById('image-dialog').close());document.getElementById('image-dialog').addEventListener('click',event=>{if(event.target===event.currentTarget)event.currentTarget.close()});document.addEventListener('click',event=>{if(event.target.id==='next-pending'&&pending()[0])selectFamily(pending()[0].familyId)});document.addEventListener('keydown',event=>{if(event.key==='Escape'&&document.getElementById('image-dialog').open)document.getElementById('image-dialog').close()});load();
 </script></body></html>"""
 
@@ -89,7 +89,8 @@ class ReviewHandler(BaseHTTPRequestHandler):
             self.wfile.write(data)
             return
         if route == "/api/families":
-            self.json_response({"families": self.list_families()})
+            spec = read_json(self.spec_path)
+            self.json_response({"packName": spec.get("pack", {}).get("name"), "families": self.list_families()})
             return
         if route.startswith("/files/"):
             self.serve_file(unquote(route[len("/files/"):]))
@@ -126,7 +127,6 @@ class ReviewHandler(BaseHTTPRequestHandler):
                 ("review-white.png", "White"),
                 ("review-purple.png", "Purple"),
                 ("review-black.png", "Black"),
-                ("small-raw-64.png", "Raw small assets at 64x64"),
                 ("split-overlay.png", "Adaptive split overlay"),
             ):
                 path = validation_root / name
@@ -134,7 +134,7 @@ class ReviewHandler(BaseHTTPRequestHandler):
                     boards.append({"label": label, "url": f"/files/{path.relative_to(self.pack_root)}"})
             validation = status.get("validation", {})
             human_gate = validation.get("human")
-            gates_pass = validation.get("code") == "approved" and validation.get("codex") == "approved"
+            gates_pass = validation.get("code") == "approved" and validation.get("agent") == "approved"
             if human_gate == "approved":
                 review_state = "approved"
             elif human_gate == "rejected":
@@ -194,8 +194,8 @@ class ReviewHandler(BaseHTTPRequestHandler):
         status_path = self.pack_root / "families" / family_id / "family-status.json"
         status = read_json(status_path)
         validation = status.get("validation", {})
-        if validation.get("code") != "approved" or validation.get("codex") != "approved":
-            raise SystemExit("human_review_requires_code_and_codex_approval")
+        if validation.get("code") != "approved" or validation.get("agent") != "approved":
+            raise SystemExit("human_review_requires_code_and_agent_approval")
         if validation.get("human") in ("approved", "rejected"):
             raise SystemExit("human_review_already_recorded")
         validation["human"] = "approved" if decision == "approve" else "rejected"

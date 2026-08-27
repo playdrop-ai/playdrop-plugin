@@ -4,10 +4,9 @@
 from __future__ import annotations
 
 import argparse
-import os
 from pathlib import Path
 
-from asset_pack_common import append_jsonl, now, read_json, write_json
+from asset_pack_common import append_jsonl, create_lock_file, now, read_json, write_json
 
 
 def main() -> None:
@@ -15,7 +14,7 @@ def main() -> None:
     parser.add_argument("--pack-root", type=Path, required=True)
     parser.add_argument("--family", required=True)
     parser.add_argument("--job", default="generation-v1")
-    parser.add_argument("--worker", default="codex-parent")
+    parser.add_argument("--worker", default="agent-parent")
     args = parser.parse_args()
 
     pack_root = args.pack_root.resolve()
@@ -23,11 +22,10 @@ def main() -> None:
     job_path = family_root / "jobs" / f"{args.job}.json"
     lock_path = job_path.with_suffix(".lock")
     try:
-        descriptor = os.open(lock_path, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600)
+        create_lock_file(lock_path)
     except FileExistsError as error:
         raise SystemExit(f"job_claim_locked:{args.family}:{args.job}") from error
     try:
-        os.close(descriptor)
         job = read_json(job_path)
         if job.get("state") != "ready":
             raise SystemExit(f"job_not_ready:{args.family}:{args.job}:{job.get('state')}")

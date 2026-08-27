@@ -9,6 +9,8 @@ Requires the PlayDrop CLI. If the `playdrop` command is unavailable, follow the 
 
 Use this before uploading or publishing.
 
+Read `../../references/game-quality.md` and visually check its observable dos and don'ts. This skill adds deterministic mechanical validation; it does not define a second quality rubric.
+
 Use `../../references/greybox-report.md` when a new or risky interaction benefits from explicit early evidence. It is optional working memory, not an upload artifact.
 
 ## Deterministic Check
@@ -33,7 +35,6 @@ Run the final self-playtest after the last runtime change and before upload. If 
 
 ## Checklist
 
-- First frame is a designed screen per `../../references/quality-bars.md`; core gameplay is reachable within one input.
 - Input works through focused game-frame actions, and the primary input produces a concrete visible response captured after the input.
 - Core loop completes or progresses visibly, and every supported-surface tape passes with inspected evidence per the Deterministic Check above.
 - When the game defines success or failure states, confirm both during normal self-play.
@@ -42,7 +43,5 @@ Run the final self-playtest after the last runtime change and before upload. If 
 - When `previewable` is true, preview state renders a meaningful live scene.
 - Pause/resume does not advance play-critical state.
 - Console logs contain no uncaught errors.
-- HUD is small, safe-area aware, and does not steal game space.
-- One gameplay screenshot recognizably matches the approved visual direction when one exists.
 
 Fix failures before upload. If a problem cannot be fixed in scope, say so clearly instead of shipping it.

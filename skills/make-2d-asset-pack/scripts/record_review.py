@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Record a Codex decision; human decisions are exclusive to review_server.py."""
+"""Record the production agent's decision; human decisions are exclusive to review_server.py."""
 
 from __future__ import annotations
 
@@ -52,7 +52,7 @@ def promote(status_path: Path, status: dict) -> list[dict[str, str]]:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--status", type=Path, required=True)
-    parser.add_argument("--reviewer", choices=("codex",), required=True)
+    parser.add_argument("--reviewer", choices=("codex", "grok"), required=True)
     parser.add_argument("--decision", choices=("approve", "reject"), required=True)
     parser.add_argument("--comment", default="")
     args = parser.parse_args()
@@ -63,17 +63,17 @@ def main() -> None:
     if not isinstance(validation, dict):
         raise SystemExit("family_status_validation_required")
     if validation.get("code") != "approved":
-        raise SystemExit("codex_review_requires_code_approval")
+        raise SystemExit("agent_review_requires_code_approval")
     normalized = "approved" if args.decision == "approve" else "rejected"
-    validation["codex"] = normalized
-    status["status"] = "awaiting-human-review" if normalized == "approved" else "codex-rejected"
+    validation["agent"] = normalized
+    status["status"] = "awaiting-human-review" if normalized == "approved" else "agent-rejected"
     if normalized == "rejected":
         validation["human"] = "pending"
     recorded_at = now()
     history = list(status.get("reviewHistory", []))
     history.append(
         {
-            "reviewer": "codex",
+            "reviewer": args.reviewer,
             "decision": args.decision,
             "comment": args.comment,
             "recordedAt": recorded_at,
@@ -82,14 +82,14 @@ def main() -> None:
     )
     status["reviewHistory"] = history
     pipeline = status.setdefault("pipeline", {})
-    pipeline["stage"] = "human-review" if normalized == "approved" else "codex-rejected"
-    pipeline.setdefault("timing", {})["codexReviewedAt"] = recorded_at
-    pipeline["lastError"] = None if normalized == "approved" else (args.comment or "Codex review rejected")
+    pipeline["stage"] = "human-review" if normalized == "approved" else "agent-rejected"
+    pipeline.setdefault("timing", {})["agentReviewedAt"] = recorded_at
+    pipeline["lastError"] = None if normalized == "approved" else (args.comment or "Agent review rejected")
     status["updatedAt"] = recorded_at
     write_json(status_path, status)
     append_jsonl(
         status_path.parent / "events.jsonl",
-        {"at": recorded_at, "event": "codex-reviewed", "decision": args.decision, "comment": args.comment},
+        {"at": recorded_at, "event": "agent-reviewed", "reviewer": args.reviewer, "decision": args.decision, "comment": args.comment},
     )
     print(f"status:{status_path}")
     print(f"family_status:{status['status']}")

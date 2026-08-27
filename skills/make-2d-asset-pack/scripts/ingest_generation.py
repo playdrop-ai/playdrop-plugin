@@ -44,7 +44,6 @@ def record_ledger(
         str(Path(__file__).resolve().parent / "record_generation.py"),
         "--ledger", str(pack_root / "generation-ledger.csv"),
         "--family", job["familyId"],
-        "--mode", "item-repair" if job.get("items") else job["mode"],
         "--attempt", str(job["attempt"]),
         "--status", status,
         "--prompt", str(pack_root / job["prompt"]),

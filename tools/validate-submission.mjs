@@ -30,14 +30,12 @@ const INTERNAL_PATH_PREFIXES = [
   "skills/task-worker/",
   "skills/review-game/",
   "skills/game-eval/",
-  "references/game-review-",
 ];
 const INTERNAL_TEXT_MARKERS = [
   "plugins/playdrop-platform",
   "skills/task-worker",
   "skills/review-game",
   "skills/game-eval",
-  "references/game-review-",
   "playdrop-platform:",
 ];
 

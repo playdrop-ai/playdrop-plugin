@@ -32,7 +32,6 @@ def build_prompt(args: argparse.Namespace) -> str:
     payload_overrides = read_json(args.payload_overrides.resolve()) if args.payload_overrides else None
     slots = slots_for_family(
         family,
-        args.mode,
         parse_item_ids(args.items),
         payload_overrides,
     )
@@ -71,38 +70,29 @@ def build_prompt(args: argparse.Namespace) -> str:
             "There is no visual style reference in this bootstrap call; establish the canonical style from the "
             "written Style contract below."
         )
-    variant_summary = {
-        "paired": "large and small gameplay assets",
-        "large": "large gameplay assets",
-        "small": "small gameplay icons",
-    }[args.mode]
     lines = [
         "Use case: style-transfer",
-        f"Asset type: {family['name']} {variant_summary} on a removable matte",
+        f"Asset type: {family['name']} 2D gameplay assets on a removable matte",
         input_contract,
         "",
         (
-            f"Create one high-resolution source sheet with exactly {columns} columns by {rows} rows and exactly "
-            f"{len(slots)} slots on a visually uniform solid {matte_hex} matte. Follow Image {identity_number} "
+            f"Create one high-resolution source sheet with a {columns}-column by {rows}-row grid. Fill exactly "
+            f"{len(slots)} occupied slots on a visually uniform solid {matte_hex} matte. Follow Image {identity_number} "
             "exactly, left to "
             "right and top to bottom:"
         ),
     ]
     for index, slot in enumerate(slots, start=1):
-        lines.append(f"{index}. {slot['item']} {slot['kind']}: {slot['payload']}")
+        output = slot["output"]
+        lines.append(
+            f"{index}. {slot['item']}: {slot['payload']} "
+            f"Target {output['width']}x{output['height']} with {output['padding']}px padding. "
+            f"{output['contract']}"
+        )
+    empty_slots = rows * columns - len(slots)
+    if empty_slots:
+        lines.append(f"Leave the final {empty_slots} trailing grid cell(s) completely empty and matte-only.")
     lines.extend(["", f"Style: {style}", ""])
-    if args.mode in ("paired", "large"):
-        lines.append(
-            "LARGE VIEW CONTRACT: detailed, dimensional, and perspective-aware where appropriate. Preserve the "
-            "complete silhouette, use sturdy readable geometry, and follow every large payload literally."
-        )
-    if args.mode in ("paired", "small"):
-        lines.append(
-            "SMALL VIEW CONTRACT: purpose-designed strict front or pure side orthographic 64x64 icon, never a "
-            "scaled or cropped large asset. Use a bold silhouette, few broad color regions, minimal internal lines, "
-            "no material grain, and no tiny texture. Follow every small payload literally even when it contains "
-            "fewer objects than the large payload."
-        )
     lines.extend(
         [
             "",
@@ -111,8 +101,9 @@ def build_prompt(args: argparse.Namespace) -> str:
                 f"exterior pixel is the same uniform solid {matte_hex}."
             ),
             (
-                "Constraints: exactly one complete asset composition per slot; generous padding; stable equal "
-                "invisible cells; no overlaps; no text, labels, numbers, dividers, frames, people, or unrequested "
+                "Constraints: exactly one complete asset composition per occupied slot; trailing empty cells remain "
+                "matte-only; generous padding; stable equal invisible cells; no overlaps; no text, labels, numbers, "
+                "dividers, frames, people, or unrequested "
                 "extra props. Every object explicitly required by a slot payload is part of that asset, not an "
                 "extra prop."
             ),
@@ -130,9 +121,8 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--spec", type=Path, required=True)
     parser.add_argument("--family", required=True)
-    parser.add_argument("--mode", choices=("paired", "large", "small"), default="paired")
     parser.add_argument("--items", help="Comma-separated item ids for an item-specific repair prompt")
-    parser.add_argument("--payload-overrides", type=Path, help="JSON payload replacements for requested variants")
+    parser.add_argument("--payload-overrides", type=Path, help="JSON payload replacements keyed by item id")
     parser.add_argument("--style-reference-count", type=int, help="Exact number of supplied style images")
     parser.add_argument("--columns", type=int)
     parser.add_argument("--matte", required=True)

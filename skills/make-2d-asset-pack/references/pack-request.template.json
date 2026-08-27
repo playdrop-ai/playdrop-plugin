@@ -8,6 +8,12 @@
     "description": "Polished casual mobile-game art with rounded readable silhouettes and controlled dimensional shading.",
     "referenceImages": []
   },
+  "output": {
+    "width": 256,
+    "height": 256,
+    "padding": 16,
+    "contract": "Complete readable silhouette, suitable detail for its in-game size, no text, floor, clipping, or exterior shadow."
+  },
   "sourceFolder": null,
   "metadata": {
     "version": "1.0.0",
@@ -20,16 +26,14 @@
     {
       "id": "furniture",
       "name": "Furniture",
-      "mode": "paired",
-      "columns": 2,
+      "columns": 3,
       "matte": "auto",
       "items": ["Chair", "Table", "Sofa"]
     },
     {
       "id": "plants",
       "name": "Plants",
-      "mode": "paired",
-      "columns": 2,
+      "columns": 3,
       "matte": "auto",
       "items": ["Fern", "Cactus", "Flower"]
     }

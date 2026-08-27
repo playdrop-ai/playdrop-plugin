@@ -30,13 +30,13 @@ def build_manifest(pack_root: Path, spec_path: Path) -> dict[str, Any]:
         if status.get("status") != "approved":
             continue
         validation = status.get("validation", {})
-        if any(validation.get(gate) != "approved" for gate in ("code", "codex", "human")):
+        if any(validation.get(gate) != "approved" for gate in ("code", "agent", "human")):
             raise SystemExit(f"approved_family_gate_mismatch:{family['id']}")
         approved = status.get("approvedAssets")
         selected = status.get("assets")
         if not isinstance(approved, list) or not isinstance(selected, list):
             raise SystemExit(f"approved_family_assets_required:{family['id']}")
-        expected = len(family["items"]) * 2
+        expected = len(family["items"])
         if len(approved) != expected or len(selected) != expected:
             raise SystemExit(f"approved_family_asset_count:{family['id']}:{len(approved)}:{expected}")
         selected_by_output = {str(asset.get("output")): asset for asset in selected}
@@ -56,10 +56,12 @@ def build_manifest(pack_root: Path, spec_path: Path) -> dict[str, Any]:
                 raise SystemExit(f"approved_asset_hash_mismatch:{relative}")
             with Image.open(path) as image:
                 width, height = image.size
-            kind = str(source.get("kind"))
+            item = next((item for item in family["items"] if item["id"] == source.get("itemId")), None)
+            if item is None:
+                raise SystemExit(f"approved_asset_item_missing:{family['id']}:{source.get('itemId')}")
             expected_size = (
-                int(spec["variants"][kind]["width"]),
-                int(spec["variants"][kind]["height"]),
+                int(item["output"]["width"]),
+                int(item["output"]["height"]),
             )
             if (width, height) != expected_size:
                 raise SystemExit(f"approved_asset_size_mismatch:{relative}:{width}x{height}")
@@ -67,7 +69,6 @@ def build_manifest(pack_root: Path, spec_path: Path) -> dict[str, Any]:
                 {
                     "item": source.get("item"),
                     "itemId": source.get("itemId"),
-                    "kind": kind,
                     "file": relative,
                     "sha256": entry["sha256"],
                     "width": width,
@@ -91,7 +92,7 @@ def build_manifest(pack_root: Path, spec_path: Path) -> dict[str, Any]:
             raise SystemExit(f"unexpected_approved_files:{family['id']}:{','.join(unexpected)}")
         if missing:
             raise SystemExit(f"missing_approved_files:{family['id']}:{','.join(missing)}")
-        assets.sort(key=lambda asset: (str(asset["itemId"]), str(asset["kind"])))
+        assets.sort(key=lambda asset: str(asset["itemId"]))
         families[family["id"]] = {
             "name": family["name"],
             "selectedRound": status.get("selectedRound"),

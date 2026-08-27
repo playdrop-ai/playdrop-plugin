@@ -61,7 +61,7 @@ The final image does not need to preserve a real screenshot or exact gameplay ge
 
 ### 4. Generate complete marketing images
 
-- Follow the single-owner Codex production contract in `../make-assets/SKILL.md` to generate the complete image, including scene content, composition, lighting, effects, and headline typography.
+- Follow the production ownership contract in `../make-assets/SKILL.md` to generate the complete image, including scene content, composition, lighting, effects, and headline typography.
 - Use the real game, gameplay video, source stills, hero, icon, and palette as visual references.
 - Generate native 9:16 portrait and 16:9 landscape compositions when both orientations are supported or requested. Compose each orientation independently.
 - In a PlayDrop game package, save approved masters under `assets/marketing/playdrop/screenshots/portrait/` and `assets/marketing/playdrop/screenshots/landscape/`.
@@ -107,4 +107,4 @@ Do not reject an image merely because it is more polished, dramatic, or idealize
 - No unavailable mechanic, character, environment, reward, or outcome is advertised.
 - Each requested orientation is composed natively and inspected independently.
 - The set is legible at listing-card size.
-- The user has reviewed the final contact sheet.
+- The final contact sheet has passed self-review. Outside Studio, the user has reviewed it before delivery.

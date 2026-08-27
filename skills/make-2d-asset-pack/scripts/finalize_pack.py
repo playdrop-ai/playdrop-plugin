@@ -6,7 +6,6 @@ from __future__ import annotations
 import argparse
 import re
 import subprocess
-import sys
 from pathlib import Path
 
 from asset_pack_common import load_spec, now, read_json, write_json
@@ -16,17 +15,16 @@ TAG_REF_PATTERN = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*/[a-z0-9]+(?:-[a-z0-9]+)
 
 
 def canonical_tag_refs(values: object) -> list[str]:
-    """Keep valid PlayDrop taxonomy refs while surfacing legacy free-form tags."""
+    """Require unique canonical PlayDrop taxonomy refs."""
     if not isinstance(values, list):
-        return []
+        raise SystemExit("pack_tags_array_required")
     retained: list[str] = []
     for value in values:
-        normalized = str(value).strip().lower()
-        if not TAG_REF_PATTERN.fullmatch(normalized):
-            print(f"ignored_noncanonical_tag:{value}", file=sys.stderr)
-            continue
-        if normalized not in retained:
-            retained.append(normalized)
+        if not isinstance(value, str) or not TAG_REF_PATTERN.fullmatch(value):
+            raise SystemExit(f"noncanonical_tag:{value}")
+        if value in retained:
+            raise SystemExit(f"duplicate_tag:{value}")
+        retained.append(value)
     return retained
 
 
@@ -48,29 +46,28 @@ def main() -> None:
         status = read_json(family_root / "family-status.json")
         if status.get("status") != "approved" or status.get("validation", {}).get("human") != "approved":
             raise SystemExit(f"family_not_human_approved:{family['id']}:{status.get('status')}")
-        selected = {(asset["itemId"], asset["kind"]): asset for asset in status.get("assets", [])}
+        selected = {asset["itemId"]: asset for asset in status.get("assets", [])}
         for item in family["items"]:
-            for kind in ("large", "small"):
-                asset = selected.get((item["id"], kind))
-                if not asset:
-                    continue
-                approved = family_root / "approved" / Path(asset["output"]).name
-                if not approved.is_file():
-                    raise SystemExit(f"approved_asset_not_found:{approved}")
-                owned_assets.append(
-                    {
-                        "name": f"{family['id']}-{item['id']}-{kind}",
-                        "displayName": f"{item['name']} {kind.title()}",
-                        "description": item["payloads"][kind],
-                        "category": "IMAGE",
-                        "subcategory": "generic",
-                        "format": "PNG",
-                        "visibility": str(pack.get("visibility") or "PRIVATE"),
-                        "license": str(pack.get("license") or "PLAYDROP"),
-                        "tags": pack_tags,
-                        "files": {"primary": str(approved.relative_to(pack_root))},
-                    }
-                )
+            asset = selected.get(item["id"])
+            if not asset:
+                continue
+            approved = family_root / "approved" / Path(asset["output"]).name
+            if not approved.is_file():
+                raise SystemExit(f"approved_asset_not_found:{approved}")
+            owned_assets.append(
+                {
+                    "name": f"{family['id']}-{item['id']}",
+                    "displayName": item["name"],
+                    "description": item["payload"],
+                    "category": "IMAGE",
+                    "subcategory": "generic",
+                    "format": "PNG",
+                    "visibility": str(pack.get("visibility") or "PRIVATE"),
+                    "license": str(pack.get("license") or "PLAYDROP"),
+                    "tags": pack_tags,
+                    "files": {"primary": str(approved.relative_to(pack_root))},
+                }
+            )
     if not owned_assets:
         raise SystemExit("approved_assets_required")
     catalogue = {

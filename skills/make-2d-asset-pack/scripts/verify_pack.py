@@ -38,20 +38,20 @@ def main() -> None:
     assets = status.get("assets")
     if not isinstance(assets, list):
         raise SystemExit("family_status_assets_required")
-    expected = len(family["items"]) * 2
+    expected = len(family["items"])
     if len(assets) != expected:
         failures.append(f"asset_count:{len(assets)}:{expected}")
-    seen: set[tuple[str, str]] = set()
+    seen: set[str] = set()
+    items = {item["id"]: item for item in family["items"]}
     checks: list[dict[str, Any]] = []
     for asset in assets:
         item_id = str(asset.get("itemId", ""))
-        kind = str(asset.get("kind", ""))
-        key = (item_id, kind)
-        if key in seen:
-            failures.append(f"duplicate_asset:{item_id}:{kind}")
-        seen.add(key)
-        if kind not in ("large", "small"):
-            failures.append(f"invalid_kind:{item_id}:{kind}")
+        if item_id in seen:
+            failures.append(f"duplicate_asset:{item_id}")
+        seen.add(item_id)
+        item = items.get(item_id)
+        if item is None:
+            failures.append(f"invalid_item:{item_id}")
             continue
         path_value = str(asset.get("output", ""))
         path = resolve_recorded(root, path_value)
@@ -86,8 +86,8 @@ def main() -> None:
                 with Image.open(path) as image:
                     image.load()
                     expected_size = (
-                        int(spec["variants"][kind]["width"]),
-                        int(spec["variants"][kind]["height"]),
+                        int(item["output"]["width"]),
+                        int(item["output"]["height"]),
                     )
                     if image.format != "PNG":
                         item_failures.append(f"format:{image.format}")
@@ -99,12 +99,11 @@ def main() -> None:
                         item_failures.append("alpha_has_no_transparency")
             except OSError:
                 item_failures.append("invalid_image")
-        failures.extend(f"{item_id}-{kind}:{failure}" for failure in item_failures)
-        checks.append({"itemId": item_id, "kind": kind, "file": path_value, "failures": item_failures})
+        failures.extend(f"{item_id}:{failure}" for failure in item_failures)
+        checks.append({"itemId": item_id, "file": path_value, "failures": item_failures})
     for item in family["items"]:
-        for kind in ("large", "small"):
-            if (item["id"], kind) not in seen:
-                failures.append(f"missing_expected:{item['id']}:{kind}")
+        if item["id"] not in seen:
+            failures.append(f"missing_expected:{item['id']}")
     if status.get("validation", {}).get("code") != "approved":
         failures.append(f"family_code_status:{status.get('validation', {}).get('code')}")
     approved_root = status_path.parent / "approved"

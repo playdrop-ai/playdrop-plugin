@@ -24,26 +24,11 @@ from asset_pack_common import (
 )
 
 
-DEFAULT_VARIANTS = {
-    "large": {
-        "width": 256,
-        "height": 256,
-        "padding": 16,
-        "contract": "Detailed dimensional game asset with a complete silhouette and perspective where appropriate.",
-    },
-    "small": {
-        "width": 64,
-        "height": 64,
-        "padding": 6,
-        "contract": "Purpose-designed simplified front or clean side icon readable at raw 64x64.",
-    },
-}
 DEFAULT_MATTE = "#ff00ff"
 DEFAULT_FALLBACK_MATTES = ["#00ff00", "#00ffff", "#0000ff", "#ffffff", "#000000"]
 MATTE_CANDIDATES = ["#00ff00", "#ff00ff", "#00ffff", "#0000ff", "#ff0000", "#ffff00", "#8000ff", "#ffffff", "#000000"]
 OWNERSHIP = {"creator-owned", "licensed", "unknown"}
 REQUEST_KINDS = {"sheet", "pack"}
-MODES = {"paired", "large", "small"}
 LICENSES = {"CLOSED", "PLAYDROP", "MIT", "CC0"}
 
 
@@ -85,14 +70,28 @@ def source_index(source_folder: Path | None) -> dict[str, Path]:
     return index
 
 
-def reference_candidates(item_id: str, item_name: str, kind: str) -> list[str]:
+def reference_candidates(item_id: str, item_name: str) -> list[str]:
     bases = {item_id, slug(item_name)}
-    suffixes = ("large", "l") if kind == "large" else ("small", "s")
     return [
-        "".join(character for character in f"{base}{suffix}".lower() if character.isalnum())
+        "".join(character for character in base.lower() if character.isalnum())
         for base in bases
-        for suffix in suffixes
     ]
+
+
+def normalize_output(value: Any, label: str) -> dict[str, Any]:
+    if not isinstance(value, dict):
+        raise SystemExit(f"request_output_object_required:{label}")
+    output = dict(value)
+    for field in ("width", "height", "padding"):
+        number = output.get(field)
+        if not isinstance(number, int) or isinstance(number, bool):
+            raise SystemExit(f"request_output_integer_required:{label}:{field}")
+    if output["width"] < 16 or output["height"] < 16 or output["padding"] < 0:
+        raise SystemExit(f"request_output_invalid:{label}")
+    if output["padding"] * 2 >= min(output["width"], output["height"]):
+        raise SystemExit(f"request_output_padding_invalid:{label}")
+    output["contract"] = require_text(output.get("contract"), f"{label}.contract")
+    return output
 
 
 def normalize_item(
@@ -102,6 +101,7 @@ def normalize_item(
     source_folder: Path | None,
     indexed_sources: dict[str, Path],
     output_root: Path,
+    default_output: dict[str, Any],
 ) -> dict[str, Any]:
     if isinstance(raw, str):
         name = require_text(raw, f"families.{family_id}.items")
@@ -115,38 +115,33 @@ def normalize_item(
     if slug(item_id) != item_id:
         raise SystemExit(f"request_item_id_invalid:{family_id}:{item_id}")
     description = str(item.get("description") or name).strip()
-    payloads = dict(item.get("payloads") or {})
-    large = str(payloads.get("large") or (
-        f"One complete {description} as a detailed casual game asset in a clean three-quarter view where appropriate, "
-        "with a complete readable silhouette; no text, floor, loose props, clipping, or exterior shadow."
+    payload = str(item.get("payload") or (
+        f"One complete {description} as a polished casual game asset with a readable silhouette; "
+        "no text, floor, loose props, clipping, or exterior shadow."
     )).strip()
-    small = str(payloads.get("small") or (
-        f"One complete simplified {description} icon designed specifically for raw 64x64 readability in a strict "
-        "front or clean side view, with a bold silhouette and few broad color regions; no text, tiny detail, floor, or exterior shadow."
-    )).strip()
-    requested_references = dict(item.get("references") or {})
-    portable_references: dict[str, str] = {}
-    for kind in ("large", "small"):
-        source: Path | None = None
-        if requested_references.get(kind):
-            source = resolve_request_path(request_path, source_folder, str(requested_references[kind]))
-        else:
-            for candidate in reference_candidates(item_id, name, kind):
-                if candidate in indexed_sources:
-                    source = indexed_sources[candidate]
-                    break
-        if source:
-            extension = source.suffix.lower() or ".png"
-            destination = output_root / "private-reference-inputs" / family_id / f"{item_id}-{kind}{extension}"
-            copy_input(source, destination)
-            portable_references[kind] = str(destination.relative_to(output_root))
+    source: Path | None = None
+    if item.get("reference"):
+        source = resolve_request_path(request_path, source_folder, str(item["reference"]))
+    else:
+        for candidate in reference_candidates(item_id, name):
+            if candidate in indexed_sources:
+                source = indexed_sources[candidate]
+                break
+    portable_reference: str | None = None
+    if source:
+        extension = source.suffix.lower() or ".png"
+        destination = output_root / "private-reference-inputs" / family_id / f"{item_id}{extension}"
+        copy_input(source, destination)
+        portable_reference = str(destination.relative_to(output_root))
+    output = normalize_output(item.get("output") or default_output, f"families.{family_id}.items.{item_id}.output")
     return {
         "id": item_id,
         "name": name,
         "description": description,
-        "referenceType": "visual-reference" if portable_references else "semantic-only",
-        **({"references": portable_references} if portable_references else {}),
-        "payloads": {"large": large, "small": small},
+        "referenceType": "visual-reference" if portable_reference else "semantic-only",
+        **({"reference": portable_reference} if portable_reference else {}),
+        "payload": payload,
+        "output": output,
     }
 
 
@@ -164,6 +159,7 @@ def validate_request(request: dict[str, Any]) -> None:
     if not isinstance(style, dict):
         raise SystemExit("request_style_object_required")
     require_text(style.get("description"), "style.description")
+    normalize_output(request.get("output"), "output")
     references = style.get("referenceImages", [])
     if not isinstance(references, list):
         raise SystemExit("request_style_references_array_required")
@@ -187,13 +183,10 @@ def validate_request(request: dict[str, Any]) -> None:
             raise SystemExit(f"request_family_id_invalid_or_duplicate:{family_id}")
         seen.add(family_id)
         require_text(family.get("name"), f"families.{family_id}.name")
-        mode = family.get("mode", "paired")
-        if mode not in MODES:
-            raise SystemExit(f"request_family_mode_invalid:{family_id}:{mode}")
         items = family.get("items")
         if not isinstance(items, list) or not items:
             raise SystemExit(f"request_family_items_required:{family_id}")
-        slot_count = len(items) * (2 if mode == "paired" else 1)
+        slot_count = len(items)
         if slot_count > 16:
             raise SystemExit(f"request_sheet_slot_limit_exceeded:{family_id}:{slot_count}")
         requested_matte = str(family.get("matte", "auto")).lower()
@@ -215,14 +208,16 @@ def validate_request(request: dict[str, Any]) -> None:
 def reference_pixels(items: list[dict[str, Any]], output_root: Path) -> np.ndarray:
     samples: list[np.ndarray] = []
     for item in items:
-        for value in (item.get("references") or {}).values():
-            path = output_root / value
-            image = Image.open(path).convert("RGBA")
-            image.thumbnail((256, 256), Image.Resampling.LANCZOS)
-            data = np.asarray(image)
-            visible = data[:, :, 3] > 32
-            if visible.any():
-                samples.append(data[:, :, :3][visible].astype(np.float32))
+        value = item.get("reference")
+        if not value:
+            continue
+        path = output_root / value
+        image = Image.open(path).convert("RGBA")
+        image.thumbnail((256, 256), Image.Resampling.LANCZOS)
+        data = np.asarray(image)
+        visible = data[:, :, 3] > 32
+        if visible.any():
+            samples.append(data[:, :, :3][visible].astype(np.float32))
     return np.concatenate(samples, axis=0) if samples else np.empty((0, 3), dtype=np.float32)
 
 
@@ -313,13 +308,12 @@ def main() -> None:
     license_name = str(metadata.get("license") or "PLAYDROP").upper()
     if license_name not in LICENSES:
         raise SystemExit(f"request_license_invalid:{license_name}")
-    variants = request.get("variants") or DEFAULT_VARIANTS
+    default_output = normalize_output(request.get("output"), "output")
     normalized_families: list[dict[str, Any]] = []
     family_configs: dict[str, dict[str, Any]] = {}
     for raw_family in request["families"]:
         family_id = raw_family["id"]
-        mode = raw_family.get("mode", "paired")
-        columns = int(raw_family.get("columns") or (2 if mode == "paired" else min(4, len(raw_family["items"]))))
+        columns = min(int(raw_family.get("columns") or 4), len(raw_family["items"]))
         continuity_style_references: list[dict[str, str]] = []
         for reference_index, reference in enumerate(raw_family.get("styleReferenceImages", []), start=1):
             source = resolve_request_path(request_path, source_folder, reference["path"])
@@ -338,7 +332,7 @@ def main() -> None:
                 }
             )
         items = [
-            normalize_item(item, family_id, request_path, source_folder, indexed_sources, output_root)
+            normalize_item(item, family_id, request_path, source_folder, indexed_sources, output_root, default_output)
             for item in raw_family["items"]
         ]
         ranking = matte_ranking(items, output_root)
@@ -364,7 +358,6 @@ def main() -> None:
                 "name": raw_family["name"],
                 "description": str(raw_family.get("description") or raw_family["name"]),
                 "production": {
-                    "mode": mode,
                     "columns": columns,
                     "matte": matte,
                     "fallbackMattes": [value for value in fallbacks if value != matte],
@@ -375,7 +368,6 @@ def main() -> None:
             }
         )
         family_configs[family_id] = {
-            "mode": mode,
             "columns": columns,
             "matte": matte,
             "fallbackMattes": fallbacks,
@@ -403,7 +395,6 @@ def main() -> None:
             "origin": "reference-image" if copied_style_references else "text-only",
             "additionalReferences": copied_style_references[1:],
         },
-        "variants": variants,
         "retryLimits": {**DEFAULT_RETRY_LIMITS, **dict(request.get("retryLimits") or {})},
         "families": normalized_families,
     }
@@ -427,18 +418,16 @@ def main() -> None:
             [
                 "--spec", str(output_root / "pack-spec.json"),
                 "--family", family_id,
-                "--mode", config["mode"],
                 "--columns", str(config["columns"]),
                 "--output-dir", str(template_dir),
             ],
         )
-        template = template_dir / f"{family_id}-{config['mode']}-identity-template.png"
+        template = template_dir / f"{family_id}-identity-template.png"
         run_builder(
             scripts / "build_prompt.py",
             [
                 "--spec", str(output_root / "pack-spec.json"),
                 "--family", family_id,
-                "--mode", config["mode"],
                 "--columns", str(config["columns"]),
                 "--matte", config["matte"],
                 "--output", str(prompt_path),
@@ -451,7 +440,6 @@ def main() -> None:
             "jobId": "generation-v1",
             "type": "generation",
             "familyId": family_id,
-            "mode": config["mode"],
             "items": [],
             "attempt": 1,
             "columns": config["columns"],
@@ -469,14 +457,14 @@ def main() -> None:
         }
         job_path = family_root / "jobs" / "generation-v1.json"
         write_json(job_path, job)
-        expected = len(family["items"]) * (2 if config["mode"] == "paired" else 1)
+        expected = len(family["items"])
         status = {
             "schemaVersion": 1,
             "family": family["name"],
             "familyId": family_id,
             "status": "queued-generation" if state == "ready" else "blocked-style-anchor",
             "selectedRound": None,
-            "validation": {"code": "pending", "codex": "pending", "human": "pending", "codeFailures": []},
+            "validation": {"code": "pending", "agent": "pending", "human": "pending", "codeFailures": []},
             "expectedAssetCount": expected,
             "selectedAssetCount": 0,
             "assets": [],

@@ -11,4 +11,5 @@ Requires the PlayDrop CLI. If the `playdrop` command is unavailable, follow the 
 - Prefer clear fixes over broad explanations.
 - Keep `catalogue.json` as the source of truth for game metadata.
 - Explain the difference between worker task uploads (PlayDrop Cloud and Local Agent) and direct publishing when creators mix them up.
+- For Colyseus or MongoDB game-server questions, read `../../references/tech/game-servers.md` before answering.
 - Never ask for secrets. Use login/session commands instead.

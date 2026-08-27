@@ -50,9 +50,9 @@ function probe(path, field) {
       "-v",
       "error",
       "-show_entries",
-      "format=duration",
+      "format=duration,bit_rate",
       "-show_entries",
-      "stream=codec_type,codec_name,width,height,sample_aspect_ratio,channels",
+      "stream=codec_type,codec_name,width,height,sample_aspect_ratio,avg_frame_rate,channels,sample_rate",
       "-of",
       "json",
       path,
@@ -64,6 +64,12 @@ function probe(path, field) {
     return null;
   }
   return JSON.parse(result.stdout);
+}
+
+function frameRate(value) {
+  if (typeof value !== "string") return Number.NaN;
+  const [numerator, denominator = "1"] = value.split("/").map(Number);
+  return denominator === 0 ? Number.NaN : numerator / denominator;
 }
 
 function validateVideo(value, field, width, height, minDuration, maxDuration) {
@@ -79,11 +85,19 @@ function validateVideo(value, field, width, height, minDuration, maxDuration) {
   } else if (video.codec_name !== "h264" || video.sample_aspect_ratio !== "1:1") {
     fail(`${field} must be H.264 with 1:1 sample aspect ratio`);
   }
-  if (!audio || audio.codec_name !== "aac" || audio.channels !== 2) {
-    fail(`${field} must have AAC stereo audio`);
+  const fps = frameRate(video?.avg_frame_rate);
+  if (!Number.isFinite(fps) || fps < 29 || fps > 31) {
+    fail(`${field} must be 30 fps`);
+  }
+  const sampleRate = Number(audio?.sample_rate);
+  if (!audio || audio.codec_name !== "aac" || audio.channels !== 2 || ![44100, 48000].includes(sampleRate)) {
+    fail(`${field} must have AAC stereo audio at 44.1 or 48 kHz`);
   }
   if (!Number.isFinite(duration) || duration < minDuration || duration > maxDuration) {
     fail(`${field} duration must be between ${minDuration} and ${maxDuration} seconds`);
+  }
+  if (!Number.isFinite(Number(data.format.bit_rate)) || Number(data.format.bit_rate) <= 0) {
+    fail(`${field} must report a positive bitrate`);
   }
 }
 

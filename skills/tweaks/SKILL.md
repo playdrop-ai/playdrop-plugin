@@ -18,6 +18,6 @@ Use Tweaks for flat runtime settings such as balance numbers, colors, labels, bo
 - For an update task, read the latest tweak ID and values from `metadata.playdrop.tweaks` in the provided task context. Outside a task, use `playdrop tweaks get app:creator/name@x.y.z --json`.
 - Preserve or deliberately transform the latest values into the next defaults, then set `basedOn` to the latest ID.
 - To intentionally remove tweaks, declare `{ "basedOn": "twk_...", "removed": true }`; do not include `schema` or `defaults`.
-- Use `playdrop tweaks replace ... --file <path>` only to recover a latest private version whose in-game editor is unusable.
+- Use `playdrop tweaks replace ... --file <path>` only to recover the latest source version when its in-game editor is unusable.
 
 This is the collaboration loop: the creator tunes by feel in the game, then the agent carries those exact values into code as the next defaults. The CLI stops dev, validation, and upload when `basedOn` is stale. Never bypass that error by discarding the creator's values.

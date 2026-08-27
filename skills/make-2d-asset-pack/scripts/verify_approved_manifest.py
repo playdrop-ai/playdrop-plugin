@@ -23,47 +23,23 @@ def assets_from_manifest(manifest: dict[str, Any]) -> list[dict[str, Any]]:
     return assets
 
 
-def parse_size(value: str | None, label: str) -> tuple[int, int] | None:
-    if not value:
-        return None
-    try:
-        width, height = (int(part) for part in value.lower().split("x", 1))
-    except (TypeError, ValueError) as error:
-        raise SystemExit(f"invalid_{label}_size:{value}") from error
-    if width < 1 or height < 1:
-        raise SystemExit(f"invalid_{label}_size:{value}")
-    return width, height
-
-
-def asset_kind(asset: dict[str, Any], path: Path) -> str | None:
-    kind = asset.get("kind")
-    if kind in ("large", "small"):
-        return str(kind)
-    if path.stem.endswith("-large"):
-        return "large"
-    if path.stem.endswith("-small"):
-        return "small"
-    return None
-
-
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--manifest", type=Path, required=True)
     parser.add_argument("--root", type=Path, required=True)
     parser.add_argument("--expected-count", type=int)
     parser.add_argument("--report", type=Path)
-    parser.add_argument("--spec", type=Path)
-    parser.add_argument("--large-size")
-    parser.add_argument("--small-size")
+    parser.add_argument("--spec", type=Path, required=True)
     parser.add_argument("--approved-glob", default="families/*/approved/*.png")
     args = parser.parse_args()
 
     manifest = read_json(args.manifest.resolve())
     root = args.root.resolve()
-    spec = load_spec(args.spec.resolve()) if args.spec else None
-    fallback_sizes = {
-        "large": parse_size(args.large_size, "large"),
-        "small": parse_size(args.small_size, "small"),
+    spec = load_spec(args.spec.resolve())
+    expected_sizes = {
+        (family["id"], item["id"]): (int(item["output"]["width"]), int(item["output"]["height"]))
+        for family in spec["families"]
+        for item in family["items"]
     }
     assets = assets_from_manifest(manifest)
     expected = args.expected_count if args.expected_count is not None else manifest.get("totalPngs")
@@ -83,16 +59,10 @@ def main() -> None:
             try:
                 with Image.open(path) as image:
                     image.load()
-                    kind = asset_kind(asset, path)
                     if asset.get("width") is not None and asset.get("height") is not None:
                         size = (int(asset["width"]), int(asset["height"]))
-                    elif spec and kind:
-                        size = (
-                            int(spec["variants"][kind]["width"]),
-                            int(spec["variants"][kind]["height"]),
-                        )
                     else:
-                        size = fallback_sizes.get(kind or "")
+                        size = expected_sizes.get((asset["family"], str(asset.get("itemId", ""))))
                     if image.format != "PNG":
                         item_failures.append(f"format:{image.format}")
                     if size is None:

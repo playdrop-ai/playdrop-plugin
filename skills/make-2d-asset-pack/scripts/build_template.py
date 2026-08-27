@@ -45,7 +45,6 @@ def build(args: argparse.Namespace) -> None:
     payload_overrides = read_json(args.payload_overrides.resolve()) if args.payload_overrides else None
     slots = slots_for_family(
         family,
-        args.mode,
         parse_item_ids(args.items),
         payload_overrides,
     )
@@ -62,12 +61,12 @@ def build(args: argparse.Namespace) -> None:
         x0, y0 = column * cell, row * cell
         x1, y1 = x0 + cell, y0 + cell
         draw.rectangle((x0, y0, x1 - 1, y1 - 1), outline=(70, 70, 70), width=2)
-        label = f"{index + 1}. {slot['item']} {slot['kind']}"
+        label = f"{index + 1}. {slot['item']}"
         draw.text((x0 + 16, y0 + 12), label, fill=(20, 20, 20), font=label_font)
         reference = resolve_input_path(spec_path, slot.get("reference"))
         reference_hash = None
         if slot["referenceType"] == "visual-reference" and (not reference or not reference.exists()):
-            raise SystemExit(f"visual_reference_not_found:{slot['itemId']}:{slot['kind']}:{reference}")
+            raise SystemExit(f"visual_reference_not_found:{slot['itemId']}:{reference}")
         if reference and reference.exists():
             reference_hash = sha256(reference)
             source = Image.open(reference)
@@ -91,7 +90,7 @@ def build(args: argparse.Namespace) -> None:
         )
 
     args.output_dir.mkdir(parents=True, exist_ok=True)
-    stem = f"{args.family}-{args.mode}-identity-template"
+    stem = f"{args.family}-identity-template"
     image_path = args.output_dir / f"{stem}.png"
     metadata_path = args.output_dir / f"{stem}.json"
     canvas.save(image_path)
@@ -102,7 +101,6 @@ def build(args: argparse.Namespace) -> None:
             "private": True,
             "family": family["name"],
             "familyId": family["id"],
-            "mode": args.mode,
             "canvas": {"width": canvas.width, "height": canvas.height},
             "grid": {"rows": rows, "columns": columns},
             "slots": metadata_slots,
@@ -134,9 +132,8 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--spec", type=Path, required=True)
     parser.add_argument("--family", required=True)
-    parser.add_argument("--mode", choices=("paired", "large", "small"), default="paired")
     parser.add_argument("--items", help="Comma-separated item ids for an item-specific repair template")
-    parser.add_argument("--payload-overrides", type=Path, help="JSON payload replacements for requested variants")
+    parser.add_argument("--payload-overrides", type=Path, help="JSON payload replacements keyed by item id")
     parser.add_argument("--columns", type=int)
     parser.add_argument("--cell-size", type=int, default=384)
     parser.add_argument("--output-dir", type=Path, required=True)

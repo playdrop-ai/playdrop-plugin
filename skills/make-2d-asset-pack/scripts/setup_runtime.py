@@ -5,7 +5,6 @@ from __future__ import annotations
 
 import argparse
 import os
-import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -16,6 +15,7 @@ from asset_pack_common import exclusive_file_lock
 
 RUNTIME_SETUP_LOCK_TIMEOUT_SECONDS = 10 * 60
 RUNTIME_SETUP_LOCK_STALE_SECONDS = 11 * 60
+EXPECTED_VERSIONS = ("11.3.0", "2.0.2", "2.0.61")
 
 
 def runtime_python(root: Path) -> Path:
@@ -31,10 +31,11 @@ def check(python: Path) -> bool:
         capture_output=True,
         check=False,
     )
-    if result.returncode == 0:
-        print(f"versions:{result.stdout.strip()}")
-        return True
-    return False
+    versions = tuple(result.stdout.strip().split())
+    if result.returncode != 0 or versions != EXPECTED_VERSIONS:
+        return False
+    print(f"versions:{' '.join(versions)}")
+    return True
 
 
 def python_version(python: Path) -> Optional[Tuple[int, int]]:
@@ -83,7 +84,9 @@ def prepare_runtime(root: Path, check_only: bool = False) -> Path:
         bootstrap_python = resolve_bootstrap_python()
         existing_version = python_version(python) if python.is_file() else None
         if existing_version and not ((3, 9) <= existing_version < (3, 14)):
-            shutil.rmtree(root)
+            raise SystemExit(
+                f"asset_pack_runtime_python_incompatible:{root}:{existing_version[0]}.{existing_version[1]}"
+            )
         root.parent.mkdir(parents=True, exist_ok=True)
         if not python.is_file():
             subprocess.run([str(bootstrap_python), "-m", "venv", str(root)], check=True)

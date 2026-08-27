@@ -48,20 +48,15 @@ def generated(job: dict[str, Any], pack_root: Path) -> bool:
     return bool(output and (pack_root / output).is_file())
 
 
-def mode_includes(mode: str, kind: str) -> bool:
-    return mode == "paired" or mode == kind
-
-
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--pack-root", type=Path, required=True)
     parser.add_argument("--family", required=True)
-    parser.add_argument("--mode", choices=("paired", "large", "small"))
     parser.add_argument("--items", help="Comma-separated item ids; omit for a full-sheet retry")
     parser.add_argument(
         "--payload-overrides",
         type=Path,
-        help="JSON payload replacements keyed by item id and large/small variant",
+        help="JSON payload replacements keyed by item id",
     )
     parser.add_argument("--matte", help="Subject-safe matte; otherwise the next configured matte is used")
     parser.add_argument("--reason", required=True)
@@ -79,15 +74,12 @@ def main() -> None:
     status = read_json(status_path)
     item_ids = parse_item_ids(args.items)
     production = family.get("production", {})
-    mode = args.mode or production.get("mode", "paired")
-    if item_ids and not args.mode:
-        raise SystemExit("targeted_retry_requires_mode")
     if args.payload_overrides and not item_ids:
         raise SystemExit("payload_overrides_require_targeted_retry")
     payload_overrides = normalize_payload_overrides(
         read_json(args.payload_overrides.resolve()) if args.payload_overrides else None
     )
-    slots_for_family(family, mode, item_ids, payload_overrides)
+    slots_for_family(family, item_ids, payload_overrides)
     jobs = [
         job for job in (
             read_json(path) for path in sorted((family_root / "jobs").glob("*.json"))
@@ -96,33 +88,30 @@ def main() -> None:
     ]
 
     if item_ids:
-        requested_kinds = ("large", "small") if mode == "paired" else (mode,)
         relevant = [
             job for job in jobs
             if set(item_ids).intersection(job.get("items") or [])
-            and any(mode_includes(str(job.get("mode")), kind) for kind in requested_kinds)
         ]
         if any(job.get("state") in ACTIVE_STATES for job in relevant):
-            raise SystemExit(f"targeted_retry_already_active:{family['id']}:{mode}")
+            raise SystemExit(f"targeted_retry_already_active:{family['id']}")
         maximum = retry_limits(spec)["individualRepairsPerAssetMaximum"]
         for item_id in item_ids:
-            for kind in requested_kinds:
-                count = sum(
-                    generated(job, pack_root)
-                    for job in jobs
-                    if item_id in (job.get("items") or []) and mode_includes(str(job.get("mode")), kind)
-                )
-                if count >= maximum and not args.override_limit:
-                    raise SystemExit(f"item_repair_retry_limit_exceeded:{family['id']}:{item_id}:{kind}:{maximum}")
-        prefix = f"repair-{item_ids[0]}-{mode}-v" if len(item_ids) == 1 else f"repair-batch-{mode}-v"
+            count = sum(
+                generated(job, pack_root)
+                for job in jobs
+                if item_id in (job.get("items") or [])
+            )
+            if count >= maximum and not args.override_limit:
+                raise SystemExit(f"item_repair_retry_limit_exceeded:{family['id']}:{item_id}:{maximum}")
+        prefix = f"repair-{item_ids[0]}-v" if len(item_ids) == 1 else "repair-batch-v"
     else:
-        relevant = [job for job in jobs if not job.get("items") and job.get("mode") == mode]
+        relevant = [job for job in jobs if not job.get("items")]
         if any(job.get("state") in ACTIVE_STATES for job in relevant):
-            raise SystemExit(f"full_sheet_retry_already_active:{family['id']}:{mode}")
+            raise SystemExit(f"full_sheet_retry_already_active:{family['id']}")
         maximum = retry_limits(spec)["fullSheetsPerFamilyMaximum"]
         count = sum(generated(job, pack_root) for job in relevant)
         if count >= maximum and not args.override_limit:
-            raise SystemExit(f"full_sheet_retry_limit_exceeded:{family['id']}:{mode}:{maximum}")
+            raise SystemExit(f"full_sheet_retry_limit_exceeded:{family['id']}:{maximum}")
         prefix = "generation-v"
 
     version = version_for(family_root, prefix)
@@ -175,16 +164,16 @@ def main() -> None:
     run_builder(
         scripts / "build_template.py",
         [
-            "--spec", str(spec_path), "--family", family["id"], "--mode", mode,
+            "--spec", str(spec_path), "--family", family["id"],
             "--columns", str(columns), *item_args, *payload_override_args,
             "--output-dir", str(template_dir),
         ],
     )
-    template = template_dir / f"{family['id']}-{mode}-identity-template.png"
+    template = template_dir / f"{family['id']}-identity-template.png"
     run_builder(
         scripts / "build_prompt.py",
         [
-            "--spec", str(spec_path), "--family", family["id"], "--mode", mode,
+            "--spec", str(spec_path), "--family", family["id"],
             "--columns", str(columns), *item_args, *payload_override_args,
             "--matte", matte,
             "--style-reference-count", str(len(style_references)),
@@ -205,7 +194,6 @@ def main() -> None:
         "jobId": job_id,
         "type": "generation",
         "familyId": family["id"],
-        "mode": mode,
         "items": item_ids or [],
         "attempt": version,
         "columns": columns,
@@ -245,7 +233,6 @@ def main() -> None:
             "at": created_at,
             "event": "retry-job-prepared",
             "jobId": job_id,
-            "mode": mode,
             "items": item_ids or [],
             "matte": matte,
             "reason": args.reason.strip(),

@@ -35,9 +35,9 @@ def main() -> None:
     }
     families: list[dict[str, Any]] = []
     code_seconds: list[float] = []
-    codex_seconds: list[float] = []
+    agent_seconds: list[float] = []
     active_code_seconds: list[float] = []
-    active_codex_seconds: list[float] = []
+    active_agent_seconds: list[float] = []
     for status_path in sorted((pack_root / "families").glob("*/family-status.json")):
         status = read_json(status_path)
         if requested_families and status.get("familyId") not in requested_families:
@@ -49,35 +49,34 @@ def main() -> None:
         active_started_at = min((value for value in started_values if value), default=None)
         latest_endpoint = (
             timing.get("humanApprovedAt")
-            or timing.get("codexReviewedAt")
+            or timing.get("agentReviewedAt")
             or timing.get("extractionFinishedAt")
             or status.get("updatedAt")
         )
         elapsed = duration(timing.get("queuedAt"), latest_endpoint)
         code_elapsed = duration(timing.get("queuedAt"), timing.get("extractionFinishedAt"))
-        codex_elapsed = duration(timing.get("queuedAt"), timing.get("codexReviewedAt"))
+        agent_elapsed = duration(timing.get("queuedAt"), timing.get("agentReviewedAt"))
         human_elapsed = duration(timing.get("queuedAt"), timing.get("humanApprovedAt"))
         queue_latency = duration(timing.get("queuedAt"), active_started_at)
         active_elapsed = duration(active_started_at, latest_endpoint)
         active_code_elapsed = duration(active_started_at, timing.get("extractionFinishedAt"))
-        active_codex_elapsed = duration(active_started_at, timing.get("codexReviewedAt"))
+        active_agent_elapsed = duration(active_started_at, timing.get("agentReviewedAt"))
         active_human_elapsed = duration(active_started_at, timing.get("humanApprovedAt"))
         validation = status.get("validation", {})
         if validation.get("code") == "approved" and code_elapsed is not None:
             code_seconds.append(code_elapsed)
-        if validation.get("codex") == "approved" and codex_elapsed is not None:
-            codex_seconds.append(codex_elapsed)
+        if validation.get("agent") == "approved" and agent_elapsed is not None:
+            agent_seconds.append(agent_elapsed)
         if validation.get("code") == "approved" and active_code_elapsed is not None:
             active_code_seconds.append(active_code_elapsed)
-        if validation.get("codex") == "approved" and active_codex_elapsed is not None:
-            active_codex_seconds.append(active_codex_elapsed)
+        if validation.get("agent") == "approved" and active_agent_elapsed is not None:
+            active_agent_seconds.append(active_agent_elapsed)
         jobs = []
         for job in raw_jobs:
             jobs.append(
                 {
                     "jobId": job.get("jobId"),
                     "state": job.get("state"),
-                    "mode": job.get("mode"),
                     "items": job.get("items", []),
                     "wallSeconds": job.get("timing", {}).get("wallSeconds"),
                     "providerSeconds": job.get("timing", {}).get("providerSeconds"),
@@ -96,10 +95,10 @@ def main() -> None:
                 "timing": {
                     "queueLatencySeconds": queue_latency,
                     "toCodeApprovalSeconds": code_elapsed,
-                    "toCodexApprovalSeconds": codex_elapsed,
+                    "toAgentApprovalSeconds": agent_elapsed,
                     "toHumanApprovalSeconds": human_elapsed,
                     "activeToCodeApprovalSeconds": active_code_elapsed,
-                    "activeToCodexApprovalSeconds": active_codex_elapsed,
+                    "activeToAgentApprovalSeconds": active_agent_elapsed,
                     "activeToHumanApprovalSeconds": active_human_elapsed,
                 },
                 "jobs": jobs,
@@ -121,9 +120,9 @@ def main() -> None:
             "readyForHuman": sum(family["status"] == "awaiting-human-review" for family in families),
             "needsRepair": sum(family["status"] in {"needs-repair", "blocked-repair"} for family in families),
             "medianSecondsToCodeApproval": round(statistics.median(code_seconds), 3) if code_seconds else None,
-            "medianSecondsToCodexApproval": round(statistics.median(codex_seconds), 3) if codex_seconds else None,
+            "medianSecondsToAgentApproval": round(statistics.median(agent_seconds), 3) if agent_seconds else None,
             "medianActiveSecondsToCodeApproval": round(statistics.median(active_code_seconds), 3) if active_code_seconds else None,
-            "medianActiveSecondsToCodexApproval": round(statistics.median(active_codex_seconds), 3) if active_codex_seconds else None,
+            "medianActiveSecondsToAgentApproval": round(statistics.median(active_agent_seconds), 3) if active_agent_seconds else None,
             "targetMedianSeconds": 300,
             "slowFamilySeconds": 600,
         },
@@ -138,12 +137,12 @@ def main() -> None:
     )
     if summary["medianSecondsToCodeApproval"] is not None:
         print(f"median_to_code_approval_seconds:{summary['medianSecondsToCodeApproval']}")
-    if summary["medianSecondsToCodexApproval"] is not None:
-        print(f"median_to_codex_approval_seconds:{summary['medianSecondsToCodexApproval']}")
+    if summary["medianSecondsToAgentApproval"] is not None:
+        print(f"median_to_agent_approval_seconds:{summary['medianSecondsToAgentApproval']}")
     if summary["medianActiveSecondsToCodeApproval"] is not None:
         print(f"median_active_to_code_approval_seconds:{summary['medianActiveSecondsToCodeApproval']}")
-    if summary["medianActiveSecondsToCodexApproval"] is not None:
-        print(f"median_active_to_codex_approval_seconds:{summary['medianActiveSecondsToCodexApproval']}")
+    if summary["medianActiveSecondsToAgentApproval"] is not None:
+        print(f"median_active_to_agent_approval_seconds:{summary['medianActiveSecondsToAgentApproval']}")
     for family in families:
         elapsed = "-" if family["elapsedSeconds"] is None else f"{family['elapsedSeconds']:.1f}s"
         active = "-" if family["activeElapsedSeconds"] is None else f"{family['activeElapsedSeconds']:.1f}s"

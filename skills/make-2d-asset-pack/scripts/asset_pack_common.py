@@ -16,11 +16,55 @@ from pathlib import Path
 from typing import Any, Iterator
 
 
-MODES = ("paired", "large", "small")
 DEFAULT_RETRY_LIMITS = {
     "fullSheetsPerFamilyMaximum": 2,
     "individualRepairsPerAssetMaximum": 2,
 }
+
+
+def lock_owner_alive(path: Path) -> bool | None:
+    try:
+        pid = int(path.read_text(encoding="ascii").strip())
+    except (FileNotFoundError, OSError, UnicodeError, ValueError):
+        return None
+    if pid <= 0:
+        return False
+    try:
+        os.kill(pid, 0)
+    except ProcessLookupError:
+        return False
+    except PermissionError:
+        return True
+    return True
+
+
+def lock_file_is_stale(path: Path, stale_seconds: float) -> bool:
+    owner_alive = lock_owner_alive(path)
+    if owner_alive is not None:
+        return not owner_alive
+    try:
+        return time.time() - path.stat().st_mtime > stale_seconds
+    except FileNotFoundError:
+        return False
+
+
+def create_lock_file(path: Path, stale_seconds: float = 60.0) -> None:
+    """Create a PID lock, replacing only a dead or old unreadable owner."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    for _ in range(2):
+        try:
+            descriptor = os.open(path, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600)
+        except FileExistsError:
+            if lock_file_is_stale(path, stale_seconds):
+                path.unlink(missing_ok=True)
+                continue
+            raise
+        try:
+            os.write(descriptor, f"{os.getpid()}\n".encode("ascii"))
+        finally:
+            os.close(descriptor)
+        return
+    raise FileExistsError(path)
 
 
 def read_json(path: Path) -> dict[str, Any]:
@@ -67,26 +111,18 @@ def exclusive_file_lock(
     """Use a short-lived lock file for cross-process state and ledger writes."""
     path.parent.mkdir(parents=True, exist_ok=True)
     deadline = time.monotonic() + timeout_seconds
-    descriptor: int | None = None
-    while descriptor is None:
+    while True:
         try:
-            descriptor = os.open(path, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600)
-            os.write(descriptor, f"{os.getpid()}\n".encode("ascii"))
+            create_lock_file(path, stale_seconds)
         except FileExistsError:
-            try:
-                stale = time.time() - path.stat().st_mtime > stale_seconds
-            except FileNotFoundError:
-                continue
-            if stale:
-                path.unlink(missing_ok=True)
-                continue
             if time.monotonic() >= deadline:
                 raise SystemExit(f"file_lock_timeout:{path}")
             time.sleep(0.05)
+            continue
+        break
     try:
         yield
     finally:
-        os.close(descriptor)
         path.unlink(missing_ok=True)
 
 
@@ -120,7 +156,7 @@ def slug(value: str) -> str:
 def validate_spec(spec: dict[str, Any]) -> None:
     if spec.get("schemaVersion") != 1:
         raise SystemExit("unsupported_pack_spec_version")
-    for key in ("pack", "styleAnchor", "variants", "families"):
+    for key in ("pack", "styleAnchor", "families"):
         if key not in spec:
             raise SystemExit(f"pack_spec_missing:{key}")
     style_anchor = spec["styleAnchor"]
@@ -130,14 +166,6 @@ def validate_spec(spec: dict[str, Any]) -> None:
         raise SystemExit("pack_spec_style_prompt_required")
     if style_anchor.get("path") is not None and not str(style_anchor.get("path", "")).strip():
         raise SystemExit("pack_spec_style_anchor_path_invalid")
-    variants = spec["variants"]
-    for kind in ("large", "small"):
-        variant = variants.get(kind)
-        if not isinstance(variant, dict):
-            raise SystemExit(f"pack_spec_variant_missing:{kind}")
-        for field in ("width", "height", "padding", "contract"):
-            if field not in variant:
-                raise SystemExit(f"pack_spec_variant_field_missing:{kind}:{field}")
     families = spec["families"]
     if not isinstance(families, list) or not families:
         raise SystemExit("pack_spec_families_required")
@@ -160,12 +188,23 @@ def validate_spec(spec: dict[str, Any]) -> None:
             if item_id in item_ids:
                 raise SystemExit(f"pack_spec_duplicate_item:{family_id}:{item_id}")
             item_ids.add(item_id)
-            payloads = item.get("payloads")
-            if not isinstance(payloads, dict):
-                raise SystemExit(f"pack_spec_payloads_required:{family_id}:{item_id}")
-            for kind in ("large", "small"):
-                if not str(payloads.get(kind, "")).strip():
-                    raise SystemExit(f"pack_spec_payload_required:{family_id}:{item_id}:{kind}")
+            if not str(item.get("payload", "")).strip():
+                raise SystemExit(f"pack_spec_payload_required:{family_id}:{item_id}")
+            output = item.get("output")
+            if not isinstance(output, dict):
+                raise SystemExit(f"pack_spec_output_required:{family_id}:{item_id}")
+            for field in ("width", "height", "padding", "contract"):
+                if field not in output:
+                    raise SystemExit(f"pack_spec_output_field_missing:{family_id}:{item_id}:{field}")
+            width = output.get("width")
+            height = output.get("height")
+            padding = output.get("padding")
+            if any(not isinstance(value, int) or isinstance(value, bool) for value in (width, height, padding)):
+                raise SystemExit(f"pack_spec_output_integer_required:{family_id}:{item_id}")
+            if width < 1 or height < 1 or padding < 0 or padding * 2 >= min(width, height):
+                raise SystemExit(f"pack_spec_output_invalid:{family_id}:{item_id}")
+            if not str(output.get("contract", "")).strip():
+                raise SystemExit(f"pack_spec_output_contract_required:{family_id}:{item_id}")
     retry_limits = spec.get("retryLimits", {})
     if not isinstance(retry_limits, dict):
         raise SystemExit("pack_spec_retry_limits_object_required")
@@ -207,36 +246,26 @@ def retry_limits(spec: dict[str, Any]) -> dict[str, int]:
     }
 
 
-def normalize_payload_overrides(value: Any) -> dict[str, dict[str, str]]:
+def normalize_payload_overrides(value: Any) -> dict[str, str]:
     if value in (None, {}):
         return {}
     if not isinstance(value, dict):
         raise SystemExit("payload_overrides_must_be_object")
-    normalized: dict[str, dict[str, str]] = {}
-    for item_id, variants in value.items():
-        if not isinstance(item_id, str) or not item_id.strip() or not isinstance(variants, dict):
+    normalized: dict[str, str] = {}
+    for item_id, payload in value.items():
+        if not isinstance(item_id, str) or not item_id.strip():
             raise SystemExit("payload_override_item_invalid")
-        normalized_variants: dict[str, str] = {}
-        for kind, payload in variants.items():
-            if kind not in {"large", "small"}:
-                raise SystemExit(f"payload_override_kind_invalid:{item_id}:{kind}")
-            if not isinstance(payload, str) or not payload.strip():
-                raise SystemExit(f"payload_override_text_required:{item_id}:{kind}")
-            normalized_variants[kind] = payload.strip()
-        if not normalized_variants:
-            raise SystemExit(f"payload_override_variants_required:{item_id}")
-        normalized[item_id.strip()] = normalized_variants
+        if not isinstance(payload, str) or not payload.strip():
+            raise SystemExit(f"payload_override_text_required:{item_id}")
+        normalized[item_id.strip()] = payload.strip()
     return normalized
 
 
 def slots_for_family(
     family: dict[str, Any],
-    mode: str,
     item_ids: list[str] | None = None,
-    payload_overrides: dict[str, dict[str, str]] | None = None,
+    payload_overrides: dict[str, str] | None = None,
 ) -> list[dict[str, Any]]:
-    if mode not in MODES:
-        raise SystemExit(f"unsupported_mode:{mode}")
     requested = set(item_ids or [])
     known = {item["id"] for item in family["items"]}
     missing = sorted(requested - known)
@@ -250,33 +279,24 @@ def slots_for_family(
         outside_request = sorted(set(overrides) - requested)
         if outside_request:
             raise SystemExit(f"payload_override_outside_request:{','.join(outside_request)}")
-    allowed_kinds = {"large", "small"} if mode == "paired" else {mode}
-    for override_item, variants in overrides.items():
-        invalid_kinds = sorted(set(variants) - allowed_kinds)
-        if invalid_kinds:
-            raise SystemExit(
-                f"payload_override_outside_mode:{override_item}:{','.join(invalid_kinds)}"
-            )
     slots: list[dict[str, Any]] = []
     for item in family["items"]:
         if requested and item["id"] not in requested:
             continue
-        kinds = ("large", "small") if mode == "paired" else (mode,)
-        for kind in kinds:
-            original_payload = item["payloads"][kind]
-            override_payload = overrides.get(item["id"], {}).get(kind)
-            slots.append(
-                {
-                    "item": item["name"],
-                    "itemId": item["id"],
-                    "kind": kind,
-                    "payload": override_payload or original_payload,
-                    "originalPayload": original_payload if override_payload else None,
-                    "payloadOverride": bool(override_payload),
-                    "referenceType": "semantic-only" if override_payload else item.get("referenceType", "semantic-only"),
-                    "reference": None if override_payload else (item.get("references") or {}).get(kind),
-                }
-            )
+        original_payload = item["payload"]
+        override_payload = overrides.get(item["id"])
+        slots.append(
+            {
+                "item": item["name"],
+                "itemId": item["id"],
+                "payload": override_payload or original_payload,
+                "originalPayload": original_payload if override_payload else None,
+                "payloadOverride": bool(override_payload),
+                "output": item["output"],
+                "referenceType": "semantic-only" if override_payload else item.get("referenceType", "semantic-only"),
+                "reference": None if override_payload else item.get("reference"),
+            }
+        )
     if len(slots) > 16:
         raise SystemExit(f"sheet_slot_limit_exceeded:{len(slots)}")
     return slots

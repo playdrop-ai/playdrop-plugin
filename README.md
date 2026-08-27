@@ -26,7 +26,6 @@ The plugin follows the [Agent Plugins 1.0 specification](https://agent-plugins.o
 - `tools/validate-plugin.mjs`: dependency-free portable manifest and skill validation
 - `tools/validate-submission.mjs`: end-to-end public artifact and marketplace preflight
 - `submission/marketplaces.json`: machine-readable listing metadata and review cases
-- `MARKETPLACE_SUBMISSION.md`: copy-ready submission materials and owner actions
 
 ## Install the Plugin
 

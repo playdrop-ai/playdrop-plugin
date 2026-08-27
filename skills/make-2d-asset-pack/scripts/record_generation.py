@@ -16,7 +16,6 @@ from asset_pack_common import exclusive_file_lock, sha256
 FIELDS = [
     "recorded_at",
     "family",
-    "mode",
     "attempt",
     "status",
     "prompt",
@@ -51,7 +50,6 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--ledger", type=Path, required=True)
     parser.add_argument("--family", required=True)
-    parser.add_argument("--mode", choices=("paired", "large", "small", "item-repair"), required=True)
     parser.add_argument("--attempt", type=int, required=True)
     parser.add_argument("--status", choices=("success", "failed"), required=True)
     parser.add_argument("--prompt", type=Path, required=True)
@@ -84,7 +82,6 @@ def main() -> None:
     row = {
         "recorded_at": datetime.now(timezone.utc).isoformat(),
         "family": args.family,
-        "mode": args.mode,
         "attempt": args.attempt,
         "status": args.status,
         "prompt": portable_path(args.prompt, ledger_root),

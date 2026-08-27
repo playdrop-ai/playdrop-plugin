@@ -75,7 +75,7 @@
         "rationale": "The requested product is not a PlayDrop browser game."
       }
     ],
-    "releaseNotes": "Ships the portable Agent Plugins 1.0 package with first-class Tweaks for in-game tuning, Playtest Notes for precise agent feedback, and public creator and agent documentation for both workflows."
+    "releaseNotes": "Adds one shared game-quality rubric, stricter review and eval evidence, explicit Grok image ownership, and a streamlined transparent-asset workflow."
   },
   "cursor": {
     "organizationName": "PlayDrop",

@@ -8,6 +8,21 @@ Use `catalogue.json` as the upload contract and compact high-level game plan. Ke
 
 These files are encouraged working memory, never CLI, API, upload, or phase gates. Preserve existing files and edit them in place instead of replacing creator notes. Do not create them merely to satisfy a checklist.
 
+## Server-enabled games
+
+PlayDrop Cloud games may opt into the pinned Colyseus runtime with one additive block on the app entry:
+
+```json
+{
+  "server": {
+    "entry": "server/index.ts",
+    "rooms": ["game"]
+  }
+}
+```
+
+The entry may import project-local TypeScript files. `playdrop project check` compiles them into one immutable server bundle and validates frozen dependencies, room exports, authentication, imports, and the 2 MiB bundle limit. V1 supports at most two room types. Direct creator server publishing is unavailable; this contract is enabled only in the controlled PlayDrop Cloud workflow.
+
 ## Allowed Values
 
 - Template keys: `playdrop/template/html_single_file_template`, `playdrop/template/phaser_2d_template`, `playdrop/template/three_js_template`.
@@ -40,7 +55,7 @@ Replace names, refs, paths, and notes. Keep the shape.
       "displayName": "Sky Orchard Glider",
       "description": "Thread a nimble glider through shifting orchard wind rings, collect orchard stars, and master precise one-thumb landings before the storm closes in.",
       "type": "GAME",
-      "authMode": "OPTIONAL",
+      "authMode": "NONE",
       "controllerMode": "UNSUPPORTED",
       "previewable": true,
       "editorSupported": false,
@@ -129,7 +144,7 @@ Replace names, refs, paths, and notes. Keep the shape.
         "genre": "game-genre/arcade",
         "coreGameplay": "core-gameplay/fly",
         "perspective": "perspective/2d-side-view",
-        "controls": "game-controls/drag",
+        "controls": "game-controls/tap",
         "visualStyle": "visual-style/stylized",
         "progression": "game-progression/levels",
         "feel": "game-feel/playful"

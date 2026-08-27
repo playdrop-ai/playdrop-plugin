@@ -49,9 +49,11 @@ Fail with `marketing_video_source_missing` when real, clean footage is unavailab
   established caption and interaction system unless the new game's visual
   language requires a documented adaptation.
 - For a marketing package, use the Flighty Saucer production method as the
-  PlayDrop precedent: HUD-free preview capture, synchronized real input cues,
-  a reproducible semantic edit, real audio, visible progression, a real payoff,
-  and ratio-native review. Do not copy that game's art or mechanic.
+  PlayDrop precedent. Find and download its exact public version with
+  `playdrop search` and `playdrop project create app --remix`, then inspect its
+  HUD-free preview capture, synchronized real input cues, reproducible semantic
+  edit, real audio, visible progression, real payoff, and ratio-native review.
+  Do not copy that game's art or mechanic.
 
 ### 2. Prepare a real gameplay state
 

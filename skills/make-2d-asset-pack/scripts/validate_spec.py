@@ -39,10 +39,9 @@ def main() -> None:
             item_count += 1
             if item.get("referenceType") == "visual-reference":
                 visual += 1
-                for kind in ("large", "small"):
-                    path = resolve_input_path(spec_path, (item.get("references") or {}).get(kind))
-                    if not path or not path.is_file():
-                        failures.append(f"visual_reference_not_found:{family['id']}:{item['id']}:{kind}:{path}")
+                path = resolve_input_path(spec_path, item.get("reference"))
+                if not path or not path.is_file():
+                    failures.append(f"visual_reference_not_found:{family['id']}:{item['id']}:{path}")
             else:
                 semantic += 1
     report = {
@@ -50,7 +49,7 @@ def main() -> None:
         "pack": spec["pack"].get("name"),
         "families": len(spec["families"]),
         "items": item_count,
-        "pngOutputs": item_count * 2,
+        "pngOutputs": item_count,
         "visualReferenceItems": visual,
         "semanticOnlyItems": semantic,
         "failures": failures,

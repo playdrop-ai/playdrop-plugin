@@ -6,7 +6,6 @@ from __future__ import annotations
 import argparse
 import json
 import math
-import os
 import shutil
 import subprocess
 import sys
@@ -19,6 +18,7 @@ from PIL import Image
 from asset_pack_common import (
     append_jsonl,
     color_hex,
+    create_lock_file,
     find_family,
     grid_for_slots,
     load_spec,
@@ -38,7 +38,6 @@ from process_sheet import (
     hard_key,
     image_metrics,
     make_board,
-    make_raw_small_board,
     matte_profile,
     remove_tiny_components,
     rembg_extract,
@@ -143,15 +142,13 @@ def write_review_boards(assets: list[dict[str, Any]], pack_root: Path, validatio
     entries = []
     for asset in assets:
         path = pack_root / asset["output"]
-        entries.append({"path": str(path), "label": f"{asset['item']} {asset['kind']}", "kind": asset["kind"]})
+        entries.append({"path": str(path), "label": asset["item"]})
     for background in ("checker", "white", "purple", "black"):
         make_board(entries, validation_root / f"review-{background}.png", background)
-    if any(entry["kind"] == "small" for entry in entries):
-        make_raw_small_board(entries, validation_root / "small-raw-64.png")
 
 
-def next_repair_number(family_root: Path, item_id: str, kind: str) -> int:
-    prefix = f"repair-{item_id}-{kind}-v"
+def next_repair_number(family_root: Path, item_id: str) -> int:
+    prefix = f"repair-{item_id}-v"
     numbers = []
     for path in (family_root / "jobs").glob(f"{prefix}*.json"):
         try:
@@ -169,18 +166,17 @@ def create_repair_job(
     family_root: Path,
     source_job: dict[str, Any],
     item_id: str,
-    kind: str,
     reasons: list[str],
 ) -> dict[str, Any] | None:
-    for path in sorted((family_root / "jobs").glob(f"repair-{item_id}-{kind}-v*.json")):
+    for path in sorted((family_root / "jobs").glob(f"repair-{item_id}-v*.json")):
         existing = read_json(path)
         if existing.get("state") in {"ready", "running", "source-approved", "awaiting-source-review"}:
             return existing
-    version = next_repair_number(family_root, item_id, kind)
+    version = next_repair_number(family_root, item_id)
     maximum = retry_limits(spec)["individualRepairsPerAssetMaximum"]
     prior_jobs = [
         read_json(path)
-        for path in sorted((family_root / "jobs").glob(f"repair-{item_id}-{kind}-v*.json"))
+        for path in sorted((family_root / "jobs").glob(f"repair-{item_id}-v*.json"))
     ]
     generated_sources = sum(
         (pack_root / candidate["output"]).is_file()
@@ -194,7 +190,7 @@ def create_repair_job(
     if not mattes:
         return None
     matte = mattes[min(generated_sources, len(mattes) - 1)]
-    job_id = f"repair-{item_id}-{kind}-v{version}"
+    job_id = f"repair-{item_id}-v{version}"
     template_dir = family_root / "private-templates" / job_id
     prompt = family_root / "prompts" / f"{job_id}.txt"
     scripts = Path(__file__).resolve().parent
@@ -217,19 +213,17 @@ def create_repair_job(
         [
             "--spec", str(spec_path),
             "--family", family["id"],
-            "--mode", kind,
             "--items", item_id,
             "--columns", "1",
             "--output-dir", str(template_dir),
         ],
     )
-    template = template_dir / f"{family['id']}-{kind}-identity-template.png"
+    template = template_dir / f"{family['id']}-identity-template.png"
     run_builder(
         scripts / "build_prompt.py",
         [
             "--spec", str(spec_path),
             "--family", family["id"],
-            "--mode", kind,
             "--items", item_id,
             "--columns", "1",
             "--matte", matte,
@@ -243,7 +237,6 @@ def create_repair_job(
         "jobId": job_id,
         "type": "generation",
         "familyId": family["id"],
-        "mode": kind,
         "items": [item_id],
         "attempt": version,
         "columns": 1,
@@ -255,7 +248,7 @@ def create_repair_job(
         "identityTemplate": record_path(template, pack_root),
         "styleReferences": style_references,
         "output": record_path(family_root / "generated" / f"{job_id}.png", pack_root),
-        "repairFor": {"itemId": item_id, "kind": kind, "reasons": reasons},
+        "repairFor": {"itemId": item_id, "reasons": reasons},
         "timing": {"queuedAt": created_at},
         "errors": [],
     }
@@ -267,7 +260,6 @@ def create_repair_job(
             "event": "repair-job-prepared",
             "jobId": job_id,
             "itemId": item_id,
-            "kind": kind,
             "reasons": reasons,
             "styleReferences": style_references,
         },
@@ -300,14 +292,11 @@ def merge_assets(
     replacements: list[dict[str, Any]],
     family: dict[str, Any],
 ) -> list[dict[str, Any]]:
-    merged = {(asset["itemId"], asset["kind"]): asset for asset in previous}
+    merged = {asset["itemId"]: asset for asset in previous}
     for asset in replacements:
-        merged[(asset["itemId"], asset["kind"])] = asset
-    order = {
-        (slot["itemId"], slot["kind"]): index
-        for index, slot in enumerate(slots_for_family(family, "paired"))
-    }
-    return sorted(merged.values(), key=lambda asset: order.get((asset["itemId"], asset["kind"]), 100000))
+        merged[asset["itemId"]] = asset
+    order = {slot["itemId"]: index for index, slot in enumerate(slots_for_family(family))}
+    return sorted(merged.values(), key=lambda asset: order.get(asset["itemId"], 100000))
 
 
 def main() -> None:
@@ -381,10 +370,9 @@ def main() -> None:
         raise SystemExit(f"source_job_not_approved:{family['id']}:{args.job}:{job.get('state')}")
     lock_path = family_root / ".process.lock"
     try:
-        lock_descriptor = os.open(lock_path, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600)
+        create_lock_file(lock_path, stale_seconds=30 * 60)
     except FileExistsError as error:
         raise SystemExit(f"family_process_locked:{family['id']}") from error
-    os.close(lock_descriptor)
     started_at = now()
     try:
         status_path = family_root / "family-status.json"
@@ -406,7 +394,7 @@ def main() -> None:
             if not path.is_file():
                 raise SystemExit(f"job_input_not_found:{label}:{path}")
         item_ids = list(job.get("items") or []) or None
-        slots = slots_for_family(family, job["mode"], item_ids)
+        slots = slots_for_family(family, item_ids)
         rows, columns = grid_for_slots(len(slots), int(job["columns"]))
         key = parse_hex_color(job["matte"])
         despill_enabled = supports_despill(key)
@@ -438,13 +426,13 @@ def main() -> None:
         unresolved: list[dict[str, Any]] = []
 
         for slot, box in zip(slots, layout["boxes"]):
-            filename = f"{slot['itemId']}-{slot['kind']}.png"
+            filename = f"{slot['itemId']}.png"
             crop = crop_box(source_image, box)
             crop_path = crop_root / filename
             crop.save(crop_path)
             crop_edge_pixels = source_crop_edge_pixels(crop, key)
             matte_overlap = source_matte_subject_overlap(crop, key, opaque)
-            variant = spec["variants"][slot["kind"]]
+            output = slot["output"]
             chosen: dict[str, Any] | None = None
             soft_visible: int | None = None
             slot_attempts: list[dict[str, Any]] = []
@@ -465,9 +453,9 @@ def main() -> None:
                     raise
                 fitted = trim_and_fit(
                     extracted,
-                    int(variant["width"]),
-                    int(variant["height"]),
-                    int(variant["padding"]),
+                    int(output["width"]),
+                    int(output["height"]),
+                    int(output["padding"]),
                 )
                 final_hue_cleanup = method == "soft-chroma" and slot["itemId"] not in skipped_hue_cleanup_items and (
                     matte_overlap["ratio"] <= 0.005 or slot["itemId"] in forced_hue_cleanup_items
@@ -510,7 +498,6 @@ def main() -> None:
                 record = {
                     "item": slot["item"],
                     "itemId": slot["itemId"],
-                    "kind": slot["kind"],
                     "method": method,
                     "file": record_path(attempt_path, pack_root),
                     "finalHueCleanupApplied": final_hue_cleanup,
@@ -529,7 +516,6 @@ def main() -> None:
                 asset = {
                     "item": slot["item"],
                     "itemId": slot["itemId"],
-                    "kind": slot["kind"],
                     "payload": slot["payload"],
                     "source": record_path(source, pack_root),
                     "sourceSha256": sha256(source),
@@ -561,12 +547,12 @@ def main() -> None:
                 failures = sorted({failure for attempt in slot_attempts for failure in attempt.get("codeFailures", [])})
                 if not failures:
                     failures = [attempt.get("skipped", "no_compatible_extractor") for attempt in slot_attempts]
-                unresolved.append({"item": slot["item"], "itemId": slot["itemId"], "kind": slot["kind"], "failures": failures})
+                unresolved.append({"item": slot["item"], "itemId": slot["itemId"], "failures": failures})
 
         if item_ids and unresolved and was_approved:
             replacements = []
         selected_assets = merge_assets(previous_assets, replacements, family)
-        expected = int(previous.get("expectedAssetCount") or len(family["items"]) * 2)
+        expected = int(previous.get("expectedAssetCount") or len(family["items"]))
         complete = len(selected_assets) == expected and not unresolved
         repair_jobs = []
         systemic_repair = bool(
@@ -574,21 +560,7 @@ def main() -> None:
             and len(unresolved) >= max(2, math.ceil(len(slots) * SYSTEMIC_REPAIR_RATIO))
         )
         if not systemic_repair:
-            unresolved_by_item: dict[str, list[dict[str, Any]]] = {}
             for asset in unresolved:
-                unresolved_by_item.setdefault(asset["itemId"], []).append(asset)
-            repair_requests: list[tuple[str, str, list[str]]] = []
-            for item_id, item_failures in unresolved_by_item.items():
-                kinds = {asset["kind"] for asset in item_failures}
-                reasons = sorted({reason for asset in item_failures for reason in asset["failures"]})
-                if kinds == {"large", "small"}:
-                    repair_requests.append((item_id, "paired", reasons))
-                else:
-                    repair_requests.extend(
-                        (item_id, asset["kind"], asset["failures"])
-                        for asset in item_failures
-                    )
-            for item_id, kind, reasons in repair_requests:
                 repair = create_repair_job(
                     pack_root,
                     spec_path,
@@ -596,9 +568,8 @@ def main() -> None:
                     family,
                     family_root,
                     job,
-                    item_id,
-                    kind,
-                    reasons,
+                    asset["itemId"],
+                    asset["failures"],
                 )
                 if repair:
                     repair_jobs.append(repair["jobId"])
@@ -622,7 +593,6 @@ def main() -> None:
                 "createdAt": now(),
                 "family": family["name"],
                 "familyId": family["id"],
-                "mode": job["mode"],
                 "round": round_name,
                 "jobId": args.job,
                 "methodPriority": methods,
@@ -649,7 +619,6 @@ def main() -> None:
             {
                 "round": round_name,
                 "jobId": args.job,
-                "mode": job["mode"],
                 "repairItems": item_ids or [],
                 "sourceSha256": sha256(source),
                 "method": "per-asset-routing",
@@ -660,10 +629,10 @@ def main() -> None:
             }
         )
         if complete:
-            status_value = "awaiting-codex-review"
-            validation = {"code": "approved", "codex": "pending", "human": "pending", "codeFailures": []}
+            status_value = "awaiting-agent-review"
+            validation = {"code": "approved", "agent": "pending", "human": "pending", "codeFailures": []}
             selected_round = round_name
-            pipeline_stage = "codex-review"
+            pipeline_stage = "agent-review"
         elif was_approved:
             status_value = "approved"
             validation = previous["validation"]
@@ -674,10 +643,10 @@ def main() -> None:
             status_value = "needs-retry" if systemic_repair else ("needs-repair" if repair_jobs else "blocked-repair")
             validation = {
                 "code": "incomplete",
-                "codex": "pending",
+                "agent": "pending",
                 "human": "pending",
                 "codeFailures": [
-                    f"{asset['itemId']}-{asset['kind']}:{failure}"
+                    f"{asset['itemId']}:{failure}"
                     for asset in unresolved
                     for failure in asset["failures"]
                 ],
@@ -692,7 +661,6 @@ def main() -> None:
                 "path": record_path(source, pack_root),
                 "sha256": sha256(source),
                 "jobId": args.job,
-                "mode": job["mode"],
                 "repairItems": item_ids or [],
                 "matte": color_hex(key),
                 "preflight": profile,

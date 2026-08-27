@@ -16,10 +16,13 @@ Before creating assets:
 5. Record explicitly forbidden treatments, objects, claims, and motifs.
 
 When the operator names a previous campaign such as Starfold or Nuts & Bolts,
-inspect its final exports, handoff, source assets, and render scripts before
-working. Treat that package as production precedent. Reuse its established
-interaction assets and motion system when requested. Do not replace a cited
-process with a generic workflow from memory.
+find the exact public game with `playdrop search "<name>" --kind app --json`,
+then download that exact version with
+`playdrop project create app <local-name> --remix <exact-app-ref>`. Inspect its
+public listing, source assets, exports, and render scripts before working. Treat
+that package as production precedent. Reuse its established interaction assets
+and motion system when requested. Do not replace a cited process with a generic
+workflow from memory.
 
 Use category research and the game's differentiator to choose the message
 before making art. Keep one marketing job per frame or video beat. Marketing
@@ -28,9 +31,9 @@ three to five words. The visual must prove the message without explanatory body
 copy.
 
 When no other PlayDrop precedent is named and the intended listing treatment is
-unclear, find the approved Starfold listing package in the available workspace.
-Inspect its current screenshot story, final exports, marketing README,
-catalogue, sources, and handoff before proceeding.
+unclear, search for and download the exact public Starfold game through the CLI.
+Inspect its current screenshot story, exports, marketing README, catalogue, and
+sources before proceeding.
 
 ## 2. Protect identity assets
 
@@ -100,7 +103,7 @@ For premium raster caption plates used in video:
    silhouette, and forbidden effects.
 3. Generate each distinct plate separately with the exact text on a flat chroma
    background.
-4. Remove the chroma background with the standard ImageGen helper.
+4. Process the plate as a one-item `skills/make-2d-asset-pack` job so its production owner handles generation, controlled-matte extraction, checks, and review.
 5. Verify spelling, punctuation, alpha channel, transparent corners, subject
    coverage, and clean edges on the actual video frame.
 6. Save the chroma source, production alpha asset, and prompt notes with the
@@ -169,21 +172,7 @@ When an exact protected hero exists at the output ratio and the campaign uses a
 hero opening, use that file unchanged for a short identity beat before real
 gameplay. Do not fabricate a hero opening for ratios without one.
 
-## 7. Adapt each destination deliberately
-
-The normal cross-channel video package is:
-
-- 1080 x 1920 shared social short, roughly 10 to 15 seconds,
-- 1080 x 1920 focused paid cut, roughly 8 to 15 seconds when requested,
-- 1080 x 1440 Instagram feed cut,
-- 1000 x 1500 Pinterest video Pin,
-- 1920 x 1080 landscape trailer, roughly 20 to 30 seconds.
-
-These are separate compositions or verified derivatives, not permission to
-crop blindly. Reuse one file only when its dimensions, safe areas, timing, and
-complete action envelope are already correct for every mapped destination.
-
-## 8. Produce review evidence
+## 7. Produce review evidence
 
 Keep `source-captures/`, `project/`, `review/`, and final exports separate.
 

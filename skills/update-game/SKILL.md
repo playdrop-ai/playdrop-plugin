@@ -7,6 +7,8 @@ description: "Update an existing PlayDrop game without breaking current behavior
 
 Requires the PlayDrop CLI. If the `playdrop` command is unavailable, follow the PlayDrop `setup` skill first.
 
+Read `../../references/game-quality.md` before editing. Preserve existing strengths and improve the requested qualities without regressing the others.
+
 Use the agent-chosen reporting vocabulary in `../../references/phases/update-game.md`.
 
 ## Rules
