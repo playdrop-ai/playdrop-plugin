@@ -33,6 +33,20 @@ The agent-task upload repeats the same smoke check against the staged artifact. 
 
 Run the final self-playtest after the last runtime change and before upload. If the creator requested listing media, capture it only after this check passes.
 
+## Multiplayer
+
+The idle/tape comparison is not a two-player test. For a multiplayer change, keep one local dev server running:
+
+```sh
+playdrop project dev . --dev-auth player --player 1
+```
+
+Open its printed hosted `/dev` URL in two separate browser contexts. Keep every query parameter, including the task capture credentials and local port. Use `devAuth=player&player=1` in the first URL and change only `player=2` in the second. Do not start a second dev server or copy the first player's token. Task capture URLs work without logging in as the creator; keep their credentials private.
+
+Confirm the server sees different verified user IDs and test slots 1 and 2. Exchange game actions and verify both clients see the same authoritative state. Reconnect one player, then restart the same dev server and verify the game's durable state survives. Missing player-slot selection can produce the same capture identity in both contexts and does not prove multiplayer works.
+
+Keep this focused multiplayer check in addition to the final tape. Report which paths were exercised; a passing tape or static release smoke does not establish server persistence or two-player correctness.
+
 ## Checklist
 
 - Input works through focused game-frame actions, and the primary input produces a concrete visible response captured after the input.

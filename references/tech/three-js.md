@@ -40,7 +40,34 @@ playdrop search "<object, effect, or character>" --kind asset --asset-category M
 playdrop asset source asset:<creator>/<name>@r<revision> <directory>
 ```
 
+For a complete example, download the published demo pack. It includes the SDK avatar's procedural source as well as models and effects:
+
+```sh
+playdrop pack detail pack:playdrop/procedural-demo@1.1.8
+playdrop pack source pack:playdrop/procedural-demo@1.1.8 references/procedural-demo
+```
+
+The demo is a reference, not a required dependency. Choose relevant assets through search and keep their exact references. Read its `scripts/build.ts` and `src/procedural-adapter.ts` together: several examples use older internal factories that the build wraps in the current contract. The avatar implements that contract directly in `vendor/playdrop-avatar-source/src/runtime.ts` and exports it from `src/index.ts` in the same snapshot.
+
 Import the downloaded local TypeScript entry and bundle it with the game. Keep its `playdrop-publication.json` provenance file. Games never dynamically import executable catalogue URLs. A procedural module creates one Three.js object and may expose `controls`, `selection`, `timeline`, and `character` capabilities. Add its object to the scene, call `update` when present, and call its idempotent `dispose` during teardown.
+
+### Authoring and validation
+
+The SDK types archive already installed by PlayDrop exports the contract. Its package name is `playdrop-sdk-types`:
+
+```ts
+import type { ProceduralAssetModuleV1, ProceduralManifestV1 } from "playdrop-sdk-types";
+
+// Use your implementation's info and create function.
+export default { info, create } satisfies ProceduralAssetModuleV1;
+// Check the generated static manifest with `satisfies ProceduralManifestV1` too.
+```
+
+A class may use `implements ProceduralAssetModuleV1`. The same definitions are exported from `@playdrop/sdk` for monorepo consumers. There is no base class or separate authoring SDK.
+
+`create(context)` returns `{ object, capabilities, dispose }`, where `object` is a Three.js Object3D. Optional `update` and `reset` belong to that instance. Do not invent a `createX(THREE, options)` / `object3d` interface. Publish a compiled browser `.mjs` primary, a matching static manifest, source, preview, and license. Keep required asset parameters, including avatar skins, resolvable.
+
+Run the mandatory CLI preflight required by your workflow. It runs the unchanged compiled module in a real browser with the hosted Three.js version, the viewer's initial parameters and animation setup, and decoded image or JSON inputs. Browser APIs such as canvas are supported; Node-only APIs are not. Fix errors at the named asset, file, or field before upload. Actual upload runs the same check. Your own type check or mock renderer does not replace it.
 
 When creators or players need persistent variations, pair the shared procedural runtime with a typed custom asset rather than copying the runtime. The custom document should contain the exact procedural asset revision and validated parameter values. `asset-spec:playdrop/procedural-config` is the standard generic form:
 
@@ -55,6 +82,22 @@ When creators or players need persistent variations, pair the shared procedural 
 ```
 
 Declare the matching `assetSpecSupport` entry and only the capabilities the game actually uses. Load the document through `sdk.assets.custom.forSpec("asset-spec:playdrop/procedural-config")`, then pass its parameters to the already bundled exact procedural module. Custom data is persistent configuration, not executable code.
+
+### Rebuildable source archive
+
+The published `source` ZIP must be a self-contained project, not a handful of flattened files. Include `package.json`, its lockfile, the README, licenses, source, build/preview scripts, and every local file those scripts import. Declare all build and preview dependencies in that package, including native renderers when used. Scripts must resolve paths inside the extracted project, never through the original game's parent directories. Do not use `zip -j`.
+
+For a project whose root contains `package.json`, `package-lock.json`, `README.md`, `LICENSE`, `src/`, and `scripts/`, package and check it from that root:
+
+```sh
+source_archive="$(pwd)/../my-asset-source.zip"
+zip -r "$source_archive" package.json package-lock.json README.md LICENSE src scripts
+source_check_dir="$(mktemp -d)"
+unzip -q "$source_archive" -d "$source_check_dir"
+(cd "$source_check_dir" && npm ci && npm run build)
+```
+
+Add any other required input directories to the archive command. The README must give these same install/build commands from the extracted root. Run them against the exact ZIP you will publish, with no access to the original project's `node_modules`. Verify that the rebuilt browser module and manifest pass the procedural preflight before upload. A passing runtime preflight alone does not prove that the source ZIP can be rebuilt.
 
 ## Procedural avatars
 

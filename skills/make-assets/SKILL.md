@@ -30,7 +30,7 @@ codex exec --ephemeral --skip-git-repo-check \
   --dangerously-bypass-approvals-and-sandbox \
   --ignore-rules \
   --cd <workspace> \
-  -- "You are a delegated image-production helper, not the lead game agent. Read the named PlayDrop skills and complete the full image job below. Write only the requested outputs. Return the accepted-file manifest or the exact error to the lead. Do not run PlayDrop task upload, completion, failure, or submission commands, even if you inherit a task context. <full image job contract>"
+  -- "You are a delegated image-production helper, not the lead game agent. Read the named PlayDrop skills and complete the full image job below. Write only the requested outputs. Return the accepted-file manifest or the exact error to the lead. Do not run PlayDrop task upload, completion, failure, or submission commands, even if you inherit a task context. <full image job contract>" < /dev/null
 ```
 
 When visual references are required, add one `--image <absolute-path>` per reference before `--`. The separator is required because `--image` accepts multiple paths. Give Codex the exact absolute output directory, the applicable PlayDrop skill paths, the visual references, and the complete asset or listing contract. For transparent assets, first prepare the managed runtime as directed by `make-2d-asset-pack`, then include its printed `runtime_python` path in the delegation prompt.
@@ -45,6 +45,7 @@ Do not switch to PlayDrop AI, an ad hoc keyer, or a second production owner when
 - If the game needs only a small subset of a pack, declare those exact asset version refs in `uses.assets` instead of the whole pack.
 - Declare a whole pack only when the runtime genuinely uses the pack. Never add a pack merely to satisfy validation or an asset-use requirement.
 - For static 3D, prove selected assets expose GLB/GLTF runtime files before choosing them. Procedural 3D assets instead use category `MODEL_3D`, subcategory `procedural`, format `CUSTOM`, and the standard `primary`, `manifest`, `preview`, `source`, and `license` roles. Download and bundle an exact procedural source revision; do not reject it for lacking GLB/GLTF files.
+- Before creating or changing a procedural asset, read `../../references/tech/three-js.md`. Use the existing SDK types to check its contract and the official demo or avatar source when an example helps. Run the mandatory CLI preflight required by your workflow and fix every procedural validation error before upload. Do not replace the platform check with a mock Three.js test or a check of your own invented interface.
 - Pair reusable procedural 3D code with compact typed custom assets when creators or players need persistent variations. Store the exact procedural asset reference plus validated parameters, following the same composition used by the shared PlayDrop avatar runtime and `asset-spec:playdrop/avatar-skin` skins. Do not duplicate procedural code, geometry, rigs, or animations in each custom asset.
 - Temporary primitives and plain shapes are useful when a rough playable will reduce risk, but replace them before upload unless the game is deliberately abstract.
 - Use a real background when the game benefits from one; `../../references/art-direction-board.md` describes useful treatments.

@@ -1,20 +1,26 @@
 # PlayDrop SDK
 
-- Include `https://assets.playdrop.ai/sdk/playdrop.js` for plain HTML.
-- Initialize early: `const sdk = await window.playdrop.init()`.
-- Never prompt for login during initialization. Read `sdk.me.isLoggedIn` and subscribe with `sdk.me.onAuthChange(...)`; only call `sdk.me.promptLogin()` from an explicit user action when the game uses multiplayer, purchases, profiles, or other account features.
-- Always call app saves, achievement writes, and leaderboard submissions directly. Never gate them on `sdk.me.isLoggedIn`; logged-out calls safely do not persist, while private guest and real-account calls persist under the hood.
-- Use `sdk.me.appData` only for simple client save data when the game does not require authoritative server rules, shared persistent state, or custom server-side code. New multiplayer and server-authoritative games use the PlayDrop game server; the older `sdk.rooms` and `sdk.me.joinRoom()` realtime APIs are deprecated and exist only for legacy games.
-- Call `sdk.host.ready()` only after the first designed screen (the board's title or gameplay screen) is fully rendered and, for preview-capable games, after the capture hooks are installed.
-- Respect `sdk.host.phase`: preview should show a live representative scene, play should accept input, and an optional Editor should mount only in `editor` phase and call `sdk.host.editorReady()` when usable. Subscribe to `sdk.host.onPhaseChange(...)` because Studio switches the existing runtime frame between Editor and Playtest. Call `sdk.host.ready()` after Playtest or Preview is mounted again. Mount the Editor before reading `sdk.creator`; staged Editor validation has no creator APIs because the version is not finalized yet. Read Tweaks, Notes, or assets lazily when the creator uses those actions.
-- Respect `sdk.host.isPaused`, `onPause`, and `onResume`.
-- Gate custom audio on `sdk.host.audioEnabled` and `onAudioPolicyChange`.
-- For a player-triggered web share, call `sdk.host.share({ text?, payload? })` directly from the click or tap. Read an incoming opaque payload from `sdk.host.launchPayload` after initialization. Payloads are untrusted base64url strings up to 256 characters; games define their meaning and servers still authorize protected room access. Do not add custom share URLs, images, or clipboard fallbacks.
-- For social games, use `sdk.social.selectFriends({ max })` for the host-owned picker, `listGameFriends()` for friends with a fresh play session in this game, and `sendMessage()`, `getMessages()`, and `consumeMessage()` for app-authored cards in the existing PlayDrop Chat conversation. Use `openProfile(userId)` for the host profile overlay and `openChat({ recipientUserId, draftMessage? })` to prepare user-controlled text plus one image `Blob` in canonical PlayDrop Chat. Games never receive the complete friend list or presence. Picker cancellation returns `[]`; do not add a second picker or inbox.
-- Social message types are `invite`, `request`, `gift`, `challenge`, and `turn`. The required title is the Chat body. Optional subtitle, declared public square image asset, compact base64url launch payload, expiry, and stable client message ID belong on the message input. Keep authoritative game state in the game server and MongoDB, not in Chat metadata.
-- Use `sdk.assets.listAppAssets()` and file roles/content types for declared runtime assets.
-- Runtime declarations are promises. If `catalogue.json` declares packs or assets, the game must load and render or play them through the SDK asset manifest.
-- Throw clear errors when required assets fail. Do not render hidden fallbacks.
-- Read declared tweak values with `await sdk.tweaks.get()`. When `sdk.creator` is non-null, game-owned creator UI may replace the complete value document with `sdk.creator.replaceTweaks(values)`.
-- When `sdk.creator` is non-null, game-owned playtest UI may use `sdk.creator.notes.list()`, `add(note)`, `replace(id, note)`, and `remove(id)` for text, Markdown, JSON, image, log, or exact asset-reference notes.
-- Playtest note kinds are uppercase and have exact payload shapes. For example: `await sdk.creator.notes.add({ kind: 'TEXT', text: 'Jump feels weak' })` and `await sdk.creator.notes.add({ kind: 'JSON', value: { gravity: 900 } })`. There is no `title` field. Keep the typed SDK value instead of casting `sdk` or `sdk.creator` to `any`, so invalid note payloads fail validation.
+Read the installed `playdrop-sdk-types` README and declarations for API signatures, examples, and payload types. Runtime JavaScript comes from the PlayDrop CDN; the types package does not bundle a second runtime. Keep the typed SDK value rather than casting it to `any`.
+
+## Choose the relevant modules
+
+| Module | Capability |
+| --- | --- |
+| `host`, `device`, `connection` | Hosted lifecycle, input surface, audio policy, sharing, and connection status. |
+| `me`, `achievements`, `leaderboards` | Player identity, simple client saves, achievements, and scores. |
+| `multiplayer`, `libs.colyseus` | Connect to a PlayDrop game server using the standard Colyseus client. |
+| `social` | Host friend selection, friends playing this game, game messages, profiles, and Chat. |
+| `assets`, `libs` | Declared game assets and platform-provided runtime libraries. |
+| `ai`, `shop`, `ads` | Generation, purchases, and advertising when the game needs them. |
+| `tweaks`, `creator` | Game configuration and optional creator-owned editing and playtest notes. |
+
+New multiplayer or server-authoritative games use [game servers](game-servers.md) and server-owned persistence. Deprecated client room APIs are for existing games only. Social messages carry invitations and turn notices; they do not supply matchmaking, stranger discovery, or authoritative match state. Use PlayDrop's picker and Chat instead of building a second friend picker or inbox.
+
+## Hosted game workflow
+
+- Initialize early, but never prompt for login during initialization. Request account features only after an explicit player action. Saves, achievements, and score submissions are always callable: do not gate them on account login.
+- Signal host readiness only after the designed first screen is rendered and any capture hooks are installed. Respect host pause and audio policy.
+- Preview shows a representative live scene; Play accepts input. Studio can switch the existing frame between Editor and Playtest, so handle phase changes and signal readiness after remounting.
+- Mount an optional Editor before reading creator capabilities. A staged version may have no creator APIs yet; read Tweaks, Notes, or assets when the creator uses those actions.
+- Trigger sharing from a player click or tap. Treat incoming launch payloads as untrusted input and authorize protected room access on the server.
+- Declared packs and assets must appear in the game through the SDK asset manifest. Surface required-asset failures clearly; do not hide them with substitute content.

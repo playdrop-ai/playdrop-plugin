@@ -12,7 +12,7 @@
       "name": "playdrop",
       "displayName": "PlayDrop",
       "description": "Create, upload, publish and manage web games on PlayDrop.",
-      "version": "0.17.5",
+      "version": "0.17.17",
       "source": "./",
       "category": "development",
       "tags": [

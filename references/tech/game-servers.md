@@ -2,130 +2,33 @@
 
 Use this capability for every new multiplayer or server-authoritative game. It is the only supported way for a game to run custom server-side code. Prefer a client-only game only when it needs no realtime multiplayer, trusted server rules, shared authoritative state, or server-owned persistent data.
 
-PlayDrop Cloud game servers use the standard Colyseus 0.17 API and the standard MongoDB Node.js driver. PlayDrop adds hosting, connection material, verified player identity, and limits. It does not wrap rooms, state, messages, or MongoDB.
+PlayDrop Cloud game servers use standard Colyseus for rooms, state, messages, reconnection, and matchmaking, and the standard MongoDB Node.js driver for persistence. PlayDrop adds hosting, connection material, verified player identity, and limits.
 
-The older `sdk.rooms` and `sdk.me.joinRoom()` APIs use PlayDrop's legacy realtime service. They remain available only for existing games and are deprecated. New games must declare a game server and connect through `sdk.multiplayer.getConnection()` as shown below.
+The older client room APIs use PlayDrop's deprecated realtime service and remain available only for existing games. New multiplayer games declare a game server and use the client SDK's `multiplayer` and `libs.colyseus` modules.
 
-## Frozen project contract
+## Platform-managed SDK and project contract
 
-Install and keep the exact package versions required by `playdrop project check`. Declare the entry and room names in `catalogue.json`:
+Create `package.json` beside `catalogue.json`. Declare the server entry in `server.entry` and its exported room names in `server.rooms` on the app entry. See [the catalogue contract](../catalogue-json.md).
 
-```json
-{
-  "server": {
-    "entry": "server/index.ts",
-    "rooms": ["game"]
-  }
-}
-```
+Run `playdrop project build` before invoking your own TypeScript build. The CLI reads the target environment's active game-server SDK version, downloads its verified archive from the same CDN as the client SDK, and installs the matching server dependencies automatically. `project check`, `project dev`, and upload preflight use the same selection. The CLI updates `package.json`, `package-lock.json`, and `vendor/playdrop/playdrop-server-<version>.tgz`; keep these files in the project. Do not try to install `@playdrop/server` from the npm registry or choose its version yourself.
 
-The server entry exports ordinary room definitions:
+Production provides the SDK in the hosted game-server runtime. A running process keeps its selected SDK until it stops; a new CLI command selects the currently deployed version. Missing SDK artifacts or unavailable runtime metadata are platform errors: report them and stop instead of replacing the server with Chat or client saves.
 
-```ts
-import { defineRoom } from "colyseus";
-import { GameRoom } from "./GameRoom.js";
+Read the installed `@playdrop/server` README for runtime and TypeScript setup, and its declarations for verified player types, server social APIs, and examples. Read the installed `playdrop-sdk-types` README and declarations for client APIs. These packages own the API reference; this skill describes capability selection and the creator workflow. Use the installed Colyseus and MongoDB packages for their standard APIs.
 
-export const rooms = {
-  game: defineRoom(GameRoom),
-};
-```
+## Capabilities and boundaries
 
-PlayDrop installs authentication on every exported room before it starts. Creator code reads the verified identity from standard Colyseus `client.auth`:
-
-```ts
-import { Room } from "colyseus";
-import type { PlayDropPlayer } from "@playdrop/server";
-
-export class GameRoom extends Room {
-  onJoin(client: { auth: PlayDropPlayer }): void {
-    console.log(client.auth.userId, client.auth.appRole, client.auth.isTestPlayer);
-  }
-}
-```
-
-Treat `client.auth` as trusted platform identity. `appRole` is `OWNER` only when the player owns the app. Keep match teams, moderators, and game roles inside the game. Do not define `onAuth`; the host owns that security boundary.
-
-## AI-generated assets
-
-Server code can create private AI assets through the narrow PlayDrop server SDK. The app creator always pays. The creator owns the result unless the call assigns it to a verified player:
-
-```ts
-import { playdrop } from "@playdrop/server";
-
-const creatorOwned = await playdrop.ai.image.createTask({
-  input: "A friendly forest merchant on a transparent background",
-  imageSize: "4K",
-});
-
-const playerOwned = await playdrop.ai.image.createTask(
-  {
-    input: "A personalized bronze shield on a transparent background",
-    imageSize: "1K",
-  },
-  { owner: client.auth },
-);
-
-const current = await playdrop.ai.tasks.get(playerOwned.id);
-```
-
-Only pass a `PlayDropPlayer` received through `client.auth`. Passing a local test-player identity keeps the generated asset creator-owned and labels the task as test mode. The server package does not expose arbitrary HTTP access or asset-pack creation.
-
-## Social messages
-
-The same verified player carries an app, version, deployment, and session-scoped social grant. Pass that exact `client.auth` object to the narrow server social API:
-
-```ts
-import { playdrop } from "@playdrop/server";
-
-const playing = await playdrop.social.listGameFriends(client.auth);
-await playdrop.social.sendMessage(client.auth, {
-  recipientUserId: opponentId,
-  type: "turn",
-  title: "Your turn",
-  payload: matchId,
-  clientMessageId,
-});
-const pending = await playdrop.social.getMessages(client.auth, { limit: 20 });
-await playdrop.social.consumeMessage(client.auth, pending.messages[0].messageId);
-```
-
-There is no server friend picker. The browser chooses a friend through PlayDrop's UI and the game server still validates game participation. Chat carries invitations and turn notices; MongoDB remains authoritative for match state. Notification failure must not roll back an already committed game action.
-
-## Client connection
-
-Load the pinned official client, request fresh connection material immediately before a new join, then use Colyseus directly:
-
-```ts
-const colyseus = await sdk.libs.colyseus.load();
-const connection = await sdk.multiplayer.getConnection();
-const client = new colyseus.Client(connection.endpoint);
-client.auth.token = connection.token;
-const room = await client.joinOrCreate("game");
-```
-
-Use normal Colyseus state, messages, reconnection, and matchmaking. Do not create a second game socket or send identity in game-defined messages.
-
-## MongoDB
-
-MongoDB is available only in server code. Use the real driver and the injected app-scoped URL:
-
-```ts
-import { MongoClient } from "mongodb";
-
-const mongo = new MongoClient(process.env.PLAYDROP_MONGO_URL!);
-await mongo.connect();
-const matches = mongo.db().collection("matches");
-```
-
-The credential can read and write only the current game database. Published versions share the app database so updates retain data. Define indexes explicitly, keep documents under MongoDB's native 16 MiB limit, and close clients when the room process shuts down. Browsers never receive this URL.
-
-Use `sdk.me.appData` for the existing client save behavior. Do not invent a client MongoDB bridge or `saveData` API.
+- **Identity:** PlayDrop authenticates every exported room. Use its verified player identity; keep match teams and game roles in the game. Do not replace platform authentication or accept player identity from game messages.
+- **Persistence:** Server code connects to the app database using the injected `PLAYDROP_MONGO_URL`. Published versions share that database so updates retain data. Browsers never receive database credentials. Client saves do not provide shared authoritative state.
+- **Persistent matches:** A `joinOrCreate` filter such as `matchId` is not a unique-room guarantee: it can create another live room when the existing one is full or locked. Keep reconnecting players in the same live match. Enforce game seats by verified player identity, and account for overlapping connections during refresh when setting `maxClients` and reconnection reservations. Verify both players can refresh and then rematch on the same shared board, not just reload the last saved result.
+- **Social:** The client SDK provides PlayDrop's friend picker and Chat UI; the server SDK can send and consume game messages for verified players. Social is not stranger discovery or matchmaking. Chat carries invitations and turn notices, while the server and MongoDB own match state. A notification failure must not roll back a committed move.
+- **AI assets:** The server SDK can create private AI assets. The app creator pays and owns the result unless ownership is assigned to a verified player. Test-player generation stays creator-owned and uses test mode. This capability does not provide arbitrary HTTP access or asset-pack creation.
 
 ## Development and validation
 
-Run `playdrop project check`, then `playdrop project dev`. The CLI requires the exact native Redis and MongoDB services configured by the environment and fails clearly if they are absent. It never installs or starts them. PlayDrop Cloud managed workers provision those native services before tasks start and give each concurrent task its own scoped Redis and MongoDB credentials.
+Run `playdrop project build`, `playdrop project check`, then `playdrop project dev`. SDK code and types are installed automatically; native Redis and MongoDB services are separate prerequisites. The CLI requires the exact native services configured by the environment and fails clearly if they are absent. It never installs or starts those services. PlayDrop Cloud managed workers provision them before tasks start and give each concurrent task its own scoped Redis and MongoDB credentials.
 
-Validate with at least two PlayDrop test players through hosted `/dev`. Exercise join, leave, late join, reconnect, malformed authentication, cross-version authentication, and owner-versus-player behavior. For shared room invitations, put the game-defined room ID in `sdk.host.share({ payload })`; PlayDrop pins the immutable app version but does not authorize the payload for the game.
+Follow the [multiplayer playtest procedure](../../skills/playtest-game/SKILL.md#multiplayer) to connect two distinct test players to one dev server. Verify shared state, reconnect, and durable data through a server restart. Check that invalid identities and wrong-version connections are rejected. Invitations and share payloads remain untrusted game input; the server authorizes room access.
 
 ## Limits and unavailable surfaces
 
