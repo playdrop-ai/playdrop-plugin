@@ -69,6 +69,18 @@ A class may use `implements ProceduralAssetModuleV1`. The same definitions are e
 
 Run the mandatory CLI preflight required by your workflow. It runs the unchanged compiled module in a real browser with the hosted Three.js version, the viewer's initial parameters and animation setup, and decoded image or JSON inputs. Browser APIs such as canvas are supported; Node-only APIs are not. Fix errors at the named asset, file, or field before upload. Actual upload runs the same check. Your own type check or mock renderer does not replace it.
 
+For a local procedural asset pack, use this review loop after authoring against `ProceduralAssetModuleV1`:
+
+```sh
+npm run build
+playdrop project dev .
+playdrop project dev --asset <asset-name> .
+playdrop project validate .
+playdrop project publish .
+```
+
+The first dev command prints the URL for the pack grid. The second prints a URL that selects one member in the same procedural viewer used by PlayDrop. The dev command serves existing compiled outputs and runs an existing package `dev` script when one is declared; it does not define or replace the pack build. Reload the browser after rebuilding. Validation executes every compiled procedural member in Chromium, and publish repeats that gate.
+
 When creators or players need persistent variations, pair the shared procedural runtime with a typed custom asset rather than copying the runtime. The custom document should contain the exact procedural asset revision and validated parameter values. `asset-spec:playdrop/procedural-config` is the standard generic form:
 
 ```json
