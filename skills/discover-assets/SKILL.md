@@ -9,6 +9,8 @@ Requires the PlayDrop CLI. If the `playdrop` command is unavailable, follow the 
 
 Use `playdrop search`, `browse`, `detail`, and `versions browse`.
 
+Use one focused search per target, with useful filters such as kind, creator, category, and subcategory. Inspect the returned candidates before searching again; do not repeat broad searches for the same target.
+
 ## Workflow
 
 1. For every new game, run three searches limited to games or demos before scaffolding. Use materially different mechanic, genre, or theme keywords and relevant tags so asset-only searches cannot satisfy this requirement.
