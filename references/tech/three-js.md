@@ -2,6 +2,12 @@
 
 Use the official Three.js template for lightweight 3D games. Prefer a relevant local GameBlock over bespoke systems when one fits; remixing a strong existing PlayDrop game is a separate decision made in `create-game`.
 
+## Early visual direction
+
+For a new game or broad visual change, choose the camera distance, player silhouette, material palette, and cues that separate objectives and hazards from scenery before multiplying content. Reuse the creator's established direction on narrow updates. A short decision in existing working notes is enough; an art board is optional.
+
+Integrate one representative playable scene with the intended player asset, ground, objective, lighting, and HUD. Inspect it at the primary surface dimensions before expanding levels or variants. Resolve scale, visual coherence, and readability there. Deliberately minimal games can stay minimal; decoration should explain the world or play, not fill a detail quota. Follow `../art-direction-board.md` only when a visual artifact would help settle the direction.
+
 ## Runtime and assets
 
 - Load Three from `sdk.libs.three.load()`. Request GLTF support with
@@ -28,6 +34,12 @@ await new GLTFLoader().loadAsync(modelFile.url);
 ```
 
 Pack members have no `runtimeKey`. Never select the first asset matching only `sourcePackRef`; select the intended member by its exact `assetRef`.
+
+### Model intake
+
+Inspect a newly selected model in the game at its actual camera distance and lighting. Check its pivot, forward/up axes, bounds, ground contact, and material readability. Apply scale/orientation corrections in a wrapper group so the imported rig keeps its authored transforms. Keep the gameplay collider separate from decorative geometry.
+
+Before repeating a model across the scene, inspect its file size, triangles, mesh/material counts, and texture dimensions. A successful load or attractive catalogue preview does not prove the asset fits the game or its device budget.
 
 ## Procedural Three.js assets
 
@@ -177,3 +189,19 @@ Cancel animation frames and remove listeners when tearing down. Dispose owned ge
 ## Playtest signals
 
 Make progress, score change, failure, retry, and softlock absence visible through ordinary gameplay. Compare normal input against a zero-input or opposite-input control. Do not use state-forcing hooks as proof.
+
+### Animation in motion
+
+When adding or changing character animation, inspect the available clip names and durations and map the game's states to the intended clips explicitly. Decide whether simulation or root motion owns world displacement so movement is applied once. Preserve the rig's authored bone tracks unless a diagnosed defect requires a specific correction.
+
+During self-play, capture and inspect a short unpaused video or timed frame sequence from the gameplay camera. Cover a complete relevant cycle, movement start/stop, direction changes, and clip transitions; include attack/contact/recovery when present. Look for frozen or deformed rigs, sliding feet, snapping transitions, repeated one-shot actions, and hits that disagree with the visible contact. Exercise transitions through normal input. A still frame cannot validate motion. Check only the motion used by the game; rigid-body games do not need a skeletal audit.
+
+These local diagnostic captures supplement the final `playtest-game` tape check. They do not create listing or marketing media requirements.
+
+### Rendering diagnostics
+
+After substantial asset or rendering changes, inspect frame timing in a representative busy gameplay view together with `renderer.info.render.calls`, `renderer.info.render.triangles`, and `renderer.info.memory` geometry/texture counts. Record the viewport and pixel ratio with the measurements. These counts help locate cost; they do not measure GPU memory or prove smooth play on a physical phone.
+
+Fix the observed cost first: share materials or instance repeated scenery for excessive draw calls, simplify distant geometry, reduce oversized textures, or reduce expensive shadows/post-processing. Compare before/after under the same scene and viewport when optimizing. Avoid universal numeric budgets or adding effects to improve screenshot statistics. Judge readability and visual quality using `../game-quality.md`.
+
+Source inspiration: [Three.js game skills](https://github.com/majidmanzarpour/threejs-game-skills/tree/e5f301d548bb18c530afbece78cd25082f4cda9c), reviewed 2026-09-05. The guidance above is adapted to PlayDrop's asset, SDK, and playtest workflows; the upstream package is not a runtime dependency or required reading.
