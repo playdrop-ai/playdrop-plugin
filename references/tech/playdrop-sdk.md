@@ -11,10 +11,13 @@ Read the installed `playdrop-sdk-types` README and declarations for API signatur
 | `multiplayer`, `libs.colyseus` | Connect to a PlayDrop game server using the standard Colyseus client. |
 | `social` | Host friend selection, friends playing this game, game messages, profiles, and Chat. |
 | `assets`, `libs` | Declared game assets and platform-provided runtime libraries. |
-| `ai`, `shop`, `ads` | Generation, purchases, and advertising when the game needs them. |
+| `ai` | Browser media generation through host quote and user confirmation; task inspection. Live text/JSON uses the game-server SDK. |
+| `shop`, `ads` | Purchases and advertising when the game needs them. |
 | `tweaks`, `creator` | Game configuration and optional creator-owned editing and playtest notes. |
 
 New multiplayer or server-authoritative games use [game servers](game-servers.md) and server-owned persistence. Deprecated client room APIs are for existing games only. Social messages carry invitations and turn notices; they do not supply matchmaking, stranger discovery, or authoritative match state. Use PlayDrop's picker and Chat instead of building a second friend picker or inbox.
+
+Browser `sdk.ai.text.createTask` and `sdk.ai.json.createTask` reject hosted app tokens with `403 app_ai_generation_disabled`; their presence in the declarations does not enable them. For live in-game AI dialogue or text/JSON, declare a [game server](game-servers.md) and use server `playdrop.ai.text` / `playdrop.ai.json`, paid for by the app creator. Prove one real request and completed response through the server and hosted test player before artwork or the full interface. Browser media creation still asks the host for an authoritative quote and user confirmation of the Credit total and private owner.
 
 ## Hosted game workflow
 
