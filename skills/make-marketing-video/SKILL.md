@@ -7,6 +7,8 @@ description: "Capture and finish truthful gameplay marketing videos from a PlayD
 
 Produce marketing video from real gameplay. Capture the reviewed normal preview from the outside; never add a game-specific recorder or change normal gameplay to manufacture footage.
 
+For localization work, follow `../localize-game/SKILL.md`: retain the original-language trailer and add English only when needed; additional video languages require explicit scope.
+
 ## Non-negotiable media model
 
 - **Video is the literal representation of gameplay.** Every gameplay frame must come from the shipped game.

@@ -15,6 +15,8 @@ Use this as the main entry point for PlayDrop game development:
 - **Remix:** read `../remix-game/SKILL.md`, then use the relevant capabilities and specialist skills below.
 - **Update:** read `../update-game/SKILL.md`, then preserve working behavior while making the requested change.
 
+- **Localization:** read `../localize-game/SKILL.md` for game language support, translated listings, and requested localized images.
+
 ## Capabilities
 
 - **Templates:** Hosted HTML, Phaser 2D, and Three.js scaffolds. Learn more: `playdrop project create app --help`.

@@ -54,6 +54,7 @@ Keep this focused multiplayer check in addition to the final tape. Report which 
 - When the game defines success or failure states, confirm both during normal self-play.
 - No loss occurs before meaningful input is possible, and no overlay blocks the first interaction.
 - Restart or replay works.
+- At the smallest supported portrait and landscape sizes, long lists scroll inside their game-owned panel while the document stays fixed, gameplay drags still work, and primary actions remain reachable. For games with text entry, check these again with the software keyboard open. Verify touch scrolling in the affected native host when fixing a native scrolling issue; a desktop wheel check alone does not prove it works.
 - When `previewable` is true, preview state renders a meaningful live scene.
 - Pause/resume does not advance play-critical state.
 - Console logs contain no uncaught errors.

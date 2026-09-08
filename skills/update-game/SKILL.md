@@ -22,6 +22,8 @@ Use the agent-chosen reporting vocabulary in `../../references/phases/update-gam
 - Validate per `../playtest-game/SKILL.md` before upload or publish.
 - When task context contains `metadata.playdrop.tweaks` or dev/validation reports stale tweaks: read `../tweaks/SKILL.md` and carry the creator's values forward.
 
+For adding languages or auditing localization coverage, read `../localize-game/SKILL.md`.
+
 ## Read when needed
 
 - For catalogue or runtime changes: `../../references/catalogue-json.md` and `../../references/tech/playdrop-sdk.md`.

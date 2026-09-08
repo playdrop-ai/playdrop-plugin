@@ -40,6 +40,9 @@ Request Fidelity judges whether the requested game was built; the other dimensio
 - **4:** Art direction, motion, audio, and feedback strongly support play.
 - **5:** A distinctive audiovisual identity gives the game memorable character.
 - **Do:** Fill the surface without distortion, letterboxing, dead zones, page scroll, or card framing.
+- **Do:** Keep `html`, `body`, and the game root bounded to the host viewport (for example `width:100%; height:100%; margin:0; overflow:hidden`). Game-owned lists, lobbies, and dialogs may scroll inside bounded `overflow:auto` panels with `overscroll-behavior:none`. Keep `min-height:0` and `min-width:0` on flex/grid children that must shrink, and keep primary actions reachable without document scrolling.
+- **Do:** Scope `touch-action:none` and gesture cancellation to gameplay canvases or draggable boards. Allow panning in scrollable panels (for example `touch-action:pan-y` for vertical lists), keep their ancestors free of gesture blocking, and preserve normal text editing. Do not depend on the host to repair the game's layout.
+- **Do:** Lay out against available height as well as width. Support each declared orientation deliberately, including short mobile landscape viewports; a width-only desktop breakpoint is not proof of landscape support.
 - **Don't:** Park the game title on the play surface outside a short preview or menu state.
 - **Do:** Make UI deliberate and coherent with the art direction, never default engine placeholders.
 - **Do:** Use visible, correctly scaled, coherent real assets that belong to the background and lighting. Prefer a simple coherent set to a large mismatched one.

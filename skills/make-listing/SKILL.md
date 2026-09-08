@@ -7,6 +7,8 @@ description: "Create or refresh a PlayDrop game listing with accurate metadata a
 
 Requires the PlayDrop CLI. If the `playdrop` command is unavailable, follow the PlayDrop `setup` skill first.
 
+For translated listings and media, read `../localize-game/SKILL.md`. Its default is original-language video plus English when needed, with localized video metadata rather than a trailer per language.
+
 ## Listing contract
 
 - Accurate title, subtitle, description, tags, surfaces, `uses`, and any populated optional `design` refs are enough to complete the default listing workflow. See `../../references/catalogue-json.md`.
