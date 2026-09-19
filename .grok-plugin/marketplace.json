@@ -8,7 +8,7 @@
   "plugins": [
     {
       "name": "playdrop",
-      "version": "1.0.5",
+      "version": "1.0.6",
       "description": "Upload, update and share public HTML games on PlayDrop.",
       "source": {
         "type": "local",
