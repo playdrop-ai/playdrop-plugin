@@ -4,7 +4,7 @@ These are packaging instructions with dated development checks below.
 Packaging validation, MCP protocol acceptance and browser OAuth onboarding are separate checks.
 Select one package per client; do not install the portable and native variants together.
 For development, use the generated package's endpoint instead of production in every provider form.
-As of September 19, 2026, the public 1.0.1 source is prepared for rollout; matching server deployment and production
+As of September 19, 2026, the public 1.0.2 source is prepared for rollout; matching server deployment and production
 acceptance remain pending. Repository publication does not enable a provider directory listing.
 
 ## Packages
