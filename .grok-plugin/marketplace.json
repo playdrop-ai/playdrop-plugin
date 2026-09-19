@@ -10,7 +10,10 @@
       "name": "playdrop",
       "version": "1.0.0",
       "description": "Upload, update and share public HTML games on PlayDrop.",
-      "source": "./variants/claude/playdrop"
+      "source": {
+        "type": "local",
+        "path": "./variants/grok/playdrop"
+      }
     }
   ]
 }

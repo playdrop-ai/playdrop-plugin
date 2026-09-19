@@ -1,5 +1,0 @@
-interface:
-  display_name: "Game Listing"
-  short_description: "Write accurate metadata and optional listing media"
-  brand_color: "#9D55F8"
-  default_prompt: "Use $make-listing to verify accurate PlayDrop listing metadata. Create or change listing media only when I explicitly request it."

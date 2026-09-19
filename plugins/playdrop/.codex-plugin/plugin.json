@@ -1,0 +1,35 @@
+{
+  "name": "playdrop",
+  "version": "1.0.0",
+  "description": "Upload, update and share public HTML games on PlayDrop.",
+  "author": {
+    "name": "PlayDrop",
+    "email": "support@playdrop.ai",
+    "url": "https://www.playdrop.ai"
+  },
+  "homepage": "https://www.playdrop.ai",
+  "repository": "https://github.com/playdrop-ai/playdrop-plugin",
+  "license": "MIT",
+  "keywords": [
+    "playdrop",
+    "publishing",
+    "html-games"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "PlayDrop",
+    "shortDescription": "Publish and share your HTML games.",
+    "longDescription": "Upload, update and share public HTML games on PlayDrop.",
+    "developerName": "PlayDrop",
+    "category": "Productivity",
+    "capabilities": [
+      "Write"
+    ],
+    "defaultPrompt": [
+      "Publish my HTML game on PlayDrop."
+    ],
+    "composerIcon": "./assets/playdrop-icon-small.svg",
+    "logo": "./assets/playdrop-icon-large.png"
+  }
+}

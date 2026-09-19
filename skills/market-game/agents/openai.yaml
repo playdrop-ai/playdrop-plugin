@@ -1,5 +1,0 @@
-interface:
-  display_name: "Market Game"
-  short_description: "Create or update a game marketing package"
-  brand_color: "#9D55F8"
-  default_prompt: "create the marketing package for the game"

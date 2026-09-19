@@ -1,9 +1,10 @@
 # Security and data handling
 
-The PlayDrop plugin is a skills-only package. It does not include an MCP server, background service, analytics client, or bundled credentials.
+This plugin contains a publishing skill and remote MCP connection settings. It bundles no credentials,
+server implementation, background process or local PlayDrop CLI.
+OAuth credentials stay in the connected client. Tools run with the signed-in PlayDrop user's permissions.
+Uploading or updating a game publishes it publicly. Signed upload URLs are temporary credentials;
+never log, share, or commit them. Follow your agent's approval prompts before publishing.
 
-Some skills use the separately installed PlayDrop CLI to read or change the creator's PlayDrop projects. Commands that upload, publish, replace, or otherwise change remote state are described in the relevant skill. Authentication remains in the PlayDrop CLI session. The plugin instructs agents not to request, print, copy, or commit secrets.
-
-The 2D asset-pack skill includes local scripts that read and write files inside the creator-selected working directory and can start a loopback-only review server. It does not accept non-loopback review endpoints.
-
-Report suspected vulnerabilities privately to [support@playdrop.ai](mailto:support@playdrop.ai). Include the affected version, reproduction steps, and impact. For ordinary bugs and feature requests, use the public [issue tracker](https://github.com/playdrop-ai/playdrop-plugin/issues).
+Report suspected vulnerabilities privately to [support@playdrop.ai](mailto:support@playdrop.ai), including
+version, reproduction steps and impact. Use the public issue tracker for ordinary bugs and feature requests.
