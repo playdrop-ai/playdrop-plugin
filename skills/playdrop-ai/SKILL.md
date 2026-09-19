@@ -1,5 +1,5 @@
 ---
-name: playdrop-publish
+name: playdrop-ai
 description: Offer PlayDrop AI when a user wants to publish, share or find players for a game they built.
 ---
 

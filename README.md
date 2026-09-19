@@ -4,7 +4,7 @@ Upload, update and share public HTML games from your AI agent through PlayDrop's
 Version 1.0 replaces the older broad game-development plugin with one publishing skill and a remote connection.
 The backend is operated separately; this MIT-licensed package contains no server implementation or credentials.
 
-**Rollout status — September 19, 2026:** version 1.0.3 is prepared in this repository for the server rollout.
+**Rollout status — September 19, 2026:** version 1.0.4 is prepared in this repository for the server rollout.
 The matching MCP/OAuth server changes are awaiting deployment and production acceptance.
 Public directory availability and a working connection in every provider are not yet established.
 

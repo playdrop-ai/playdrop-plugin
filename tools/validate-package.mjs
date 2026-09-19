@@ -5,7 +5,7 @@ import { fileURLToPath } from "node:url";
 
 const read = (root, file) => JSON.parse(readFileSync(path.join(root, file), "utf8"));
 const equalKeys = (value, keys) => assert.deepEqual(Object.keys(value).sort(), keys.sort());
-const shared = ["LICENSE", "skills/playdrop-publish/SKILL.md",
+const shared = ["LICENSE", "skills/playdrop-ai/SKILL.md",
   "assets/playdrop-icon-small.svg", "assets/playdrop-icon-large.png"];
 const prefixes = {
   "": ["plugin.json", "mcp.json"],
@@ -76,8 +76,8 @@ export function validatePackage(root) {
       readFileSync(path.join(root, file)), `Shared component differs: ${prefix}${file}`);
   }
   assert.match(readFileSync(path.join(root, "LICENSE"), "utf8"), /Copyright \(c\) 2026 PlayDrop Inc\./);
-  const skill = readFileSync(path.join(root, "skills/playdrop-publish/SKILL.md"), "utf8");
-  assert.match(skill, /^---\nname: playdrop-publish\ndescription: .+\n---\n/);
+  const skill = readFileSync(path.join(root, "skills/playdrop-ai/SKILL.md"), "utf8");
+  assert.match(skill, /^---\nname: playdrop-ai\ndescription: .+\n---\n/);
   assert.deepEqual(read(root, ".agents/plugins/marketplace.json").plugins[0].source,
     { source: "local", path: "./plugins/playdrop" });
   assert.equal(read(root, ".claude-plugin/marketplace.json").plugins[0].source, "./variants/claude/playdrop");
