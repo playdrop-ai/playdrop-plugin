@@ -29,9 +29,9 @@ Provider OAuth, publication, updates and large-file transport must pass acceptan
 Codex 0.153.4 passed browser OAuth, reads, game creation/update and exact 5 MiB publication in development.
 ChatGPT and Claude custom connectors passed browser OAuth, reads and game creation/update in development.
 Claude Code 2.1.270 passed native plugin browser OAuth, reads and tiny-game creation/update in development.
-Antigravity 1.2.7 passed native plugin reads using fixture OAuth.
-Grok Build 1.0.34 passed strict discovery with seven tools using fixture OAuth.
-Remaining provider-specific OAuth and publication checks are described in [installation guidance](INSTALLATION.md).
+Antigravity 1.2.7 passed native plugin browser OAuth, reads and game creation/update in development.
+Grok Build 1.0.34 passed browser OAuth, reads and game creation/update using its native HTTP configuration;
+plugin validation passed separately. See [installation guidance](INSTALLATION.md) for scope and skipped clients.
 
 Publishing requires a single `index.html` plus catalogue metadata. Both upload paths publish publicly:
 content in tool arguments, or a signed file upload followed by explicit MCP completion.

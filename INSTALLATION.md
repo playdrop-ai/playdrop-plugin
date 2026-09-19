@@ -17,6 +17,7 @@ acceptance remain pending. Repository publication does not enable a provider dir
 | Gemini | Custom MCP is unavailable to the tested work account | Account eligibility gate |
 | Antigravity | `variants/antigravity/playdrop` | Manual install; curated store is separate |
 | Grok Bot | The tested account needs a paid plan | Do not equate with Grok Build |
+| Grok hosted chat | Tested connector uses incompatible legacy MCP; skip | Separate from Bot and Build |
 | Grok Build | `variants/grok/playdrop` | Repo marketplace, no public listing required |
 | Cursor | Tested CLI uses incompatible legacy MCP; skip | Cloud agent access also needs a paid plan |
 | Lovable | Tested hosted client uses incompatible legacy MCP; skip | Recheck when its protocol changes |
@@ -41,10 +42,10 @@ Their validators detect only the skill in the portable root; use the native vari
 Codex 0.153.4 needs the `mcp_2026_07_28` feature; Claude Code 2.1.270 needs `MCP_SDK_GENERATION=v2`.
 Codex passed native browser OAuth, account/game reads, create/update and exact 5 MiB publishing in development.
 Claude Code passed native plugin browser OAuth, documentation/account/game reads, and tiny-game create/update.
-Grok Build 1.0.34's `mcp doctor` negotiated `2026-07-28` and discovered all seven tools.
-Antigravity 1.2.7 also passed both read calls through its installed native plugin.
-Its Google model login succeeded; PlayDrop authentication still used a programmatic fixture token.
-Antigravity's PlayDrop browser onboarding/writes and Grok Build's onboarding/reads/writes remain unchecked.
+Antigravity 1.2.7 passed native plugin DCR/browser OAuth, reads and game create/update.
+Grok Build 1.0.34 passed browser OAuth, reads and game create/update using its native HTTP configuration.
+Its plugin validation passed separately; the write run did not establish execution through the installed plugin.
+These write checks verified the updated HTML hashes and playable HTTP 200 responses.
 These development checks do not establish production readiness.
 Check the installed client version and negotiated protocol. If it cannot use `2026-07-28`, report it as blocked.
 Do not add a compatibility proxy or silently negotiate an earlier protocol.
@@ -58,6 +59,8 @@ ChatGPT and Claude custom connectors passed browser OAuth, reads and inline crea
 Lovable passed OAuth DCR and browser consent, then requested MCP `2025-11-25`; the strict endpoint returned 400.
 Skip the tested Lovable client until it supports `2026-07-28`.
 Replit passed OAuth DCR, then sent legacy `initialize`; the strict endpoint correctly rejected it.
+Grok hosted chat added its connector after DCR/browser OAuth, then repeatedly sent legacy `initialize` without
+the required protocol header. The endpoint returned 400 and chat could not call tools; skip this tested client.
 Muse documents private custom connectors, but does not document whether that route supports arbitrary MCP URLs.
 Its public submission form accepts an existing hosted MCP with OAuth PKCE; request testing details during onboarding.
 
