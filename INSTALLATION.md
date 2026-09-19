@@ -19,7 +19,7 @@ acceptance remain pending. Repository publication does not enable a provider dir
 | Grok Bot | The tested account needs a paid plan | Do not equate with Grok Build |
 | Grok Build | `variants/grok/playdrop` | Repo marketplace, no public listing required |
 | Cursor | Tested CLI uses incompatible legacy MCP; skip | Cloud agent access also needs a paid plan |
-| Lovable | Add a custom MCP chat connector with URL and OAuth | No listing required for private connection |
+| Lovable | Tested hosted client uses incompatible legacy MCP; skip | Recheck when its protocol changes |
 | Replit | Tested hosted client uses incompatible legacy MCP; skip | Recheck when its protocol changes |
 | Muse | Submit an Existing MCP connector with endpoint and OAuth PKCE | Review required for directory listing |
 
@@ -40,8 +40,7 @@ Their validators detect only the skill in the portable root; use the native vari
 
 Codex 0.153.4 needs the `mcp_2026_07_28` feature; Claude Code 2.1.270 needs `MCP_SDK_GENERATION=v2`.
 Codex passed native browser OAuth, account/game reads, create/update and exact 5 MiB publishing in development.
-Claude Code passed native plugin reads with programmatic fixture OAuth; its browser onboarding and writes remain
-unchecked.
+Claude Code passed native plugin browser OAuth, documentation/account/game reads, and tiny-game create/update.
 Grok Build 1.0.34's `mcp doctor` negotiated `2026-07-28` and discovered all seven tools.
 Antigravity 1.2.7 also passed both read calls through its installed native plugin.
 Its Google model login succeeded; PlayDrop authentication still used a programmatic fixture token.
@@ -56,7 +55,8 @@ Use a development HTTPS endpoint reachable by the provider. Connect OAuth, read 
 list games, publish a tiny HTML game, update it, then verify near-limit signed upload if the client can send files.
 Capture the actual protocol version and results; transport support alone is insufficient.
 ChatGPT and Claude custom connectors passed browser OAuth, reads and inline create/update in development.
-Lovable offers a custom remote MCP form; an end-to-end connection has not yet been established.
+Lovable passed OAuth DCR and browser consent, then requested MCP `2025-11-25`; the strict endpoint returned 400.
+Skip the tested Lovable client until it supports `2026-07-28`.
 Replit passed OAuth DCR, then sent legacy `initialize`; the strict endpoint correctly rejected it.
 Muse documents private custom connectors, but does not document whether that route supports arbitrary MCP URLs.
 Its public submission form accepts an existing hosted MCP with OAuth PKCE; request testing details during onboarding.
