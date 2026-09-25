@@ -9,10 +9,10 @@ const shared = ["LICENSE", "skills/playdrop-ai/SKILL.md",
   "assets/playdrop-icon-small.svg", "assets/playdrop-icon-large.png"];
 const prefixes = {
   "": ["plugin.json", "mcp.json"],
-  "plugins/playdrop/": [".codex-plugin/plugin.json", ".mcp.json"],
-  "variants/claude/playdrop/": [".claude-plugin/plugin.json", ".mcp.json"],
-  "variants/antigravity/playdrop/": ["plugin.json", "mcp_config.json"],
-  "variants/grok/playdrop/": ["plugin.json", ".mcp.json"],
+  "plugins/playdrop/": [".codex-plugin/plugin.json", ".mcp.json", "README.md"],
+  "variants/claude/playdrop/": [".claude-plugin/plugin.json", ".mcp.json", "README.md"],
+  "variants/antigravity/playdrop/": ["plugin.json", "mcp_config.json", "README.md"],
+  "variants/grok/playdrop/": ["plugin.json", ".grok-plugin/plugin.json", ".mcp.json", "README.md"],
 };
 export function files(root, prefix = "") {
   return readdirSync(path.join(root, prefix)).filter((name) => prefix || name !== ".git").sort().flatMap((name) => {
@@ -25,8 +25,10 @@ export function files(root, prefix = "") {
   });
 }
 export function validatePackage(root) {
-  const expected = ["README.md", "INSTALLATION.md", "SECURITY.md", ".github/CODEOWNERS",
-    ".github/CONTRIBUTING.md", "tools/validate-package.mjs",
+  const expected = ["README.md", "INSTALLATION.md", "SECURITY.md", "CHANGELOG.md", "CODE_OF_CONDUCT.md",
+    "server.json", "gemini-extension.json", ".github/CODEOWNERS", ".github/CONTRIBUTING.md", ".github/pull_request_template.md",
+    ".github/ISSUE_TEMPLATE/bug_report.yml", ".github/ISSUE_TEMPLATE/feature_request.yml",
+    ".github/ISSUE_TEMPLATE/config.yml", "tools/validate-package.mjs",
     ".agents/plugins/marketplace.json", ".claude-plugin/marketplace.json", ".grok-plugin/marketplace.json"];
   for (const [prefix, specific] of Object.entries(prefixes)) {
     expected.push(...[...shared, ...specific].map((file) => prefix + file));
@@ -65,8 +67,10 @@ export function validatePackage(root) {
   assert.equal(codex.skills, "./skills/");
   assert.deepEqual(read(root, "variants/claude/playdrop/.claude-plugin/plugin.json"),
     Object.fromEntries(Object.entries(manifest).filter(([key]) => key !== "$schema")));
-  assert.deepEqual(read(root, "variants/grok/playdrop/plugin.json"),
-    Object.fromEntries(Object.entries(manifest).filter(([key]) => key !== "$schema")));
+  for (const file of ["plugin.json", ".grok-plugin/plugin.json"]) {
+    assert.deepEqual(read(root, `variants/grok/playdrop/${file}`),
+      Object.fromEntries(Object.entries(manifest).filter(([key]) => key !== "$schema")));
+  }
   assert.deepEqual(read(root, "variants/antigravity/playdrop/plugin.json"), {
     $schema: "https://antigravity.google/schemas/v1/plugin.json",
     name: manifest.name, description: manifest.description,
@@ -83,6 +87,13 @@ export function validatePackage(root) {
   assert.equal(read(root, ".claude-plugin/marketplace.json").plugins[0].source, "./variants/claude/playdrop");
   assert.deepEqual(read(root, ".grok-plugin/marketplace.json").plugins[0].source,
     { type: "local", path: "./variants/grok/playdrop" });
+  assert.deepEqual(read(root, "gemini-extension.json"), { name: manifest.name, version: manifest.version,
+    description: manifest.description, mcpServers: { playdrop: { httpUrl: url } } });
+  const registry = read(root, "server.json");
+  assert.equal(registry.name, "ai.playdrop/mcp");
+  assert.equal(registry.version, manifest.version);
+  assert(registry.description.length <= 100, "Registry description exceeds 100 characters");
+  assert.deepEqual(registry.remotes, [{ type: "streamable-http", url }]);
   return { version: manifest.version, endpoint: url, files: expected.length };
 }
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {

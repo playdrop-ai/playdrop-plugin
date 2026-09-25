@@ -1,0 +1,34 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "ai.playdrop/mcp",
+  "title": "PlayDrop",
+  "description": "Publish, test and share browser games on PlayDrop from your AI agent.",
+  "version": "1.0.7",
+  "websiteUrl": "https://www.playdrop.ai/docs/connectors",
+  "repository": {
+    "url": "https://github.com/playdrop-ai/playdrop-plugin",
+    "source": "github"
+  },
+  "icons": [
+    {
+      "src": "https://www.playdrop.ai/branding/playdrop/favicon.svg",
+      "mimeType": "image/svg+xml",
+      "sizes": [
+        "any"
+      ]
+    },
+    {
+      "src": "https://www.playdrop.ai/branding/playdrop/favicon.png",
+      "mimeType": "image/png",
+      "sizes": [
+        "1254x1254"
+      ]
+    }
+  ],
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://mcp.playdrop.ai/mcp"
+    }
+  ]
+}

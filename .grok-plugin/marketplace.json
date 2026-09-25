@@ -8,8 +8,8 @@
   "plugins": [
     {
       "name": "playdrop",
-      "version": "1.0.6",
-      "description": "Upload, update and share public HTML games on PlayDrop.",
+      "version": "1.0.7",
+      "description": "Test, publish, update and share games on PlayDrop, with optional SDK, game server and listing media.",
       "source": {
         "type": "local",
         "path": "./variants/grok/playdrop"

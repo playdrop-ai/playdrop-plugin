@@ -60,16 +60,16 @@ Grok Build, hosted Grok chat and Grok Bot are separate clients.
 
 ## Hosted agents: connect the remote MCP
 
-Use `https://mcp.playdrop.ai/mcp`, choose OAuth, and authorize your own PlayDrop account.
+Use `https://mcp.playdrop.ai/mcp`, choose OAuth, and authorize your own PlayDrop account. Paths verified September 25, 2026.
 No client secret or access token belongs in this repository or an install link.
 
 | Provider | Connection | Account or testing constraint |
 | --- | --- | --- |
-| ChatGPT | Developer mode → Plugins → plus button → MCP URL | Developer mode depends on account/workspace policy |
+| ChatGPT | Plugins → Add → Create MCP App → MCP URL, OAuth → Create → Continue to PlayDrop | Custom MCP apps depend on account/workspace policy |
 | Claude | Customize → Connectors → Add custom connector | Free: one custom connector; organization policy applies |
 | Lovable | Connectors → plus button → MCP server | All plans; workspace admins can disable custom MCP |
 | Replit | Integrations → Add MCP server → Test & save | Complete OAuth; keep the security scanner enabled |
-| Grok hosted chat | Connectors → New Connector → Custom | Business/Enterprise admins provision connectors first |
+| Grok hosted chat | Plugins → Connectors → New Connector → Custom → Add Connector | Business/Enterprise admins provision connectors first |
 | Gemini | Connected Apps → Custom apps → MCP URL | US personal account, age 18+, English, Keep Activity on |
 | Grok Bot | Configure permitted connectors/plugins in Bot's supported account | Tested account requires a paid plan |
 | Muse | Existing MCP onboarding with HTTPS and OAuth PKCE | Private runtime and review remain unverified |
