@@ -65,8 +65,11 @@ export function validatePackage(root) {
   assert.equal(codex.version, manifest.version);
   assert.equal(codex.mcpServers, "./.mcp.json");
   assert.equal(codex.skills, "./skills/");
-  assert.deepEqual(read(root, "variants/claude/playdrop/.claude-plugin/plugin.json"),
-    Object.fromEntries(Object.entries(manifest).filter(([key]) => key !== "$schema")));
+  assert.deepEqual(read(root, "variants/claude/playdrop/.claude-plugin/plugin.json"), {
+    ...Object.fromEntries(Object.entries(manifest).filter(([key]) => key !== "$schema")),
+    displayName: "PlayDrop", icon: "./assets/playdrop-icon-large.png",
+    privacyPolicyUrl: "https://www.playdrop.ai/legal/privacy",
+  });
   for (const file of ["plugin.json", ".grok-plugin/plugin.json"]) {
     assert.deepEqual(read(root, `variants/grok/playdrop/${file}`),
       Object.fromEntries(Object.entries(manifest).filter(([key]) => key !== "$schema")));

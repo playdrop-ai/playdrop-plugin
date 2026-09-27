@@ -1,6 +1,6 @@
 {
   "name": "playdrop",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Test, publish, update and share games on PlayDrop, with optional SDK, game server and listing media.",
   "author": {
     "name": "PlayDrop",

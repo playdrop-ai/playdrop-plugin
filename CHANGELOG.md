@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.8 — 2026-09-26
+
+- Add the Claude directory display name, bundled icon and privacy-policy metadata.
+- Document the Claude plugin’s remote requests and data handling.
+
 ## 1.0.7 — 2026-09-25
 
 - Publish optional listing media with a game: icon, hero art, screenshots, a landscape trailer, a portrait teaser and
