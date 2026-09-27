@@ -60,17 +60,17 @@ Grok Build, hosted Grok chat and Grok Bot are separate clients.
 
 ## Hosted agents: connect the remote MCP
 
-Use `https://mcp.playdrop.ai/mcp`, choose OAuth, and authorize your own PlayDrop account. Paths verified September 25, 2026.
+Use `https://mcp.playdrop.ai/mcp`, choose OAuth, and authorize your own PlayDrop account. Provider routes reviewed September 27, 2026; runtime evidence is dated below.
 No client secret or access token belongs in this repository or an install link.
 
 | Provider | Connection | Account or testing constraint |
 | --- | --- | --- |
 | ChatGPT | Plugins → Add → Create MCP App → MCP URL, OAuth → Create → Continue to PlayDrop | Custom MCP apps depend on account/workspace policy |
-| Claude | Customize → Connectors → Add custom connector | Free: one custom connector; organization policy applies |
+| Claude | Add [PlayDrop from the directory](https://claude.ai/directory/playdrop), or Customize → Connectors → Add custom connector | Free: one custom connector; organization policy applies |
 | Lovable | Connectors → plus button → MCP server | All plans; workspace admins can disable custom MCP |
 | Replit | Integrations → Add MCP server → Test & save | Complete OAuth; keep the security scanner enabled |
 | Grok hosted chat | Plugins → Connectors → New Connector → Custom → Add Connector | Business/Enterprise admins provision connectors first |
-| Gemini | Connected Apps → Custom apps → MCP URL | US personal account, age 18+, English, Keep Activity on |
+| Gemini web / mobile | On the web: Settings → Connected Apps → Custom apps → Add → MCP URL → OAuth | US personal account, age 18+, English, Keep Activity on |
 | Grok Bot | Configure permitted connectors/plugins in Bot's supported account | Tested account requires a paid plan |
 | Muse | Existing MCP onboarding with HTTPS and OAuth PKCE | Private runtime and review remain unverified |
 
@@ -85,19 +85,35 @@ connect MCP separately. This skill installation path is documented by Replit but
 Grok hosted chat also accepts a private skill through Plugins → Skills → New Skill → Write Manually. Use the
 canonical name, description and Markdown body; this flow and subsequent `playdrop-ai` activation passed.
 
+### Gemini on web, iOS and Android
+
+Open [Gemini on the web](https://gemini.google.com) with an eligible personal Google account. In Settings, open
+Connected Apps (some accounts show Personal Intelligence), then Custom apps → Add. Enter
+`https://mcp.playdrop.ai/mcp`, continue and sign in to PlayDrop through OAuth. Ask Gemini which games you have
+on PlayDrop to check the connection. Configure on the web first, then use Gemini on mobile with the same Google
+account; there is no separate PlayDrop mobile connector package.
+
+Google currently requires a personal US account, age 18+, English and Keep Activity enabled. Work/school Workspace
+accounts are not eligible. Check these conditions if Custom apps is absent; a paid plan alone does not establish
+eligibility. Review the activity setting yourself before changing it. Adding a custom app does not publish PlayDrop
+in Google's app catalog. PlayDrop consumer web/mobile runtime validation remains pending; Antigravity acceptance
+below is a separate client test. See [Google's setup guide](https://support.google.com/gemini/answer/17209137?hl=en)
+and [iOS instructions](https://support.google.com/gemini/answer/17209137?co=GENIE.Platform%3DiOS&hl=en).
+
 ## Acceptance and compatibility
 
 On September 19, 2026, production OAuth, reads and create/update passed in Codex, Claude Code, Antigravity,
 ChatGPT, Claude, Lovable, Replit and Grok hosted chat. Codex also passed a signed 5 MiB upload and completion replay.
-Native plugin/skill acceptance used 1.0.5; 1.0.6 retains connection/skill bytes and updates documentation.
-SDK-free production games played in locally built iOS/Android apps, including taps and rotation. Those native
-readiness fixes await app releases; macOS builds/tests pass and Windows Core tests pass, without a Windows UI run.
+Those September 19 native plugin/skill checks used 1.0.5. On September 27, Antigravity 1.2.12
+with native variant 1.0.8 passed OAuth and all eight tools, including private create/update, signed upload and cancellation.
+SDK-free production games played in locally built iOS/Android apps, including taps and rotation. Those local builds do not establish released mobile-binary status. Historical macOS builds/focused tests and Windows
+Core tests passed, without a Windows UI run.
 Codex 0.153.4 used `mcp_2026_07_28`; Claude Code 2.1.270 used `MCP_SDK_GENERATION=v2` in the recorded modern tests.
 Grok Build's development write run used native HTTP configuration; current plugin validation passed separately.
 Its production OAuth remains unverified because the automation environment blocked the required terminal UI.
-Cursor's current CLI reaches production OAuth but registration rejects its legacy native callback. The exact callback
-allowance is locally tested and awaits deployment and a fresh connection test. Its portable package format is supported
-by the Cursor specification; runtime acceptance and a marketplace listing remain separate checks.
+Cursor's publisher application has been submitted. Its earlier callback failure and locally tested allowance do not
+establish a fresh production CLI pass. Runtime acceptance and marketplace approval remain separate checks.
+Individual directory approvals must be checked in the provider's listing.
 
 The server supports MCP `2026-07-28` and Streamable HTTP `2025-03-26`, `2025-06-18`, `2025-11-25` without MCP
 session IDs or a session store. Older POST responses may be bounded SSE; GET/DELETE return 405. There is no separate
@@ -120,4 +136,4 @@ HTTP+SSE endpoint or stdio bridge. Test account/docs/list, publish a small game,
 - [Muse onboarding](https://muse.ai/platform).
 
 Public directories require their own review and publisher permissions. No provider submission is performed by
-installing this repository. A prepared web change redirects legacy `/docs/plugin` to this guide after deployment.
+installing this repository. Use the current public guide at `https://www.playdrop.ai/docs/connectors`.

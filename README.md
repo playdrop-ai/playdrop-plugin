@@ -17,6 +17,9 @@ install.
 - **Grok Build:** `grok plugin install 'playdrop-ai/playdrop-plugin#variants/grok/playdrop' --trust`.
 - **Antigravity:** clone this repository, then `agy plugin install ./playdrop-plugin/variants/antigravity/playdrop`.
 - **Replit:** [add PlayDrop to Replit](https://replit.com/integrations?mcp=eyJkaXNwbGF5TmFtZSI6IlBsYXlEcm9wIEFJIiwiYmFzZVVybCI6Imh0dHBzOi8vbWNwLnBsYXlkcm9wLmFpL21jcCJ9).
+- **Gemini web, iOS and Android:** add a custom app on [Gemini web](https://gemini.google.com), then use the same
+  Google account on mobile. Requires an eligible personal US account, age 18+, English and Keep Activity enabled.
+  See the [Gemini guide](https://www.playdrop.ai/docs/connectors/gemini); consumer runtime validation is pending.
 - **ChatGPT, Claude, Lovable, Grok and other MCP clients:** add a custom connector with the URL
   `https://mcp.playdrop.ai/mcp` and OAuth.
 
@@ -27,7 +30,8 @@ install.
   [Antigravity](https://www.playdrop.ai/docs/connectors/antigravity).
 - Hosted assistants: [ChatGPT](https://www.playdrop.ai/docs/connectors/chatgpt),
   [Claude](https://www.playdrop.ai/docs/connectors/claude), [Lovable](https://www.playdrop.ai/docs/connectors/lovable),
-  [Replit](https://www.playdrop.ai/docs/connectors/replit), [Grok](https://www.playdrop.ai/docs/connectors/grok).
+  [Replit](https://www.playdrop.ai/docs/connectors/replit), [Grok](https://www.playdrop.ai/docs/connectors/grok),
+  [Gemini](https://www.playdrop.ai/docs/connectors/gemini).
 
 [Installation](INSTALLATION.md) covers each package in detail, with dated compatibility results.
 
