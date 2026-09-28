@@ -1,106 +1,73 @@
-# playdrop-plugin
+# PlayDrop Agent Plugin
 
-Public PlayDrop plugin mirror for Codex, Claude Code, and Cursor.
+[![Release](https://img.shields.io/github/v/release/playdrop-ai/playdrop-plugin)](https://github.com/playdrop-ai/playdrop-plugin/releases)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
-This repository is published automatically from `plugins/playdrop-creator/` in the private PlayDrop monorepo. The monorepo directory is the only source of truth. Do not commit changes directly to this mirror because the next publication will replace them.
+Publish, test and share the browser games you build with your AI agent on [PlayDrop](https://www.playdrop.ai).
+Want PlayDrop to build and maintain the game for you instead? Start with [PlayDrop Cloud](https://www.playdrop.ai/create).
 
-Open public bug reports and feature requests in this repository's [issue tracker](https://github.com/playdrop-ai/playdrop-plugin/issues). Maintainers make accepted source changes in the monorepo and publish the generated creator artifact back to this mirror.
+The plugin adds one skill, `playdrop-ai`, and a connection to PlayDrop's remote MCP server at
+`https://mcp.playdrop.ai/mcp`. Sign in to your PlayDrop account when your agent asks; there is no CLI or package to
+install.
 
-## Public links
+## Install
 
-- Home page: [playdrop.ai](https://www.playdrop.ai/)
-- Getting Started: [playdrop.ai/getting-started](https://www.playdrop.ai/getting-started)
-- Plugin docs: [playdrop.ai/docs/plugin](https://www.playdrop.ai/docs/plugin)
-- Full documentation: [playdrop.ai/docs](https://www.playdrop.ai/docs)
+- **Claude Code:** `/plugin marketplace add playdrop-ai/playdrop-plugin`, then `/plugin install playdrop@playdrop`.
+- **Codex:** `codex plugin marketplace add playdrop-ai/playdrop-plugin`, then install PlayDrop from the Plugins Directory.
+- **Grok Build:** `grok plugin install 'playdrop-ai/playdrop-plugin#variants/grok/playdrop' --trust`.
+- **Antigravity:** clone this repository, then `agy plugin install ./playdrop-plugin/variants/antigravity/playdrop`.
+- **Replit:** [add PlayDrop to Replit](https://replit.com/integrations?mcp=eyJkaXNwbGF5TmFtZSI6IlBsYXlEcm9wIEFJIiwiYmFzZVVybCI6Imh0dHBzOi8vbWNwLnBsYXlkcm9wLmFpL21jcCJ9).
+- **Gemini web, iOS and Android:** add a custom app on [Gemini web](https://gemini.google.com), then use the same
+  Google account on mobile. Requires an eligible personal US account, age 18+, English and Keep Activity enabled.
+  See the [Gemini guide](https://www.playdrop.ai/docs/connectors/gemini); consumer runtime validation is pending.
+- **ChatGPT, Claude, Lovable, Grok and other MCP clients:** add a custom connector with the URL
+  `https://mcp.playdrop.ai/mcp` and OAuth.
 
-## Repository layout
+[PlayDrop Connector](https://www.playdrop.ai/docs/connectors) has a step-by-step guide for each platform:
 
-- `.agents/plugins/`: Codex marketplace manifest
-- `.codex-plugin/`: Codex manifest
-- `.claude-plugin/`: Claude manifest
-- `.cursor-plugin/`: Cursor manifest
-- `.github/`: mirror ownership and contribution policy
-- `skills/`: specialist public PlayDrop skills
-- `references/`: shared public workflow references
-- `assets/`: plugin icons and branding assets
+- Agents with plugins: [Codex](https://www.playdrop.ai/docs/connectors/codex),
+  [Claude Code](https://www.playdrop.ai/docs/connectors/claude-code),
+  [Antigravity](https://www.playdrop.ai/docs/connectors/antigravity).
+- Hosted assistants: [ChatGPT](https://www.playdrop.ai/docs/connectors/chatgpt),
+  [Claude](https://www.playdrop.ai/docs/connectors/claude), [Lovable](https://www.playdrop.ai/docs/connectors/lovable),
+  [Replit](https://www.playdrop.ai/docs/connectors/replit), [Grok](https://www.playdrop.ai/docs/connectors/grok),
+  [Gemini](https://www.playdrop.ai/docs/connectors/gemini).
 
-## Install the Plugin
+[Installation](INSTALLATION.md) covers each package in detail, with dated compatibility results.
 
-### Codex
+## What your agent can do
 
-Install or update the PlayDrop marketplace through the Codex CLI:
+- Publish `index.html` with its [catalogue.json](https://www.playdrop.ai/docs/catalogue-json) metadata, plus an
+  optional icon, hero art, screenshots, a landscape trailer and a portrait teaser, localized per language.
+- Upload privately to test a version, then make it public from the game page. Update the same game later.
+- Test inside PlayDrop before publishing:
+  `https://www.playdrop.ai/creators/<username>/apps/game/<slug>/dev?url=http://localhost:5173/`.
+- Add the optional [client SDK](https://www.playdrop.ai/docs/sdk) with one script tag: leaderboards, achievements,
+  cloud saves, social features and multiplayer.
+- Run multiplayer on your own server, or upload a [Colyseus](https://colyseus.io) `server.js` to PlayDrop's free hosted
+  game servers with [MongoDB](https://www.mongodb.com). See [game servers](https://www.playdrop.ai/docs/server-sdk).
+- Send questions, bugs and ideas to the PlayDrop team with the feedback tool.
 
-```bash
-codex plugin marketplace add playdrop-ai/playdrop-plugin
-codex plugin add playdrop@playdrop
+Your agent reads current limits and formats with `get_documentation`. Everything is also at
+[playdrop.ai/docs](https://www.playdrop.ai/docs).
+
+## Contents
+
+- `plugin.json`, `mcp.json`, `skills/`: portable Agent Plugins 1.0 package.
+- `plugins/playdrop/`: Codex native package with its registered public OAuth client.
+- `variants/claude/playdrop/`: Claude Code native package with its registered public OAuth client.
+- `variants/antigravity/playdrop/`, `variants/grok/playdrop/`: native client packages.
+- `.agents/plugins/`, `.claude-plugin/`, `.grok-plugin/`: repository marketplace metadata.
+- `server.json`: the [MCP Registry](https://registry.modelcontextprotocol.io) entry, `ai.playdrop/mcp`.
+
+All packages point at the URL in `mcp.json`; generated development copies may point at a development service.
+Version 1.0 replaced the older broad game-development plugin with one publishing skill and a remote connection.
+This MIT-licensed package contains no server implementation or credentials. Never add access tokens to it.
+
+## Package check
+
+```sh
+node tools/validate-package.mjs .
 ```
 
-Refresh the marketplace snapshot before reinstalling or verifying an update:
-
-```bash
-codex plugin marketplace upgrade playdrop
-codex plugin add playdrop@playdrop
-codex plugin list
-```
-
-### Claude Code
-
-Either run these commands in Claude CLI directly, or tell the Claude app to run them with Claude CLI.
-
-```bash
-/plugin marketplace add playdrop-ai/playdrop-plugin
-/plugin install playdrop@playdrop
-```
-
-`/plugin` is not available inside the Claude Code app at the moment.
-
-### Cursor
-
-Install the plugin from the Cursor marketplace or import this repository as a team marketplace. For local testing, copy or symlink this repository into:
-
-```text
-~/.cursor/plugins/local/playdrop
-```
-
-then restart Cursor or run `Developer: Reload Window`.
-
-## Validation
-
-Use short representative checks instead of treating discovery alone as sufficient.
-
-- Codex: verify `playdrop:task-routing`, `playdrop:create-game`, `playdrop:update-game`, `playdrop:remix-game`, `playdrop:make-2d-asset-pack`, and `playdrop:make-listing`
-- Claude Code: verify `/playdrop`, `/playdrop:create-game`, `/playdrop:update-game`, and `/playdrop:make-listing`
-- Cursor: verify `playdrop:task-routing`, `playdrop:create-game`, `playdrop:update-game`, `playdrop:remix-game`, and `playdrop:make-listing`
-- Marketing: verify `playdrop:make-listing` and `playdrop:market-game`
-- Workflow smoke tests:
-  - `create-game` -> `discover-assets` -> `make-assets` -> `playtest-game` -> `make-listing`
-  - `remix-game` -> `playtest-game` -> `make-listing`
-  - `update-game` -> `playtest-game` -> `make-listing`
-  - `discover-assets` -> `make-2d-asset-pack` -> `make-assets`
-  - `review-game` with the staged game-review references
-
-## Versioning
-
-Plugin manifests in this repository are on the same release train as the PlayDrop platform and must match the platform version. Version alignment and legacy sync are maintained from the private PlayDrop monorepo. Publication is bot-owned and direct commits to this mirror are frozen.
-
-## Legacy sync
-
-`playdrop-skills` is a generated compatibility, skills.sh, and SEO surface. It is not the source of truth.
-
-Run the sync from the private PlayDrop monorepo root:
-
-```bash
-node scripts/sync-legacy-skills-repo.mjs
-```
-
-Check for drift with:
-
-```bash
-node scripts/sync-legacy-skills-repo.mjs --check
-```
-
-Align the public plugin manifests with the platform release version from the monorepo:
-
-```bash
-node scripts/set-public-plugin-version.mjs 0.6.2
-```
+This checks package contents and configuration offline. It does not authenticate, publish a game or verify a provider.

@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "playdrop": {
+      "type": "http",
+      "url": "https://mcp.playdrop.ai/mcp",
+      "oauth": {
+        "clientId": "playdrop-claude-code"
+      }
+    }
+  }
+}

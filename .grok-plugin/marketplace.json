@@ -1,0 +1,19 @@
+{
+  "name": "playdrop",
+  "owner": {
+    "name": "PlayDrop",
+    "email": "support@playdrop.ai",
+    "url": "https://www.playdrop.ai"
+  },
+  "plugins": [
+    {
+      "name": "playdrop",
+      "version": "1.0.8",
+      "description": "Test, publish, update and share games on PlayDrop, with optional SDK, game server and listing media.",
+      "source": {
+        "type": "local",
+        "path": "./variants/grok/playdrop"
+      }
+    }
+  ]
+}

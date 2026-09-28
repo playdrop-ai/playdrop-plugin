@@ -1,0 +1,27 @@
+name: Bug report
+description: Something in the plugin or the PlayDrop connection does not work.
+labels: [bug]
+body:
+  - type: dropdown
+    id: client
+    attributes:
+      label: AI agent
+      options: [Claude Code, Claude, Codex, ChatGPT, Antigravity, Grok, Lovable, Replit, Cursor, Other]
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Plugin version
+      description: Shown in your agent's plugin list, or "connector" if you added the MCP URL directly.
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: What you asked the agent, what it did, and any error message. Never paste tokens or signed URLs.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected

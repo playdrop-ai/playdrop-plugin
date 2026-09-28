@@ -2,17 +2,15 @@
   "name": "playdrop",
   "owner": {
     "name": "PlayDrop",
-    "url": "https://www.playdrop.ai/"
-  },
-  "metadata": {
-    "description": "PlayDrop creator plugins"
+    "email": "support@playdrop.ai",
+    "url": "https://www.playdrop.ai"
   },
   "plugins": [
     {
       "name": "playdrop",
-      "description": "Creator workflows for planning, building, improving, publishing, and maintaining PlayDrop games.",
-      "version": "0.12.6",
-      "source": "./"
+      "version": "1.0.8",
+      "description": "Test, publish, update and share games on PlayDrop, with optional SDK, game server and listing media.",
+      "source": "./variants/claude/playdrop"
     }
   ]
 }

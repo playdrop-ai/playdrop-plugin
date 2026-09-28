@@ -1,0 +1,38 @@
+{
+  "name": "playdrop",
+  "version": "1.0.8",
+  "description": "Test, publish, update and share games on PlayDrop, with optional SDK, game server and listing media.",
+  "author": {
+    "name": "PlayDrop",
+    "email": "support@playdrop.ai",
+    "url": "https://www.playdrop.ai"
+  },
+  "homepage": "https://www.playdrop.ai",
+  "repository": "https://github.com/playdrop-ai/playdrop-plugin",
+  "license": "MIT",
+  "keywords": [
+    "playdrop",
+    "games",
+    "game-publishing",
+    "html5-games",
+    "multiplayer",
+    "mcp"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "PlayDrop",
+    "shortDescription": "Publish and share your HTML games.",
+    "longDescription": "Test, publish, update and share games on PlayDrop, with optional SDK, game server and listing media.",
+    "developerName": "PlayDrop",
+    "category": "Productivity",
+    "capabilities": [
+      "Write"
+    ],
+    "defaultPrompt": [
+      "Publish my HTML game on PlayDrop."
+    ],
+    "composerIcon": "./assets/playdrop-icon-small.svg",
+    "logo": "./assets/playdrop-icon-large.png"
+  }
+}

@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Setup guides for each AI agent
+    url: https://www.playdrop.ai/docs/connectors
+    about: Install the plugin or add the PlayDrop MCP connection in your agent.
+  - name: PlayDrop documentation
+    url: https://www.playdrop.ai/docs
+    about: SDK, game servers, catalogue.json and publishing.
+  - name: Report a security issue privately
+    url: https://github.com/playdrop-ai/playdrop-plugin/blob/main/SECURITY.md
+    about: Please do not report vulnerabilities in public issues.
