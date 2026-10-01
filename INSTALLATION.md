@@ -1,7 +1,7 @@
 # Install PlayDrop AI
 
 Publish, update and share an HTML game from your AI agent. The public `playdrop` package contains one
-`playdrop-ai` skill and a connection to `https://mcp.playdrop.ai/mcp`. Sign in to PlayDrop when OAuth opens.
+`playdrop-ai` skill and a connection to `https://mcp.playdrop.ai/mcp`. Sign in to PlayDrop through OAuth.
 The plugin does not install the PlayDrop CLI or the former collection of game-development skills.
 
 The production endpoint and OAuth registration discovery are live. Provider directory approval and each provider's
@@ -31,7 +31,13 @@ Run inside Claude Code:
 /plugin install playdrop@playdrop
 ```
 
-The marketplace selects `variants/claude/playdrop`. See the
+If Claude Code asks you to, run `/reload-plugins`. Then sign in: run `/mcp`, select `plugin:playdrop:playdrop`,
+choose Authenticate and approve the connection in your browser. Until then, `/mcp` lists PlayDrop as
+"Needs authentication". A PlayDrop plugin turned on at claude.ai also loads in Claude Code when you sign in with the
+same Claude account.
+
+From your game project, run `/playdrop:publish` (add `private` to test first) or ask Claude Code to publish the game.
+It replies with the game's public link. The marketplace selects `variants/claude/playdrop`. See the
 [Claude Code marketplace guide](https://code.claude.com/docs/en/plugin-marketplaces).
 
 ### Antigravity

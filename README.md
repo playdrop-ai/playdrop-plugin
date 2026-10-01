@@ -7,12 +7,12 @@ Publish, test and share the browser games you build with your AI agent on [PlayD
 Want PlayDrop to build and maintain the game for you instead? Start with [PlayDrop Cloud](https://www.playdrop.ai/create).
 
 The plugin adds one skill, `playdrop-ai`, and a connection to PlayDrop's remote MCP server at
-`https://mcp.playdrop.ai/mcp`. Sign in to your PlayDrop account when your agent asks; there is no CLI or package to
-install.
+`https://mcp.playdrop.ai/mcp`. Sign in to your PlayDrop account through OAuth; there is no CLI or package to install.
 
 ## Install
 
 - **Claude Code:** `/plugin marketplace add playdrop-ai/playdrop-plugin`, then `/plugin install playdrop@playdrop`.
+  Sign in with `/mcp` → `plugin:playdrop:playdrop` → Authenticate, then run `/playdrop:publish` in your game project.
 - **Codex:** `codex plugin marketplace add playdrop-ai/playdrop-plugin`, then install PlayDrop from the Plugins Directory.
 - **Grok Build:** `grok plugin install 'playdrop-ai/playdrop-plugin#variants/grok/playdrop' --trust`.
 - **Antigravity:** clone this repository, then `agy plugin install ./playdrop-plugin/variants/antigravity/playdrop`.

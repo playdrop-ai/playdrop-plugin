@@ -1,10 +1,10 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "playdrop",
-  "version": "1.0.8",
-  "description": "Test, publish, update and share games on PlayDrop, with optional SDK, game server and listing media.",
+  "version": "1.0.9",
+  "description": "Publish your browser game (HTML5) on PlayDrop and get a public link to share. Test privately, update it without changing the link, and add leaderboards, saves or multiplayer.",
   "author": {
-    "name": "PlayDrop",
+    "name": "PlayDrop Inc.",
     "email": "support@playdrop.ai",
     "url": "https://www.playdrop.ai"
   },
@@ -14,9 +14,39 @@
   "keywords": [
     "playdrop",
     "games",
-    "game-publishing",
+    "browser-games",
     "html5-games",
+    "game-publishing",
+    "game-hosting",
+    "publish",
+    "share",
+    "leaderboards",
     "multiplayer",
     "mcp"
-  ]
+  ],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "PlayDrop",
+        "shortDescription": "Publish and share your games",
+        "longDescription": "Publish your browser game (HTML5) on PlayDrop and get a public link to share. Test privately, update it without changing the link, and add leaderboards, saves or multiplayer.",
+        "developerName": "PlayDrop Inc.",
+        "category": "Creativity",
+        "capabilities": [
+          "Write"
+        ],
+        "defaultPrompt": [
+          "Show my PlayDrop games.",
+          "Upload my game privately so I can test it.",
+          "Publish the game version I just tested."
+        ],
+        "websiteURL": "https://www.playdrop.ai/docs/connectors",
+        "supportURL": "https://www.playdrop.ai/contact",
+        "privacyPolicyURL": "https://www.playdrop.ai/legal/privacy",
+        "termsOfServiceURL": "https://www.playdrop.ai/legal/terms",
+        "composerIcon": "./assets/playdrop-icon-large.png",
+        "logo": "./assets/playdrop-icon-large.png"
+      }
+    }
+  }
 }

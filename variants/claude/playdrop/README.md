@@ -1,8 +1,8 @@
 # PlayDrop for Claude Code
 
 Publish, test and share the browser games you build with Claude Code on PlayDrop. This plugin adds the
-`playdrop-ai` skill and a connection to PlayDrop's remote MCP server. Sign in to your PlayDrop account when
-Claude Code asks; there is no CLI or package to install.
+`playdrop-ai` skill and a connection to PlayDrop's remote MCP server. After installing, run `/mcp`, select `plugin:playdrop:playdrop` and choose Authenticate to sign in to your PlayDrop
+account; there is no CLI or package to install. Then run `/playdrop:publish` or ask Claude Code to publish your game.
 
 Your agent can publish `index.html` with listing images, videos and localized art, upload privately to test first,
 add the optional PlayDrop SDK, upload a Colyseus `server.js` for free hosted multiplayer with MongoDB, and send

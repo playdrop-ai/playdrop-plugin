@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.0.9 — 2026-10-01
+
+- Claude Code: add `/playdrop:publish`, which publishes the current project's game and replies with its public link.
+- Clearer description and keywords (browser games, HTML5, publish, share link) so the plugin is easier to find.
+- The skill now starts from the user's goal: package one `index.html`, publish with `upload_game`, share the link.
+- Claude Code README: sign in from `/mcp` → `plugin:playdrop:playdrop` → Authenticate after installing.
+- Antigravity: connect with PlayDrop's fixed `playdrop-antigravity` client instead of registering a new OAuth client on
+  every start.
+
 ## 1.0.8 — 2026-09-26
 
 - Add the Claude directory display name, bundled icon and privacy-policy metadata.

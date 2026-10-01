@@ -1,15 +1,15 @@
 {
   "name": "playdrop",
   "owner": {
-    "name": "PlayDrop",
+    "name": "PlayDrop Inc.",
     "email": "support@playdrop.ai",
     "url": "https://www.playdrop.ai"
   },
   "plugins": [
     {
       "name": "playdrop",
-      "version": "1.0.8",
-      "description": "Test, publish, update and share games on PlayDrop, with optional SDK, game server and listing media.",
+      "version": "1.0.9",
+      "description": "Publish your browser game (HTML5) on PlayDrop and get a public link to share. Test privately, update it without changing the link, and add leaderboards, saves or multiplayer.",
       "source": {
         "type": "local",
         "path": "./variants/grok/playdrop"

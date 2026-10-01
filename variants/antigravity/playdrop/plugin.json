@@ -1,5 +1,5 @@
 {
   "$schema": "https://antigravity.google/schemas/v1/plugin.json",
   "name": "playdrop",
-  "description": "Test, publish, update and share games on PlayDrop, with optional SDK, game server and listing media."
+  "description": "Publish your browser game (HTML5) on PlayDrop and get a public link to share. Test privately, update it without changing the link, and add leaderboards, saves or multiplayer."
 }

@@ -10,7 +10,7 @@ const shared = ["LICENSE", "skills/playdrop-ai/SKILL.md",
 const prefixes = {
   "": ["plugin.json", "mcp.json"],
   "plugins/playdrop/": [".codex-plugin/plugin.json", ".mcp.json", "README.md"],
-  "variants/claude/playdrop/": [".claude-plugin/plugin.json", ".mcp.json", "README.md"],
+  "variants/claude/playdrop/": [".claude-plugin/plugin.json", ".mcp.json", "README.md", "commands/publish.md"],
   "variants/antigravity/playdrop/": ["plugin.json", "mcp_config.json", "README.md"],
   "variants/grok/playdrop/": ["plugin.json", ".grok-plugin/plugin.json", ".mcp.json", "README.md"],
 };
@@ -36,12 +36,51 @@ export function validatePackage(root) {
   assert.deepEqual(files(root).sort(), expected.sort(), "Unexpected or missing public package files");
   const manifest = read(root, "plugin.json");
   equalKeys(manifest, ["$schema", "name", "version", "description", "author", "homepage",
-    "repository", "license", "keywords"]);
+    "repository", "license", "keywords", "extensions"]);
   assert.equal(manifest.$schema, "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json");
   assert.equal(manifest.name, "playdrop");
   assert.match(manifest.version, /^\d+\.\d+\.\d+$/);
   assert.equal(manifest.license, "MIT");
   assert.equal(manifest.repository, "https://github.com/playdrop-ai/playdrop-plugin");
+  equalKeys(manifest.extensions, ["com.openai"]);
+  const openai = manifest.extensions["com.openai"];
+  assert(!("apps" in openai), "Public uploads must not contain private App bindings");
+  const listing = openai.interface;
+  assert(listing.displayName.length <= 30 && listing.shortDescription.length <= 30);
+  assert(listing.longDescription.length <= 4000 && listing.developerName.length <= 80);
+  assert.equal(listing.category, "Creativity");
+  assert(Array.isArray(listing.defaultPrompt) && listing.defaultPrompt.length <= 3);
+  const normalizedPrompts = listing.defaultPrompt.map((prompt) => prompt.trim().replace(/\s+/gu, " "));
+  assert(normalizedPrompts.every((prompt, index) => prompt.length > 0 && prompt.length <= 128 &&
+    !/[\r\n]/u.test(listing.defaultPrompt[index]) && !prompt.includes("@")));
+  assert.equal(new Set(normalizedPrompts).size, normalizedPrompts.length);
+  for (const field of ["websiteURL", "supportURL", "privacyPolicyURL", "termsOfServiceURL"]) {
+    const destination = new URL(listing[field]);
+    assert(destination.protocol === "https:" && !destination.username && !destination.password);
+    assert(listing[field].length <= 1024);
+  }
+  for (const field of ["logo", "composerIcon"]) {
+    assert.equal(listing[field], "./assets/playdrop-icon-large.png");
+    const png = readFileSync(path.join(root, listing[field]));
+    assert(png.subarray(0, 8).equals(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10])));
+    const dimension = field === "logo" ? 256 : 48;
+    assert(png.readUInt32BE(16) >= dimension && png.readUInt32BE(16) === png.readUInt32BE(20));
+    assert(png.length <= 5 * 1024 * 1024);
+  }
+  if (openai.review) {
+    equalKeys(openai.review, ["test_cases"]);
+    assert.equal(openai.review.test_cases.positive.length, 5);
+    assert.equal(openai.review.test_cases.negative.length, 3);
+    for (const entry of openai.review.test_cases.positive) {
+      equalKeys(entry, ["description", "prompt", "tools_triggered", "expected_behavior"]);
+      assert(Object.values(entry).every((value) => typeof value === "string" && value.trim()));
+    }
+    for (const entry of openai.review.test_cases.negative) {
+      equalKeys(entry, ["description", "prompt"]);
+      assert(Object.values(entry).every((value) => typeof value === "string" && value.trim()));
+    }
+    assert.equal(typeof openai.publication.release_notes, "string");
+  }
   const portable = read(root, "mcp.json");
   equalKeys(portable, ["$schema", "mcpServers"]);
   assert.equal(portable.$schema, "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json");
@@ -56,7 +95,7 @@ export function validatePackage(root) {
     ["plugins/playdrop/.mcp.json", { type: "http", url,
       oauth: { clientId: "playdrop-codex", callbackUrl: "http://127.0.0.1/callback" } }],
     ["variants/claude/playdrop/.mcp.json", { type: "http", url, oauth: { clientId: "playdrop-claude-code" } }],
-    ["variants/antigravity/playdrop/mcp_config.json", { serverUrl: url }],
+    ["variants/antigravity/playdrop/mcp_config.json", { serverUrl: url, oauth: { clientId: "playdrop-antigravity" } }],
     ["variants/grok/playdrop/.mcp.json", { type: "http", url }],
   ];
   for (const [file, server] of native) assert.deepEqual(read(root, file), { mcpServers: { playdrop: server } });
@@ -65,14 +104,18 @@ export function validatePackage(root) {
   assert.equal(codex.version, manifest.version);
   assert.equal(codex.mcpServers, "./.mcp.json");
   assert.equal(codex.skills, "./skills/");
+  assert.deepEqual(codex.extensions, manifest.extensions);
+  assert.deepEqual(codex.interface, listing);
+  const portableMetadata = Object.fromEntries(Object.entries(manifest)
+    .filter(([key]) => !["$schema", "extensions"].includes(key)));
   assert.deepEqual(read(root, "variants/claude/playdrop/.claude-plugin/plugin.json"), {
-    ...Object.fromEntries(Object.entries(manifest).filter(([key]) => key !== "$schema")),
+    ...portableMetadata,
     displayName: "PlayDrop", icon: "./assets/playdrop-icon-large.png",
     privacyPolicyUrl: "https://www.playdrop.ai/legal/privacy",
   });
   for (const file of ["plugin.json", ".grok-plugin/plugin.json"]) {
     assert.deepEqual(read(root, `variants/grok/playdrop/${file}`),
-      Object.fromEntries(Object.entries(manifest).filter(([key]) => key !== "$schema")));
+      portableMetadata);
   }
   assert.deepEqual(read(root, "variants/antigravity/playdrop/plugin.json"), {
     $schema: "https://antigravity.google/schemas/v1/plugin.json",
@@ -87,7 +130,10 @@ export function validatePackage(root) {
   assert.match(skill, /^---\nname: playdrop-ai\ndescription: .+\n---\n/);
   assert.deepEqual(read(root, ".agents/plugins/marketplace.json").plugins[0].source,
     { source: "local", path: "./plugins/playdrop" });
-  assert.equal(read(root, ".claude-plugin/marketplace.json").plugins[0].source, "./variants/claude/playdrop");
+  const claudeMarketplace = read(root, ".claude-plugin/marketplace.json");
+  assert.equal(claudeMarketplace.plugins[0].source, "./variants/claude/playdrop");
+  assert.equal(claudeMarketplace.metadata.description, manifest.description);
+  assert.match(readFileSync(path.join(root, "variants/claude/playdrop/commands/publish.md"), "utf8"), /^---\ndescription: .+\n/);
   assert.deepEqual(read(root, ".grok-plugin/marketplace.json").plugins[0].source,
     { type: "local", path: "./variants/grok/playdrop" });
   assert.deepEqual(read(root, "gemini-extension.json"), { name: manifest.name, version: manifest.version,

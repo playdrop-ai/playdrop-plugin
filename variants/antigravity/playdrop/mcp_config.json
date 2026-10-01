@@ -1,7 +1,10 @@
 {
   "mcpServers": {
     "playdrop": {
-      "serverUrl": "https://mcp.playdrop.ai/mcp"
+      "serverUrl": "https://mcp.playdrop.ai/mcp",
+      "oauth": {
+        "clientId": "playdrop-antigravity"
+      }
     }
   }
 }
