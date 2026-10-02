@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.10 — 2026-10-02
+
+- Plugin description in the words people search for: publish, host and share an HTML5, web or browser game.
+
 ## 1.0.9 — 2026-10-01
 
 - Claude Code: add `/playdrop:publish`, which publishes the current project's game and replies with its public link.

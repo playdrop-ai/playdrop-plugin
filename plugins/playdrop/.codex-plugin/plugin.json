@@ -1,7 +1,7 @@
 {
   "name": "playdrop",
-  "version": "1.0.9",
-  "description": "Publish your browser game (HTML5) on PlayDrop and get a public link to share. Test privately, update it without changing the link, and add leaderboards, saves or multiplayer.",
+  "version": "1.0.10",
+  "description": "Publish, host and share the games you make with AI: turn any HTML5, web or browser game into a public link anyone can play on phone or desktop, and update it without changing the link.",
   "author": {
     "name": "PlayDrop Inc.",
     "email": "support@playdrop.ai",
@@ -28,7 +28,7 @@
   "interface": {
     "displayName": "PlayDrop",
     "shortDescription": "Publish and share your games",
-    "longDescription": "Publish your browser game (HTML5) on PlayDrop and get a public link to share. Test privately, update it without changing the link, and add leaderboards, saves or multiplayer.",
+    "longDescription": "Publish, host and share the games you make with AI: turn any HTML5, web or browser game into a public link anyone can play on phone or desktop, and update it without changing the link.",
     "developerName": "PlayDrop Inc.",
     "category": "Creativity",
     "capabilities": [
@@ -51,7 +51,7 @@
       "interface": {
         "displayName": "PlayDrop",
         "shortDescription": "Publish and share your games",
-        "longDescription": "Publish your browser game (HTML5) on PlayDrop and get a public link to share. Test privately, update it without changing the link, and add leaderboards, saves or multiplayer.",
+        "longDescription": "Publish, host and share the games you make with AI: turn any HTML5, web or browser game into a public link anyone can play on phone or desktop, and update it without changing the link.",
         "developerName": "PlayDrop Inc.",
         "category": "Creativity",
         "capabilities": [
