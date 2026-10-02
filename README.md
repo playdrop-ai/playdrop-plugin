@@ -9,6 +9,9 @@ Want PlayDrop to build and maintain the game for you instead? Start with [PlayDr
 The plugin adds one skill, `playdrop-ai`, and a connection to PlayDrop's remote MCP server at
 `https://mcp.playdrop.ai/mcp`. Sign in to your PlayDrop account through OAuth; there is no CLI or package to install.
 
+The public PlayDrop CLI and legacy CLI-based skills are retired. Publish games through the
+[PlayDrop connector](https://www.playdrop.ai/docs/connectors).
+
 ## Install
 
 - **Claude Code:** `/plugin marketplace add playdrop-ai/playdrop-plugin`, then `/plugin install playdrop@playdrop`.
