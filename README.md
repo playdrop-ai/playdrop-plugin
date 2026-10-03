@@ -43,8 +43,13 @@ The public PlayDrop CLI and legacy CLI-based skills are retired. Publish games t
 - Publish `index.html` with its [catalogue.json](https://www.playdrop.ai/docs/catalogue-json) metadata, plus an
   optional icon, hero art, screenshots, a landscape trailer and a portrait teaser, localized per language.
 - Upload privately to test a version, then make it public from the game page. Update the same game later.
-- Test inside PlayDrop before publishing:
-  `https://www.playdrop.ai/creators/<username>/apps/game/<slug>/dev?url=http://localhost:5173/`.
+- Test a running local game before uploading: open
+  `https://www.playdrop.ai/creators/<username>/apps/game/<slug>/dev?url=http%3A%2F%2Flocalhost%3A5173%2F`.
+  In ChatGPT desktop, use its built-in browser beside the conversation when available. This uses the normal
+  PlayDrop host and SDK around your local server; no tunnel or upload is needed. Your agent checks gameplay,
+  not just page loading. If the built-in browser blocks access to your local server, open the same Dev URL in
+  your ordinary browser and use its local-network permission prompt. The agent reports which browser worked.
+  The Extensions panel provides Live/Draft playback of uploaded versions.
 - Add the optional [client SDK](https://www.playdrop.ai/docs/sdk) with one script tag: leaderboards, achievements,
   cloud saves, social features and multiplayer.
 - Run multiplayer on your own server, or upload a [Colyseus](https://colyseus.io) `server.js` to PlayDrop's free hosted

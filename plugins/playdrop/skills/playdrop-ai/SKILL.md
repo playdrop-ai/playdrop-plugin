@@ -41,8 +41,16 @@ and its listing in English plus the user's language when different; hero art has
 
 Before using these, call `get_documentation` (topics `sdk`, `server-sdk`, `catalogue`) instead of relying on memory.
 
-- **Test inside PlayDrop:** run the dev server and open
-  `https://www.playdrop.ai/creators/<username>/apps/game/<slug>/dev?url=<dev URL>` to play it inside PlayDrop.
+- **Test locally inside PlayDrop:** start the local game server and confirm its loopback URL responds. Open
+  `https://www.playdrop.ai/creators/<username>/apps/game/<slug>/dev?url=<encoded loopback URL>` in ChatGPT desktop's
+  built-in browser beside the conversation when available, or another local browser. URL-encode the whole local
+  URL; the server must run on the browser's machine. Keep it running and verify the hosted game renders and
+  responds to input through the normal PlayDrop host and SDK. Standalone localhost is not enough evidence.
+  Do not use a tunnel or upload a substitute Dev version. If the built-in browser blocks public-to-local
+  requests, open the same
+  PlayDrop Dev URL in the creator's ordinary browser, such as Chrome, and use its normal local-network
+  permission flow. Do not change global browser security. Report which browser actually passed; ordinary-browser
+  playback is not proof of built-in browser support.
 - **SDK:** add `<script src="https://assets.playdrop.ai/sdk/playdrop.js"></script>`, then `await playdrop.init()`
   and `sdk.host.ready()`, for sign-in, saves, leaderboards, purchases, ads, friends and multiplayer.
 - **Game server:** use your own, or upload `server.js` with plain Colyseus 0.17 rooms and MongoDB via

@@ -8,7 +8,7 @@
   "plugins": [
     {
       "name": "playdrop",
-      "version": "1.0.10",
+      "version": "1.0.11",
       "description": "Publish, host and share the games you make with AI: turn any HTML5, web or browser game into a public link anyone can play on phone or desktop, and update it without changing the link.",
       "source": {
         "type": "local",
