@@ -130,8 +130,11 @@ account; there is no separate PlayDrop mobile connector package.
 Google currently requires a personal US account, age 18+, English and Keep Activity enabled. Work/school Workspace
 accounts are not eligible. Check these conditions if Custom apps is absent; a paid plan alone does not establish
 eligibility. Review the activity setting yourself before changing it. Adding a custom app does not publish PlayDrop
-in Google's app catalog. PlayDrop consumer web/mobile runtime validation remains pending; Antigravity acceptance
-below is a separate client test. See [Google's setup guide](https://support.google.com/gemini/answer/17209137?hl=en)
+in Google's app catalog. On October 9, Google OAuth discovered 17 tools and Gemini Flash read the connected
+PlayDrop account after explicit @PlayDrop selection. Flash also passed private create/update, retained-version
+readback and browser playtesting. Pro requests stalled, and the Gemini host sometimes reported error 1076 after
+successful tool completion. Check retained versions before retrying; resume an interrupted request with its original
+request ID. Mobile use and public publication remain unverified. Antigravity acceptance below is a separate client test. See [Google's setup guide](https://support.google.com/gemini/answer/17209137?hl=en)
 and [iOS instructions](https://support.google.com/gemini/answer/17209137?co=GENIE.Platform%3DiOS&hl=en).
 
 ### First private game and update
@@ -147,7 +150,8 @@ problem with the client name, failed action and returned error.
 Follow [Grok Bot’s mobile setup](https://docs.x.ai/grok-bot/mobile). On October 9, onboarding offered Cursor Pro or
 Link Grok Account. Linking Grok required SuperGrok, SuperGrok Plus, SuperGrok Heavy or X Premium+; Google sign-in
 alone did not satisfy this requirement. An existing linked SuperGrok Heavy account subsequently reached connector
-setup on Cursor Free without a purchase or new trial. The full PlayDrop Bot create/update workflow remains unverified.
+setup on Cursor Free without a purchase or new trial. On October 9, the native macOS Bot passed production OAuth,
+private create/update, retained-version readback and browser playtesting. The mobile workflow remains unverified.
 
 In a browser, open the [Cursor plugins dashboard](https://cursor.com/dashboard/plugins) with the same account as
 Grok Bot. Choose **Personal**, then **Add → Custom MCP**. Set Name to **PlayDrop**, Type to **URL**, and Server URL
@@ -168,11 +172,15 @@ SDK-free production games played in locally built iOS/Android apps, including ta
 Core tests passed, without a Windows UI run.
 Codex 0.153.4 used `mcp_2026_07_28`; Claude Code 2.1.270 used `MCP_SDK_GENERATION=v2` in the recorded modern tests.
 Grok Build's development write run used native HTTP configuration; current plugin validation passed separately.
-On October 9, Grok Build 1.0.50 provider login and native plugin loading passed. Fresh PlayDrop OAuth then
-hit a consent CORS error; its fix is awaiting production deployment before create/update acceptance.
+On October 9, Cursor Agent CLI 2026.10.01 and the Grok Build 1.0.50 native plugin passed production OAuth,
+private create/update, retained-version readback and browser playtesting after the consent CORS fix was deployed.
+Grok Bot on macOS, Lovable and Replit also passed fresh private create/update, readback and browser playtests.
+Lovable reconnected to the reviewer account through its supported disconnect/re-add OAuth flow after the
+previous account reached its game quota; no games were deleted and no quota was bypassed.
+These desktop/browser checks do not establish mobile client support or public marketplace approval.
 A prior record says Cursor’s publisher application was submitted, but the October 9 publisher portal shows a blank
 application and no submission email was found in the work account. Submission status needs reconciliation; do not
-describe it as currently in review. The earlier callback allowance is not a fresh production CLI acceptance.
+describe it as currently in review. Native Cursor CLI acceptance is independent of this publisher status.
 Runtime acceptance and marketplace approval remain separate checks.
 Individual directory approvals must be checked in the provider's listing.
 
