@@ -105,7 +105,7 @@ No client secret or access token belongs in this repository or an install link.
 | Replit | Integrations → Add MCP server → Test & save | Complete OAuth; keep the security scanner enabled |
 | Grok hosted chat | Plugins → Connectors → New Connector → Custom → Add Connector | Business/Enterprise admins provision connectors first |
 | Gemini web / mobile | On the web: Settings → Connected Apps → Custom apps → Add → MCP URL → OAuth | US personal account, age 18+, English, Keep Activity on |
-| Grok Bot | Configure permitted connectors/plugins in Bot's supported account | Tested account requires a paid plan |
+| Grok Bot | Configure permitted connectors/plugins in Bot's supported account | Cursor Pro or a linked eligible Grok subscription; Google sign-in alone is insufficient |
 | Muse | Existing MCP onboarding with HTTPS and OAuth PKCE | Private runtime and review remain unverified |
 
 [Add PlayDrop AI to Replit](https://replit.com/integrations?mcp=eyJkaXNwbGF5TmFtZSI6IlBsYXlEcm9wIEFJIiwiYmFzZVVybCI6Imh0dHBzOi8vbWNwLnBsYXlkcm9wLmFpL21jcCJ9)
@@ -144,8 +144,11 @@ problem with the client name, failed action and returned error.
 
 ### Grok Bot on mobile
 
-Follow [Grok Bot’s mobile setup](https://docs.x.ai/grok-bot/mobile) using an eligible account, then check the Bot’s
-available plugins and connectors. Connect PlayDrop if available and finish OAuth. Availability depends on account,
+Follow [Grok Bot’s mobile setup](https://docs.x.ai/grok-bot/mobile). On October 9, onboarding offered Cursor Pro or
+Link Grok Account. Linking Grok required SuperGrok, SuperGrok Plus, SuperGrok Heavy or X Premium+; Google sign-in
+alone did not satisfy this requirement. The offered free trial required a payment card. No subscription or trial
+was started during the check, and the full PlayDrop Bot workflow remains unverified. With eligible access, check
+the Bot’s available plugins and connectors. Connect PlayDrop if available and finish OAuth. Availability depends on account,
 plan and team policy. Hosted Grok chat acceptance and a Grok Build plugin installation do not validate Grok Bot.
 Use [PlayDrop Web](https://www.playdrop.ai/create) if your Bot does not offer the required connection.
 
