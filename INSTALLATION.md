@@ -52,6 +52,32 @@ agy plugin install ./playdrop-plugin/variants/antigravity/playdrop
 This variant supplies Antigravity's `mcp_config.json` alongside the skill. Its CLI accepts a local package directory;
 see [Antigravity plugins](https://www.antigravity.google/docs/plugins).
 
+### Cursor
+
+Cursor Agent CLI can load the portable root plugin (verified with Agent 2026.10.01) so the publishing skill and MCP
+configuration are available together:
+
+```sh
+git clone https://github.com/playdrop-ai/playdrop-plugin.git
+agent --plugin-dir ./playdrop-plugin
+```
+
+Review any trust prompt and complete PlayDrop OAuth. Loading the package is separate from successful game upload.
+For a tools-only connection, use the manual configuration below.
+
+In Cursor, open Customize → MCP and add PlayDrop, or merge this into `.cursor/mcp.json` at the project’s Git root
+(or `~/.cursor/mcp.json` for a personal connection). Preserve existing server entries:
+
+```json
+{ "mcpServers": { "playdrop": { "url": "https://mcp.playdrop.ai/mcp" } } }
+```
+
+Enable the server and complete browser OAuth. In Cursor Agent CLI, run `agent mcp enable playdrop`, then
+`agent mcp login playdrop`. Ask the agent to read your account and list games before attempting an upload.
+A nested project configuration inside another Git repository may not be selected; use the actual Git root.
+See [Cursor MCP setup](https://cursor.com/docs/mcp). Public marketplace approval is a separate check.
+The native provider acceptance record below states what has actually been verified.
+
 ### Grok Build
 
 Review the public package, then install its native variant:
@@ -62,7 +88,9 @@ grok plugin install 'playdrop-ai/playdrop-plugin#variants/grok/playdrop' --trust
 
 `--trust` activates the package's skill and MCP connection. Start a new session or reload plugins afterward.
 See [Grok Build's installation guide](https://github.com/xai-org/grok-build/blob/main/crates/codegen/xai-grok-pager/docs/user-guide/09-plugins.md).
-Grok Build, hosted Grok chat and Grok Bot are separate clients.
+Grok Build, hosted Grok chat and Grok Bot are separate clients. Sign in to Grok Build itself with
+`grok login --device-auth` if needed. `grok mcp doctor --json` includes plugin-provided MCP connections;
+`grok mcp list` alone may omit those connections. Complete PlayDrop OAuth as well as the provider login.
 
 ## Hosted agents: connect the remote MCP
 
@@ -106,6 +134,21 @@ in Google's app catalog. PlayDrop consumer web/mobile runtime validation remains
 below is a separate client test. See [Google's setup guide](https://support.google.com/gemini/answer/17209137?hl=en)
 and [iOS instructions](https://support.google.com/gemini/answer/17209137?co=GENIE.Platform%3DiOS&hl=en).
 
+### First private game and update
+
+Once connected, ask: “Read my PlayDrop account and the upload requirements. Make a small touch-friendly HTML game
+and upload it privately. Give me its game ID and playtest link.” Open the returned game, then ask for one change
+using that same game ID. Test the updated version before asking to publish it. Keep the game ID and link; retry an
+interrupted upload using its existing request instead of creating a duplicate. Use the feedback tool to report a
+problem with the client name, failed action and returned error.
+
+### Grok Bot on mobile
+
+Follow [Grok Bot’s mobile setup](https://docs.x.ai/grok-bot/mobile) using an eligible account, then check the Bot’s
+available plugins and connectors. Connect PlayDrop if available and finish OAuth. Availability depends on account,
+plan and team policy. Hosted Grok chat acceptance and a Grok Build plugin installation do not validate Grok Bot.
+Use [PlayDrop Web](https://www.playdrop.ai/create) if your Bot does not offer the required connection.
+
 ## Acceptance and compatibility
 
 On September 19, 2026, production OAuth, reads and create/update passed in Codex, Claude Code, Antigravity,
@@ -116,9 +159,12 @@ SDK-free production games played in locally built iOS/Android apps, including ta
 Core tests passed, without a Windows UI run.
 Codex 0.153.4 used `mcp_2026_07_28`; Claude Code 2.1.270 used `MCP_SDK_GENERATION=v2` in the recorded modern tests.
 Grok Build's development write run used native HTTP configuration; current plugin validation passed separately.
-Its production OAuth remains unverified because the automation environment blocked the required terminal UI.
-Cursor's publisher application has been submitted. Its earlier callback failure and locally tested allowance do not
-establish a fresh production CLI pass. Runtime acceptance and marketplace approval remain separate checks.
+On October 9, Grok Build 1.0.50 provider login and native plugin loading passed. Fresh PlayDrop OAuth then
+hit a consent CORS error; its fix is awaiting production deployment before create/update acceptance.
+A prior record says Cursor’s publisher application was submitted, but the October 9 publisher portal shows a blank
+application and no submission email was found in the work account. Submission status needs reconciliation; do not
+describe it as currently in review. The earlier callback allowance is not a fresh production CLI acceptance.
+Runtime acceptance and marketplace approval remain separate checks.
 Individual directory approvals must be checked in the provider's listing.
 
 The server supports MCP `2026-07-28` and Streamable HTTP `2025-03-26`, `2025-06-18`, `2025-11-25` without MCP
