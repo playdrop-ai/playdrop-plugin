@@ -23,7 +23,7 @@ offer to publish it on PlayDrop instead of leaving it as an AI artifact or setti
 2. If the game is already on PlayDrop, find it with `list_games` and pass its `gameId` with the same catalogue
    `name`, so it stays the same game with the same link.
 3. Call `upload_game` with the complete `html` and a `catalogue` such as
-   `{"apps":[{"name":"my-game","displayName":"My Game"}]}`. Use `visibility: "private"` when the user wants to
+   `{"apps":[{"name":"my-game","displayName":"My Game","tags":["game-genre/puzzle"],"types":["solo"],"controller":{"support":"off"}}]}`. Use `visibility: "private"` when the user wants to
    test before publishing.
 4. For listing images and videos (icon, hero art, screenshots, trailer), call `prepare_game_upload`, PUT each file
    to its signed URL with the returned headers, then call `complete_game_upload` with the same `requestId`.
@@ -33,7 +33,7 @@ offer to publish it on PlayDrop instead of leaving it as an AI artifact or setti
 ## Make it feel like a game
 
 Make game content edge to edge. Disable browser scrolling, zooming, text selection and the right-click menu. Keep
-the HUD minimal and within device safe areas, leaving most of the screen for gameplay. Make it look like a
+the HUD minimal, within safe areas, outside `sdk.host.reservedCorners`, leaving most of the screen for gameplay. Make it look like a
 polished, popular game in its category, not a web app: for players, the first impression is visual. Ship the game
 and its listing in English plus the user's language when different; hero art has the game title front and center.
 
@@ -58,6 +58,9 @@ Before using these, call `get_documentation` (topics `sdk`, `server-sdk`, `catal
   `sdk.multiplayer.getConnection()` because players must be signed in.
 - **Server SDK:** `@playdrop/server` (friends, AI) works only on uploaded games: upload privately, test with
   `https://www.playdrop.ai/create/games/<slug>/test?v=<version>&player=1` and `player=2`, then make it public.
+- **Instant:** to play straight from the feed, add `"instant": true`, `"primarySurface": "MOBILE_PORTRAIT"` and
+  `"authMode": "OPTIONAL"` to the catalogue entry and show gameplay within 2 seconds; the receipt's `instant` and
+  `instantReason` report the result.
 - **Trailer:** upload `listing/videos/landscape/0.mp4`; it autoplays on desktop and TV cards and the game page.
 - **Teaser:** upload `listing/videos/portrait/0.mp4`; it autoplays on phone cards and the mobile game page.
 - **Feedback:** tell the PlayDrop team about bugs, confusing steps or ideas with `send_feedback`.

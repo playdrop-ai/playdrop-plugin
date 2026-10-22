@@ -71,11 +71,3 @@ Your agent reads current limits and formats with `get_documentation`. Everything
 All packages point at the URL in `mcp.json`; generated development copies may point at a development service.
 Version 1.0 replaced the older broad game-development plugin with one publishing skill and a remote connection.
 This MIT-licensed package contains no server implementation or credentials. Never add access tokens to it.
-
-## Package check
-
-```sh
-node tools/validate-package.mjs .
-```
-
-This checks package contents and configuration offline. It does not authenticate, publish a game or verify a provider.
