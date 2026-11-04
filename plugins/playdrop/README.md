@@ -4,12 +4,12 @@ Publish, test and share the browser games you build with Codex on PlayDrop. This
 `playdrop-ai` skill and a connection to PlayDrop's remote MCP server. Sign in to your PlayDrop account when
 Codex asks; there is no CLI or package to install.
 
-Your agent can publish `index.html` with listing images, videos and localized art, upload privately to test first,
-add the optional PlayDrop SDK, upload a Colyseus `server.js` for free hosted multiplayer with MongoDB, and send
-feedback to the PlayDrop team.
+Publish a single HTML game, or a full package with listing media, PlayDrop SDK features and hosted servers
+with MongoDB. Games play on the web and in PlayDrop's iOS, Android, Windows and macOS apps. Test privately first
+when needed. `get_documentation({topic:"index"})` lists every current guide; send feedback through MCP.
 
-- Setup guide: https://www.playdrop.ai/docs/connectors
-- Documentation: https://www.playdrop.ai/docs
+- Setup guide: https://www.playdrop.ai/create/connectors
+- Documentation: https://www.playdrop.ai/create/learn
 - Source and other clients: https://github.com/playdrop-ai/playdrop-plugin
 - Support: support@playdrop.ai
 

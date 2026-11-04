@@ -2,9 +2,9 @@
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "ai.playdrop/mcp",
   "title": "PlayDrop",
-  "description": "Publish, test and share browser games on PlayDrop from your AI agent.",
-  "version": "1.0.11",
-  "websiteUrl": "https://www.playdrop.ai/docs/connectors",
+  "description": "Make, publish and share games with your AI agent on PlayDrop, on the web and in native apps.",
+  "version": "1.1.1",
+  "websiteUrl": "https://www.playdrop.ai/create/connectors",
   "repository": {
     "url": "https://github.com/playdrop-ai/playdrop-plugin",
     "source": "github"

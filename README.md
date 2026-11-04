@@ -10,7 +10,7 @@ The plugin adds one skill, `playdrop-ai`, and a connection to PlayDrop's remote 
 `https://mcp.playdrop.ai/mcp`. Sign in to your PlayDrop account through OAuth; there is no CLI or package to install.
 
 The public PlayDrop CLI and legacy CLI-based skills are retired. Publish games through the
-[PlayDrop connector](https://www.playdrop.ai/docs/connectors).
+[PlayDrop connector](https://www.playdrop.ai/create/connectors).
 
 ## Install
 
@@ -22,42 +22,42 @@ The public PlayDrop CLI and legacy CLI-based skills are retired. Publish games t
 - **Replit:** [add PlayDrop to Replit](https://replit.com/integrations?mcp=eyJkaXNwbGF5TmFtZSI6IlBsYXlEcm9wIEFJIiwiYmFzZVVybCI6Imh0dHBzOi8vbWNwLnBsYXlkcm9wLmFpL21jcCJ9).
 - **Gemini web, iOS and Android:** add a custom app on [Gemini web](https://gemini.google.com), then use the same
   Google account on mobile. Requires an eligible personal US account, age 18+, English and Keep Activity enabled.
-  See the [Gemini guide](https://www.playdrop.ai/docs/connectors/gemini); consumer runtime validation is pending.
+  See the [Gemini guide](https://www.playdrop.ai/create/connectors/gemini); consumer runtime validation is pending.
 - **ChatGPT, Claude, Lovable, Grok and other MCP clients:** add a custom connector with the URL
   `https://mcp.playdrop.ai/mcp` and OAuth.
 
-[PlayDrop Connector](https://www.playdrop.ai/docs/connectors) has a step-by-step guide for each platform:
+[PlayDrop Connector](https://www.playdrop.ai/create/connectors) has a step-by-step guide for each platform:
 
-- Agents with plugins: [Codex](https://www.playdrop.ai/docs/connectors/codex),
-  [Claude Code](https://www.playdrop.ai/docs/connectors/claude-code),
-  [Antigravity](https://www.playdrop.ai/docs/connectors/antigravity).
-- Hosted assistants: [ChatGPT](https://www.playdrop.ai/docs/connectors/chatgpt),
-  [Claude](https://www.playdrop.ai/docs/connectors/claude), [Lovable](https://www.playdrop.ai/docs/connectors/lovable),
-  [Replit](https://www.playdrop.ai/docs/connectors/replit), [Grok](https://www.playdrop.ai/docs/connectors/grok),
-  [Gemini](https://www.playdrop.ai/docs/connectors/gemini).
+- Agents with plugins: [Codex](https://www.playdrop.ai/create/connectors/codex),
+  [Claude Code](https://www.playdrop.ai/create/connectors/claude-code),
+  [Antigravity](https://www.playdrop.ai/create/connectors/antigravity).
+- Hosted assistants: [ChatGPT](https://www.playdrop.ai/create/connectors/chatgpt),
+  [Claude](https://www.playdrop.ai/create/connectors/claude), [Lovable](https://www.playdrop.ai/create/connectors/lovable),
+  [Replit](https://www.playdrop.ai/create/connectors/replit), [Grok](https://www.playdrop.ai/create/connectors/grok),
+  [Gemini](https://www.playdrop.ai/create/connectors/gemini).
 
 [Installation](INSTALLATION.md) covers each package in detail, with dated compatibility results.
 
 ## What your agent can do
 
-- Publish `index.html` with its [catalogue.json](https://www.playdrop.ai/docs/catalogue-json) metadata, plus an
-  optional icon, hero art, screenshots, a landscape trailer and a portrait teaser, localized per language.
-- Upload privately to test a version, then make it public from the game page. Update the same game later.
-- Test a running local game before uploading: open
-  `https://www.playdrop.ai/creators/<username>/apps/game/<slug>/dev?url=http%3A%2F%2Flocalhost%3A5173%2F`.
-  In ChatGPT desktop, use its built-in browser beside the conversation when available. This uses the normal
-  PlayDrop host and SDK around your local server; no tunnel or upload is needed. Your agent checks gameplay,
-  not just page loading. If the built-in browser blocks access to your local server, open the same Dev URL in
-  your ordinary browser and use its local-network permission prompt. The agent reports which browser worked.
-  The Extensions panel provides Live/Draft playback of uploaded versions.
-- Add the optional [client SDK](https://www.playdrop.ai/docs/sdk) with one script tag: leaderboards, achievements,
-  cloud saves, social features and multiplayer.
-- Run multiplayer on your own server, or upload a [Colyseus](https://colyseus.io) `server.js` to PlayDrop's free hosted
-  game servers with [MongoDB](https://www.mongodb.com). See [game servers](https://www.playdrop.ai/docs/server-sdk).
+- Publish one self-contained HTML game up to 10 MiB with `upload_game`, or a built folder, ZIP or `.play` package
+  with [catalogue.json](https://www.playdrop.ai/create/learn/packaging) for several files, listing art and video,
+  PlayDrop SDK features and hosted servers. Your source project stays with you; PlayDrop receives built output.
+- Choose who can play: private for testing, unlisted for anyone with the link, or public for discovery. Release a
+  tested private version with `publish_game_version`, and update the same game later without changing its link.
+- Reach players on the web and in PlayDrop's iOS, Android, Windows and macOS apps, where games play full screen.
+- Add [cloud saves](https://www.playdrop.ai/create/learn/cloud-saves),
+  [leaderboards](https://www.playdrop.ai/create/learn/leaderboards), sharing and invites,
+  [online parties with voice](https://www.playdrop.ai/create/learn/online-party), gamepads and phone controllers,
+  [hosted Colyseus servers with MongoDB](https://www.playdrop.ai/create/learn/game-servers), and optional tips,
+  purchases and ads that earn the creator credits.
+- Test a running local game inside PlayDrop before uploading: open
+  `https://www.playdrop.ai/@<username>/<slug>/dev?url=http%3A%2F%2Flocalhost%3A5173%2F` in a browser on the machine
+  that runs the local server. The Extensions panel provides Live/Draft playback of uploaded versions.
 - Send questions, bugs and ideas to the PlayDrop team with the feedback tool.
 
-Your agent reads current limits and formats with `get_documentation`. Everything is also at
-[playdrop.ai/docs](https://www.playdrop.ai/docs).
+Your agent reads the current guides with `get_documentation`: `{topic:"index"}` lists them all. The same guides are
+on the web at [playdrop.ai/create/learn](https://www.playdrop.ai/create/learn), in 20 languages.
 
 ## Contents
 

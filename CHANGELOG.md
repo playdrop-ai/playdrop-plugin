@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.1.1 — 2026-11-04
+
+- Two publishing paths: `upload_game` for one self-contained HTML file up to 10 MiB without the SDK, and
+  `prepare_catalogue_upload` for a built folder, ZIP or `.play` package with every PlayDrop feature.
+- `unlisted` visibility on uploads and on `publish_game_version`, which releases a tested private version exactly.
+- `get_documentation({topic:"index"})` lists a guide per feature, plus generated SDK declarations.
+- Errors link the guide that fixes them. Active connections renew while they are used.
+- The `playdrop-ai` skill presents PlayDrop for the whole making of a game, not only the final upload.
+
 ## 1.0.10 — 2026-10-02
 
 - Plugin description in the words people search for: publish, host and share an HTML5, web or browser game.

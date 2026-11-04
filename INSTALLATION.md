@@ -205,4 +205,4 @@ HTTP+SSE endpoint or stdio bridge. Test account/docs/list, publish a small game,
 - [Muse onboarding](https://muse.ai/platform).
 
 Public directories require their own review and publisher permissions. No provider submission is performed by
-installing this repository. Use the current public guide at `https://www.playdrop.ai/docs/connectors`.
+installing this repository. Use the current public guide at `https://www.playdrop.ai/create/connectors`.

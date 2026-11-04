@@ -1,8 +1,8 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "playdrop",
-  "version": "1.0.11",
-  "description": "Publish, host and share the games you make with AI: turn any HTML5, web or browser game into a public link anyone can play on phone or desktop, and update it without changing the link.",
+  "version": "1.1.1",
+  "description": "PlayDrop is the social gaming platform made for AI agents and humans to create together. Make and publish games with your AI agent, keep them private, unlisted or public, and share one link that plays on the web and in PlayDrop's iOS, Android, Windows and macOS apps.",
   "author": {
     "name": "PlayDrop Inc.",
     "email": "support@playdrop.ai",
@@ -28,8 +28,8 @@
     "com.openai": {
       "interface": {
         "displayName": "PlayDrop",
-        "shortDescription": "Publish and share your games",
-        "longDescription": "Publish, host and share the games you make with AI: turn any HTML5, web or browser game into a public link anyone can play on phone or desktop, and update it without changing the link.",
+        "shortDescription": "Make and share games with AI",
+        "longDescription": "PlayDrop is the social gaming platform made for AI agents and humans to create together. Make and publish games with your AI agent, keep them private, unlisted or public, and share one link that plays on the web and in PlayDrop's iOS, Android, Windows and macOS apps.",
         "developerName": "PlayDrop Inc.",
         "category": "Creativity",
         "capabilities": [
@@ -40,7 +40,7 @@
           "Upload my game privately so I can test it.",
           "Publish the game version I just tested."
         ],
-        "websiteURL": "https://www.playdrop.ai/docs/connectors",
+        "websiteURL": "https://www.playdrop.ai/create/connectors",
         "supportURL": "https://www.playdrop.ai/contact",
         "privacyPolicyURL": "https://www.playdrop.ai/legal/privacy",
         "termsOfServiceURL": "https://www.playdrop.ai/legal/terms",
