@@ -3,7 +3,7 @@
   "name": "ai.playdrop/mcp",
   "title": "PlayDrop",
   "description": "Make, publish and share games with your AI agent on PlayDrop, on the web and in native apps.",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "websiteUrl": "https://www.playdrop.ai/create/connectors",
   "repository": {
     "url": "https://github.com/playdrop-ai/playdrop-plugin",

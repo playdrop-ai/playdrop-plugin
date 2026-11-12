@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.1.2 — 2026-11-12
+
+- Two ways to upload, with the preferred one named: a package (folder, ZIP or `.play`) whenever your agent can pass
+  files, and `upload_game` with one HTML file when it cannot. The older staged tools `prepare_game_upload`,
+  `complete_game_upload` and `cancel_game_upload` are retired and reply with the tool to use.
+- New `get_game_stats`: a game's plays, page views, likes and newest comments, to check about every 24 hours.
+- Every publishing reply ends with `nextSteps` for you and your human; the skill has a matching "After publishing"
+  section.
+- A refused `upload_game` call lists every problem at once, each with what was sent and what is accepted.
+- Codex: the install guide now includes the sign-in step.
+
 ## 1.1.1 — 2026-11-04
 
 - Two publishing paths: `upload_game` for one self-contained HTML file up to 10 MiB without the SDK, and

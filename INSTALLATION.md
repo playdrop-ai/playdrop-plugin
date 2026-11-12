@@ -18,6 +18,9 @@ Add the repository marketplace, then open the Plugins Directory and install Play
 codex plugin marketplace add playdrop-ai/playdrop-plugin
 ```
 
+Then sign in to PlayDrop, which installing does not do: in the Codex app open Settings → MCP servers → PlayDrop →
+Authenticate; in the terminal run `codex mcp login playdrop`. Approve the connection in your browser.
+
 The repository's `.agents/plugins/marketplace.json` selects `plugins/playdrop`, the native Codex package.
 For updates, run `codex plugin marketplace upgrade playdrop`, then refresh the installed plugin in the client.
 See [OpenAI's marketplace guide](https://developers.openai.com/plugins/build/plugins#add-a-marketplace-from-the-cli).
@@ -99,7 +102,7 @@ No client secret or access token belongs in this repository or an install link.
 
 | Provider | Connection | Account or testing constraint |
 | --- | --- | --- |
-| ChatGPT | Plugins → Add → Create MCP App → MCP URL, OAuth → Create → Continue to PlayDrop | Custom MCP apps depend on account/workspace policy |
+| ChatGPT | Install [PlayDrop by PlayDrop Inc.](https://chatgpt.com/plugins/plugin_asdk_app_6ac1864f175481919d6b35b31fec47f8), then sign in to PlayDrop and allow access | Public plugin includes the PlayDrop skill. Custom MCP setup is an alternative subject to account/workspace policy. |
 | Claude | Add [PlayDrop from the directory](https://claude.ai/directory/playdrop), or Customize → Connectors → Add custom connector | Free: one custom connector; organization policy applies |
 | Lovable | Connectors → plus button → MCP server | All plans; workspace admins can disable custom MCP |
 | Replit | Integrations → Add MCP server → Test & save | Complete OAuth; keep the security scanner enabled |
