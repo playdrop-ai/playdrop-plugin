@@ -10,6 +10,8 @@
   section.
 - A refused `upload_game` call lists every problem at once, each with what was sent and what is accepted.
 - Codex: the install guide now includes the sign-in step.
+- Claude package: the unused SVG icon is no longer shipped. Claude's directory accepts only PNG, JPEG, GIF, WebP and
+  ICO images from publishers it has not marked Verified.
 
 ## 1.1.1 — 2026-11-04
 
